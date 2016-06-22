@@ -1,4 +1,18 @@
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://jitpack.io" }
+    maven { url "http://dl.bintray.com/android/android-tools" }
+    maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://jcenter.bintray.com" }
+}
+
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+apply plugin: 'io.fabric'
+apply plugin: 'com.jakewharton.hugo'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 23
@@ -11,11 +25,31 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    productFlavors {
+        develop {
+            minSdkVersion 21
+            buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
+        }
+        prod {
+            minSdkVersion 17
+            buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            debuggable true
+
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -24,4 +58,21 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.google.android.gms:play-services:9.0.2'
+
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
+        transitive = true;
+    }
+
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxjava:1.1.5'
+
+    compile 'com.aykuttasil:androidbasichelper:1.0.3' // AndroidBasicHelper
+    compile 'com.google.android:flexbox:0.2.1' // Google FlexboxLayout kullanımı için
+    compile 'org.greenrobot:eventbus:3.0.0'
+
 }
