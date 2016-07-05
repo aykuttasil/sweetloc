@@ -13,8 +13,8 @@
 
 
         <activity
-            android:name=".activity.MapsActivity"
-            android:label="@string/title_activity_maps">
+            android:name=".activity.MainActivity_"
+            android:label="Main Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,21 +22,55 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activity.LoginActivity_"
+            android:label="Login" />
+
+        <activity
+            android:name=".activity.MapsActivity"
+            android:label="@string/title_activity_maps" />
+
+
+        <service
+            android:name=".service.MyFirebaseInstanceIdService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.MyFcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.MyGcmTaskService"
+            android:exported="true"
+            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
+            <intent-filter>
+                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="1180ed8815863b0006d4df63e666bc74901dc3ec" />
 
-        <!--
-         The API key for Google Maps-based APIs is defined as a string resource.
-         (See the file "res/values/google_maps_api.xml").
-         Note that the API key is linked to the encryption key used to sign the APK.
-         You need a different API key for each encryption key, including the release key that is used to
-         sign the APK for publishing.
-         You can define the keys for the debug and release targets in src/debug/ and src/release/.
-        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="sweetloc.db" />
+
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

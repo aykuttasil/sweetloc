@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "535821025252",
+    "firebase_url": "https://sweetloc-1362.firebaseio.com",
+    "project_id": "sweetloc-1362",
+    "storage_bucket": "sweetloc-1362.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535821025252:android:af9b93e0d62d96da",
+        "android_client_info": {
+          "package_name": "com.aykuttasil.sweetloc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "535821025252-98sdbrmtjujbmjofs44cht12tgtei5qf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aykuttasil.sweetloc",
+            "certificate_hash": "DBB5C0A24C9A551FE99937452AC2C03BA4AB2CF8"
+          }
+        },
+        {
+          "client_id": "535821025252-msipukucilrgfk2jskvnfracsgncqi72.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "535821025252-900ior2vv23as7h7pnjd2pjn6inb6q6s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDx291mIGINNAu5jT-arL1sbFhs1H9YJmM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

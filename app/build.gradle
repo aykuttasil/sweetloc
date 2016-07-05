@@ -13,15 +13,71 @@ apply plugin: 'android-apt'
 apply plugin: 'io.fabric'
 apply plugin: 'com.jakewharton.hugo'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.neenbedankt.android-apt'
+
+def AAVersion = '4.0-SNAPSHOT'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.orhanobut:logger:1.15'
+
+    compile 'com.android.support:appcompat-v7:24.0.0'
+
+    compile 'com.google.firebase:firebase-core:9.2.0'
+    compile 'com.google.firebase:firebase-messaging:9.2.0'
+    compile 'com.google.firebase:firebase-database:9.2.0'
+    compile 'com.google.firebase:firebase-config:9.2.0'
+    compile 'com.google.firebase:firebase-auth:9.2.0'
+
+    compile 'com.google.android.gms:play-services:9.2.0'
+    //compile 'com.google.android.gms:play-services-gcm:9.2.0'
+
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
+        transitive = true;
+    }
+
+    apt "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxjava:1.1.5'
+
+    compile 'com.aykuttasil:androidbasichelper:1.0.3' // AndroidBasicHelper
+    compile 'com.google.android:flexbox:0.2.1' // Google FlexboxLayout kullanımı için
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+
+}
+
+apt {
+    arguments {
+        //androidManifestFile variant.outputs[0].processResources.manifestFile
+        // if you have multiple outputs (when using splits), you may want to have other index than 0
+
+        // If you are using different applicationId than your manifest package name, add the manifest package name here
+        // resourcePackageName "org.androidannotations.sample"
+
+        // You can set optional annotation processing options here, like these commented options:
+        // logLevel 'INFO'
+        // logFile '/var/log/aa.log'
+    }
+}
+
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.aykuttasil.sweetloc"
         minSdkVersion 17
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
@@ -53,26 +109,4 @@ android {
     }
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.google.android.gms:play-services:9.0.2'
-
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
-        transitive = true;
-    }
-
-    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-
-    compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'io.reactivex:rxjava:1.1.5'
-
-    compile 'com.aykuttasil:androidbasichelper:1.0.3' // AndroidBasicHelper
-    compile 'com.google.android:flexbox:0.2.1' // Google FlexboxLayout kullanımı için
-    compile 'org.greenrobot:eventbus:3.0.0'
-
-}
+apply plugin: 'com.google.gms.google-services'

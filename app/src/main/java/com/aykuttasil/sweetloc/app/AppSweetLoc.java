@@ -1,9 +1,18 @@
 package com.aykuttasil.sweetloc.app;
 
 import android.app.Application;
+import android.content.Context;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Configuration;
+import com.aykuttasil.sweetloc.BuildConfig;
+import com.aykuttasil.sweetloc.model.ModelLocation;
+import com.aykuttasil.sweetloc.model.ModelUser;
 import com.crashlytics.android.Crashlytics;
+import com.orhanobut.logger.LogLevel;
+import com.orhanobut.logger.Logger;
 
+import hugo.weaving.DebugLog;
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -13,6 +22,43 @@ public class AppSweetLoc extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initializeActiveAndroid();
+        initSweetLoc();
         Fabric.with(this, new Crashlytics());
+    }
+
+
+    @DebugLog
+    public void initializeActiveAndroid() {
+        ActiveAndroid.initialize(new Configuration.Builder(getApplicationContext())
+                .addModelClass(ModelUser.class)
+                .addModelClass(ModelLocation.class)
+                .create());
+    }
+
+    @DebugLog
+    private void initSweetLoc() {
+        Logger.init("SweetLoc")                 // default PRETTYLOGGER or use just init()
+                .methodCount(3)                 // default 2
+                .logLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE)        // default LogLevel.FULL
+                .methodOffset(0);              // default 0
+        //.hideThreadInfo()               // default shown//.logAdapter(new AndroidLogAdapter()); //default AndroidLogAdapter
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        try {
+            super.attachBaseContext(base);
+            //MultiDex.install(this);
+        } catch (RuntimeException ignored) {
+            // Multidex support doesn't play well with Robolectric yet
+        }
+    }
+
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        ActiveAndroid.dispose();
     }
 }
