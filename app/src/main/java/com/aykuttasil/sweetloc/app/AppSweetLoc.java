@@ -11,8 +11,6 @@ import com.aykuttasil.sweetloc.model.ModelLocation;
 import com.aykuttasil.sweetloc.model.ModelSweetLocPreference;
 import com.aykuttasil.sweetloc.model.ModelUser;
 import com.crashlytics.android.Crashlytics;
-
-import com.facebook.stetho.Stetho;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
@@ -28,7 +26,6 @@ public class AppSweetLoc extends Application {
         super.onCreate();
         initializeActiveAndroid();
         initSweetLoc();
-        Stetho.initializeWithDefaults(this);
     }
 
 
@@ -42,7 +39,7 @@ public class AppSweetLoc extends Application {
     }
 
     @DebugLog
-    private void initSweetLoc() {
+    public void initSweetLoc() {
         Logger.init("SweetLocLogger")                // default PRETTYLOGGER or use just init()
                 .methodCount(3)                      // default 2
                 .logLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE)        // default LogLevel.FULL
