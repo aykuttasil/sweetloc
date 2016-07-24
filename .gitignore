@@ -33,3 +33,6 @@ local.properties
 *.ipr
 *~
 *.swp
+/gradle.properties
+app/AykutAsil.jks
+app/libs/

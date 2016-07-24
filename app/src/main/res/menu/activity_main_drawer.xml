@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:title="Genel">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/menuProfil"
+                    android:icon="@drawable/ic_chevron_right"
+                    android:title="Profil" />
+                <item
+                    android:id="@+id/menuHarita"
+                    android:icon="@drawable/ic_chevron_right"
+                    android:title="Harita" />
+            </group>
+        </menu>
+    </item>
+</menu>

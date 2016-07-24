@@ -15,46 +15,8 @@ apply plugin: 'com.jakewharton.hugo'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 
+
 def AAVersion = '4.0-SNAPSHOT'
-
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.orhanobut:logger:1.15'
-
-    compile 'com.android.support:appcompat-v7:24.0.0'
-
-    compile 'com.google.firebase:firebase-core:9.2.0'
-    compile 'com.google.firebase:firebase-messaging:9.2.0'
-    compile 'com.google.firebase:firebase-database:9.2.0'
-    compile 'com.google.firebase:firebase-config:9.2.0'
-    compile 'com.google.firebase:firebase-auth:9.2.0'
-
-    compile 'com.google.android.gms:play-services:9.2.0'
-    //compile 'com.google.android.gms:play-services-gcm:9.2.0'
-
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
-        transitive = true;
-    }
-
-    apt "org.androidannotations:androidannotations:$AAVersion"
-    compile "org.androidannotations:androidannotations-api:$AAVersion"
-
-    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-
-    compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'io.reactivex:rxjava:1.1.5'
-
-    compile 'com.aykuttasil:androidbasichelper:1.0.3' // AndroidBasicHelper
-    compile 'com.google.android:flexbox:0.2.1' // Google FlexboxLayout kullanımı için
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
-
-}
-
 apt {
     arguments {
         //androidManifestFile variant.outputs[0].processResources.manifestFile
@@ -69,17 +31,16 @@ apt {
     }
 }
 
-
 android {
     compileSdkVersion 24
-    buildToolsVersion "23.0.3"
-
+    buildToolsVersion "24.0.0"
     defaultConfig {
         applicationId "com.aykuttasil.sweetloc"
         minSdkVersion 17
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     productFlavors {
         develop {
@@ -87,8 +48,17 @@ android {
             buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
         }
         prod {
-            minSdkVersion 17
+            minSdkVersion 21
             buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
         }
     }
 
@@ -96,17 +66,59 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            resValue "string", "GOOGLE_MAPS_ANDROID_API_KEY", "(your development Maps API key)"
         }
         debug {
             minifyEnabled false
             debuggable true
+            signingConfig signingConfigs.release
+            resValue "string", "GOOGLE_MAPS_ANDROID_API_KEY", "(your development Maps API key)"
 
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    debugCompile 'com.facebook.stetho:stetho:1.3.0'
+    debugCompile 'com.facebook.stetho:stetho-js-rhino:1.3.0'
+    compile 'com.orhanobut:logger:1.15'
+    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.google.firebase:firebase-core:9.2.0'
+    compile 'com.google.firebase:firebase-messaging:9.2.0'
+    compile 'com.google.firebase:firebase-database:9.2.0'
+    compile 'com.google.firebase:firebase-config:9.2.0'
+    compile 'com.google.firebase:firebase-auth:9.2.0'
+    compile 'com.google.android.gms:play-services-maps:9.2.0'
+    compile 'com.google.android.gms:play-services-gcm:9.2.0'
+    compile 'com.google.android.gms:play-services-location:9.2.0'
+    //compile 'com.google.android.gms:play-services:9.2.0'
+    //compile 'com.google.android.gms:play-services-gcm:9.2.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
+        transitive = true;
+    }
+    apt "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxjava:1.1.5'
+    compile 'com.aykuttasil:androidbasichelper:1.0.3'
+    // AndroidBasicHelper
+    compile 'com.google.android:flexbox:0.2.1'
+    // Google FlexboxLayout kullanımı için
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+}
 apply plugin: 'com.google.gms.google-services'

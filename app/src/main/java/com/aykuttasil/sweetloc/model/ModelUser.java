@@ -1,6 +1,7 @@
 package com.aykuttasil.sweetloc.model;
 
 import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,29 +12,50 @@ import com.google.gson.annotations.SerializedName;
 @Table(name = "User", id = "_id")
 public class ModelUser extends Model {
 
+    @Column
     @Expose
     @SerializedName("Ad")
     private String Ad;
 
+    @Column
     @Expose
-    @SerializedName("Ad")
+    @SerializedName("SoyAd")
     private String SoyAd;
 
+    @Column
     @Expose
-    @SerializedName("Ad")
+    @SerializedName("Telefon")
     private String Telefon;
 
+    @Column
     @Expose
-    @SerializedName("Ad")
+    @SerializedName("Email")
     private String Email;
 
+    @Column
+    @Expose
+    @SerializedName("Parola")
+    private String Parola;
+
+    @Column
     @Expose
     @SerializedName("RegId")
     private String RegID;
 
+    @Column
     @Expose
     @SerializedName("Token")
     private String Token;
+
+    @Column
+    @Expose
+    @SerializedName("UUID")
+    private String UUID;
+
+    @Column
+    @Expose
+    @SerializedName("ImageUrl")
+    private String ImageUrl;
 
     public ModelUser() {
         super();
@@ -85,5 +107,29 @@ public class ModelUser extends Model {
 
     public void setRegID(String regID) {
         RegID = regID;
+    }
+
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
+    }
+
+    public String getParola() {
+        return Parola;
+    }
+
+    public void setParola(String parola) {
+        Parola = parola;
+    }
+
+    public String getImageUrl() {
+        return ImageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        ImageUrl = imageUrl;
     }
 }

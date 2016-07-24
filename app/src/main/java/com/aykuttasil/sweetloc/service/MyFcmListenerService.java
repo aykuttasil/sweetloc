@@ -14,6 +14,5 @@ public class MyFcmListenerService extends FirebaseMessagingService {
         String from = message.getFrom();
         Map data = message.getData();
 
-
     }
 }

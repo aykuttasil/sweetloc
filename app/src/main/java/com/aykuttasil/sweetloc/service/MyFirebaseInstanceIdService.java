@@ -1,5 +1,7 @@
 package com.aykuttasil.sweetloc.service;
 
+import com.aykuttasil.sweetloc.db.DbManager;
+import com.aykuttasil.sweetloc.model.ModelSweetLocPreference;
 import com.aykuttasil.sweetloc.model.event.FcmRegistraionIDEvent;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
@@ -13,7 +15,6 @@ import hugo.weaving.DebugLog;
  * Created by aykutasil on 20.11.2015.
  */
 public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
-    private static final String TAG = "FirebaseInstanceId";
 
     @DebugLog
     @Override
@@ -26,6 +27,13 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
         fcmRegistraionIDEvent.setRegID(refreshedToken);
 
         EventBus.getDefault().post(fcmRegistraionIDEvent);
+
+        ModelSweetLocPreference modelSweetLocPreference = DbManager.getModelSweetLocPreference();
+        if (modelSweetLocPreference == null) {
+            modelSweetLocPreference = new ModelSweetLocPreference();
+        }
+        modelSweetLocPreference.setRegId(refreshedToken);
+        modelSweetLocPreference.save();
 
         // TODO: Implement this method to send any registration to your app's servers.
         //sendRegistrationToServer(refreshedToken);

@@ -15,6 +15,4 @@ public interface ApiService {
     @DebugLog
     @POST("Location")
     Observable<LocationResponse> Location(LocationRequest request);
-
-
 }

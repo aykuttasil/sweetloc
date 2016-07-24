@@ -21,14 +21,12 @@ public class ApiManager {
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(resp -> {
-                        resp.getData();
+                        //resp.getData();
                     }, error -> {
                         EventBus.getDefault().post("");
                     });
-
-
         } catch (Exception e) {
-
+            //
         }
     }
 

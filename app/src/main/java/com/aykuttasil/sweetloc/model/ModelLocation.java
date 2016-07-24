@@ -1,11 +1,10 @@
 package com.aykuttasil.sweetloc.model;
 
 import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.Date;
 
 /**
  * Created by aykutasil on 3.07.2016.
@@ -27,37 +26,40 @@ public class ModelLocation extends Model {
     }
     */
 
-    @SerializedName("name")
+    @Column
+    @SerializedName("Name")
     @Expose
     private String Name;
 
-    @SerializedName("address")
+    @Column
+    @SerializedName("Address")
     @Expose
     private String Address;
 
-    @SerializedName("locLatitude")
+    @Column
+    @SerializedName("LocLatitude")
     @Expose
     private double Latitude;
 
-    @SerializedName("locLongitude")
+    @Column
+    @SerializedName("LocLongitude")
     @Expose
     private double Longitude;
 
-    @SerializedName("locAccuracy")
+    @Column
+    @SerializedName("LocAccuracy")
     @Expose
     private double Accuracy;
 
-    @SerializedName("locTime")
+    @Column
+    @SerializedName("LocTime")
     @Expose
-    private Date Time;
+    private long Time;
 
-    @SerializedName("createdAt")
+    @Column
+    @SerializedName("LocFormatTime")
     @Expose
-    private Date CreatedAt;
-
-    @SerializedName("updatedAt")
-    @Expose
-    private Date UpdatedAt;
+    private String FormatTime;
 
     public ModelLocation() {
         super();
@@ -103,27 +105,20 @@ public class ModelLocation extends Model {
         Accuracy = accuracy;
     }
 
-    public Date getTime() {
+
+    public long getTime() {
         return Time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(long time) {
         Time = time;
     }
 
-    public Date getCreatedAt() {
-        return CreatedAt;
+    public String getFormatTime() {
+        return FormatTime;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        CreatedAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return UpdatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        UpdatedAt = updatedAt;
+    public void setFormatTime(String formatTime) {
+        FormatTime = formatTime;
     }
 }

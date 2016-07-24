@@ -7,4 +7,6 @@ public class Const {
     public static final String TASK_TYPE = "TaskType";
     public static final String TASK_LOCATION = "TaskLocation";
 
+    public static final int REQUEST_CODE_BROADCAST_LOCATION = 0;
+
 }

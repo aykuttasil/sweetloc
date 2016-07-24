@@ -1,30 +1,28 @@
 package com.aykuttasil.sweetloc.activity;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.MenuItem;
 
-import com.aykuttasil.androidbasichelperlib.UiHelper;
+import com.aykuttasil.androidbasichelperlib.SuperHelper;
 import com.aykuttasil.sweetloc.R;
-import com.aykuttasil.sweetloc.model.ModelUser;
-import com.aykuttasil.sweetloc.model.event.FcmRegistraionIDEvent;
-import com.aykuttasil.sweetloc.service.MyFirebaseInstanceIdService;
+import com.aykuttasil.sweetloc.fragment.MainFragment;
+import com.aykuttasil.sweetloc.fragment.MainFragment_;
+import com.aykuttasil.sweetloc.fragment.MapFragment;
+import com.aykuttasil.sweetloc.fragment.MapFragment_;
+import com.aykuttasil.sweetloc.fragment.ProfilFragment;
+import com.aykuttasil.sweetloc.fragment.ProfilFragment_;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.orhanobut.logger.Logger;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OnActivityResult;
-import org.androidannotations.annotations.UiThread;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.Random;
+import org.androidannotations.annotations.ViewById;
 
 import hugo.weaving.DebugLog;
 
@@ -32,87 +30,76 @@ import hugo.weaving.DebugLog;
  * Created by aykutasil on 23.06.2016.
  */
 @EActivity(R.layout.activity_main_layout)
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final int LOGIN_REQUEST_CODE = 1001;
+    @ViewById(R.id.drawer_layout)
+    DrawerLayout drawer;
 
-    DatabaseReference mDatabaseReferance;
+    @ViewById(R.id.nav_view)
+    NavigationView navigationView;
+    //
+    ActionBarDrawerToggle toggle;
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
 
     @DebugLog
     @AfterViews
     public void MainActivityInit() {
+        setNavigationView();
         startFirebaseInstanceIDService();
-
-        mDatabaseReferance = FirebaseDatabase.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Logger.d("onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    Logger.d("onAuthStateChanged:signed_out");
-                }
-                updateUI(user);
-            }
-        };
-
+        setFirebaseAuthListener();
     }
 
     @DebugLog
-    private void startFirebaseInstanceIDService() {
-        String token = FirebaseInstanceId.getInstance().getToken();
-        Logger.i(token);
-        if (token == null) {
-            Intent intent = new Intent(this, MyFirebaseInstanceIdService.class);
-            startService(intent);
-        }
+    public void setFirebaseAuthListener() {
+        mAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                Logger.d("onAuthStateChanged:signed_in:" + user.getUid());
+            } else {
+                Logger.d("onAuthStateChanged:signed_out");
+            }
+            updateUI(user);
+        };
     }
 
+    @DebugLog
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
+
+    @DebugLog
+    public void setNavigationView() {
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @DebugLog
+    private void startFragment() {
+        SuperHelper.ReplaceFragmentBeginTransaction(
+                this,
+                MainFragment_.builder().build(),
+                FRAGMENT_CONTAINER_ID,
+                MainFragment.class.getSimpleName(),
+                false);
+    }
+
     @DebugLog
     private void updateUI(FirebaseUser user) {
-        if (user != null) {
-            UiHelper.UiDialog.newInstance(this).getOKDialog("Merhaha", user.getEmail(), null).show();
-        } else {
-            Intent intent = new Intent(MainActivity.this, LoginActivity_.class);
+        if (user == null) {
+            Intent intent = new Intent(this, LoginActivity_.class);
             startActivityForResult(intent, LOGIN_REQUEST_CODE);
+        } else {
+            startFragment();
         }
-    }
-
-    @UiThread
-    @DebugLog
-    public void saveUser(ModelUser user) {
-        mDatabaseReferance.child(ModelUser.class.getSimpleName()).child(user.getToken()).setValue(user, new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if (databaseError != null) {
-                    UiHelper.UiDialog.newInstance(MainActivity.this).getOKDialog("Database Error", databaseError.getMessage(), null).show();
-                }
-            }
-        });
-    }
-
-    @DebugLog
-    @Click(R.id.Button_SaveData)
-    public void Button_SaveDataClick() {
-        ModelUser modelUser = new ModelUser();
-        modelUser.setAd("Aykut");
-        modelUser.setSoyAd("Asil");
-        modelUser.setRegID(FirebaseInstanceId.getInstance().getToken());
-        modelUser.setEmail("aykuttasil@hotmail.com");
-        modelUser.setTelefon("053581512442342");
-        modelUser.setToken(String.valueOf(new Random().nextInt()));
-
-        saveUser(modelUser);
     }
 
 
@@ -121,17 +108,65 @@ public class MainActivity extends BaseActivity {
     public void ActivityResultLogin(int resultCode) {
         switch (resultCode) {
             case RESULT_OK: {
-
                 break;
             }
         }
     }
 
 
+    /*
     @DebugLog
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FcmRegistraionIDEvent event) {
+        FirebaseInstanceId.getInstance().getToken();
+        ModelSweetLocPreference modelSweetLocPreference = DbManager.getModelSweetLocPreference();
+        if (modelSweetLocPreference == null) {
+            modelSweetLocPreference = new ModelSweetLocPreference();
+        }
+        modelSweetLocPreference.setRegId(event.getRegID());
+        modelSweetLocPreference.save();
+    }
+    */
 
+    @DebugLog
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuProfil: {
+                //WhichFragment = MainGonderiFragment.class.getSimpleName();
+                //WhichNestedFragment = GonderiListFragment.class.getSimpleName();
+                SuperHelper.ReplaceFragmentBeginTransaction(
+                        this,
+                        ProfilFragment_.builder().build(),
+                        FRAGMENT_CONTAINER_ID,
+                        ProfilFragment.class.getSimpleName(),
+                        false);
+                break;
+            }
+            case R.id.menuHarita: {
+                //WhichFragment = MainGonderiFragment.class.getSimpleName();
+                //WhichNestedFragment = GonderiListFragment.class.getSimpleName();
+                SuperHelper.ReplaceFragmentBeginTransaction(
+                        this,
+                        MapFragment_.builder().build(),
+                        FRAGMENT_CONTAINER_ID,
+                        MapFragment.class.getSimpleName(),
+                        false);
+                break;
+            }
+            default: {
+                //WhichFragment = MainGonderiFragment.class.getSimpleName();
+                SuperHelper.ReplaceFragmentBeginTransaction(
+                        this,
+                        MainFragment_.builder().build(),
+                        FRAGMENT_CONTAINER_ID,
+                        MainFragment.class.getSimpleName(),
+                        false);
+                break;
+            }
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @DebugLog
