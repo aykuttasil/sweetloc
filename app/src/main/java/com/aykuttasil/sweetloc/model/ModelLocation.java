@@ -1,5 +1,7 @@
 package com.aykuttasil.sweetloc.model;
 
+import android.location.Location;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -61,6 +63,12 @@ public class ModelLocation extends Model {
     @Expose
     private String FormatTime;
 
+    @Expose
+    private Location Location;
+
+    @Expose
+    private String CreateDate;
+
     public ModelLocation() {
         super();
     }
@@ -120,5 +128,21 @@ public class ModelLocation extends Model {
 
     public void setFormatTime(String formatTime) {
         FormatTime = formatTime;
+    }
+
+    public android.location.Location getLocation() {
+        return Location;
+    }
+
+    public void setLocation(android.location.Location location) {
+        Location = location;
+    }
+
+    public String getCreateDate() {
+        return CreateDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        CreateDate = createDate;
     }
 }

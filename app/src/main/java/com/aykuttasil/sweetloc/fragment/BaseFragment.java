@@ -83,7 +83,9 @@ public class BaseFragment extends Fragment {
                 AlarmManager.INTERVAL_FIFTEEN_MINUTES,
                 pendingIntent);*/
 
-        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+        //alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP);
+
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME,
                 SystemClock.currentThreadTimeMillis() + 3000,
                 periodicTime,
                 pendingIntent);

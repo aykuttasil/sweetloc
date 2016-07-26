@@ -18,8 +18,7 @@ public class LocationReceiver extends WakefulBroadcastReceiver {
     @DebugLog
     @Override
     public void onReceive(Context context, Intent intent) {
-        //Intent intent = new Intent(ACTION_PERIODIC_SERVICE);
         Intent intent_ = new Intent(context, PeriodicService_.class);
-        startWakefulService(context, intent_);
+        LocationReceiver.startWakefulService(context, intent_);
     }
 }

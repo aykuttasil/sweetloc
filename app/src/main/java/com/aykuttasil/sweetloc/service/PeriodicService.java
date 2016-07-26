@@ -64,7 +64,7 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
         final int id = intent.getIntExtra("android.support.content.wakelockid", 0);
         Logger.i("android.support.content.wakelockid : " + id);
         this.mIntent = intent;
-        return START_REDELIVER_INTENT;
+        return START_NOT_STICKY;
     }
 
     @DebugLog
@@ -119,8 +119,12 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
             return;
         }
 
+
+        //Location location = FusedLocationApi.getLastLocation(mGoogleApiClient);
+        //addFireBaseLocation(location);
+
         FusedLocationApi.getLocationAvailability(mGoogleApiClient).isLocationAvailable();
-        int LocationPeriod = 30;
+        int LocationPeriod = 20;
 
         long intervalTime = LocationPeriod * 1000;
         long fastestTime = 10 * 1000;
@@ -181,6 +185,13 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
     @Override
     public void onLocationChanged(Location location) {
         Logger.d(location);
+        addFireBaseLocation(location);
+    }
+
+    @DebugLog
+    private void addFireBaseLocation(Location location) {
+        if (location == null) return;
+        Logger.d(location);
 
         ModelLocation modelLocation = new ModelLocation();
         modelLocation.setLatitude(location.getLatitude());
@@ -189,6 +200,8 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
         modelLocation.setAddress(location.getProvider());
         modelLocation.setTime(location.getTime());
         modelLocation.setFormatTime(SuperHelper.getFormatTime(location.getTime()));
+        modelLocation.setLocation(location);
+        modelLocation.setCreateDate(SuperHelper.getFormatTime());
 
         FirebaseDatabase.getInstance().getReference()
                 .child(ModelLocation.class.getSimpleName())
@@ -196,9 +209,10 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
                 .push()
                 .setValue(modelLocation);
 
-        FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        //FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         LocationReceiver.completeWakefulIntent(mIntent);
-        PeriodicService_.intent(this).stop();
+        stopService(mIntent);
+        //PeriodicService_.intent(this).stop();
     }
 
     @DebugLog
