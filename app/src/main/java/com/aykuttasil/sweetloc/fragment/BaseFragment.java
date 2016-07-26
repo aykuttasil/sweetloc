@@ -33,7 +33,7 @@ public class BaseFragment extends Fragment {
                 .build();
         firebaseRemoteConfig.setConfigSettings(configSettings);
 
-        FirebaseRemoteConfig.getInstance().setDefaults(R.xml.remote_config_defaults);
+        firebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
 
         if (firebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
             cacheExpiration = 0;
@@ -82,7 +82,6 @@ public class BaseFragment extends Fragment {
                 SystemClock.currentThreadTimeMillis(),
                 AlarmManager.INTERVAL_FIFTEEN_MINUTES,
                 pendingIntent);*/
-
 
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.currentThreadTimeMillis() + 3000,

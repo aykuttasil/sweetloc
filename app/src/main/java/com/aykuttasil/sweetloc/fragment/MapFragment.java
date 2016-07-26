@@ -3,7 +3,6 @@ package com.aykuttasil.sweetloc.fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -11,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.activity.MainActivity;
@@ -23,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -37,8 +38,7 @@ import com.orhanobut.logger.Logger;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashMap;
 
 import hugo.weaving.DebugLog;
 
@@ -46,24 +46,15 @@ import hugo.weaving.DebugLog;
  * Created by aykutasil on 11.07.2016.
  */
 @EFragment(R.layout.fragment_map_layout)
-public class MapFragment extends BaseFragment implements OnMapReadyCallback {
+public class MapFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.InfoWindowAdapter {
 
     View mView;
     Context mContext;
     MainActivity mActivity;
     GoogleMap mGoogleMap;
     SupportMapFragment mapFragment;
-    List<Location> modelRotaPointList;
+    HashMap<Object, Object> mapMarker = new HashMap();
     //
-    //@ViewById(R.id.MapView)
-    //MapView mMapView;
-
-    //
-    //@ViewById(R.id.TextView_RotalamaRotaSec_Deneme)
-    //TextView mTextView_RotalamaRotaSec_Deneme;
-    private LatLngBounds AUSTRALIA = new LatLngBounds(
-            new LatLng(-44, 113), new LatLng(-10, 154));
-
     private LatLngBounds TURKEY = new LatLngBounds(
             new LatLng(36.299172, 26.248221),//Güney Batı
             new LatLng(41.835412, 44.781357) //Kuzey Doğu
@@ -92,20 +83,9 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //if (mView == null) {
-        //    mView = inflater.inflate(R.layout.fragment_map_layout, container, false);
-        //}
         setHasOptionsMenu(true);
-        //this.mContext = getContext();
-        //this.mActivity = (MainActivity) getActivity();
-
-        //setMapInit();
-
-        //EventBus.getDefault().register(this);
-        //return mView;
         return null;
     }
-
 
     @DebugLog
     @Override
@@ -113,19 +93,8 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
         super.onResume();
     }
 
-
-    /*
-    @Override
-    public void onDestroyView() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroyView();
-    }
-    */
-
     @DebugLog
     private void setMapInit() {
-        //mMapView.getMapAsync(this);spo
-
         mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -137,6 +106,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Logger.i("Permissinon is not Granted !");
             return;
         }
         this.mGoogleMap = googleMap;
@@ -144,9 +114,9 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
         googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.getUiSettings().setZoomGesturesEnabled(true);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(TURKEY, 0));
+        googleMap.setInfoWindowAdapter(this);
 
         setMap();
-        //googleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
 
     @DebugLog
@@ -154,7 +124,6 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         Query queryUser = databaseReference.child(ModelUser.class.getSimpleName());
-
 
         queryUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -191,8 +160,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
                                         ModelLocation modelLocation = dataSnapshot.getValue(ModelLocation.class);
                                         Logger.d(modelLocation);
 
-                                        LatLng latLng = new LatLng(modelLocation.getLatitude(), modelLocation.getLongitude());
-                                        addMarker(latLng, "Burdaydı !", modelUser.getEmail());
+                                        addMarker(modelUser, modelLocation);
                                     }
 
                                     @Override
@@ -200,8 +168,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
                                         ModelLocation modelLocation = dataSnapshot.getValue(ModelLocation.class);
                                         Logger.d(modelLocation);
 
-                                        LatLng latLng = new LatLng(modelLocation.getLatitude(), modelLocation.getLongitude());
-                                        addMarker(latLng, "Güncellendi !", modelUser.getEmail());
+                                        addMarker(modelUser, modelLocation);
                                     }
 
                                     @Override
@@ -219,25 +186,6 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
                                     }
                                 });
-
-                        /*
-                        databaseReference.child(ModelLocation.class.getSimpleName()).child(modelUser.getEmail().split("@")[0])
-                                .addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        ModelLocation modelLocation = dataSnapshot.getChildren().iterator().next().getValue(ModelLocation.class);
-                                        Logger.d(modelLocation);
-
-                                        LatLng latLng = new LatLng(modelLocation.getLatitude(), modelLocation.getLongitude());
-                                        addMarker(latLng, "Burda", "HEHEHHHE");
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
-                                */
                     }
 
                 }
@@ -248,51 +196,6 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
             }
         });
-
-        /*
-        Query myLastLocation = databaseReference
-                .child(ModelLocation.class.getSimpleName())
-                .child(FirebaseAuth.getInstance().getCurrentUser().getEmail().split("@")[0])
-                .limitToLast(1);
-
-        myLastLocation.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Logger.d(dataSnapshot);
-                ModelLocation modelLocation = dataSnapshot.getChildren().iterator().next().getValue(ModelLocation.class);
-                Logger.d(modelLocation);
-
-                LatLng latLng = new LatLng(modelLocation.getLatitude(), modelLocation.getLongitude());
-                addMarker(latLng, "Burda", "HEHEHHHE");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Logger.d(databaseError);
-            }
-        });
-        */
-
-        /*
-        databaseReference.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Logger.d(dataSnapshot);
-                ModelLocation modelLocation = dataSnapshot.getValue(ModelLocation.class);
-                LatLng latLng = new LatLng(modelLocation.getLatitude(), modelLocation.getLongitude());
-                addMarker(latLng, "Burda", "hehehhhehheh");
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        */
-
-
-        //setMarker();
-        //setPolyLine();
     }
 
     /*
@@ -305,34 +208,20 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     }
     */
 
-
     @DebugLog
-    private void setMarker() {
-        //modelRotaPointList = DbManager.dbGetRotaPointList();
+    private void addMarker(ModelUser modelUser, ModelLocation modelLocation) {
+        LatLng latLng = new LatLng(modelLocation.getLatitude(), modelLocation.getLongitude());
 
-        /*
-        for (int a = 0; a < modelRotaPointList.size(); a++) //ModelRotaPoint modelRotaPoint : modelRotaPointList) {
-        {
-            mGoogleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(
-                            Double.parseDouble(modelRotaPointList.get(a).getEnlem()),
-                            Double.parseDouble(modelRotaPointList.get(a).getBoylam())))
-                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_action_loop))
-                    //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                    .title(String.valueOf(modelRotaPointList.get(a).getDrAdresSiraNo()))
-                    .snippet(modelRotaPointList.get(a).getDrAdres()));
-        }
-        */
-    }
-
-    @DebugLog
-    private void addMarker(LatLng latLng, String title, String snippet) {
-        mGoogleMap.addMarker(new MarkerOptions()
-                .position(latLng)
+        Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(modelUser.getEmail())
                 //.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_check_light))
                 //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                .title(title)
-                .snippet(snippet));
+                //.title(title)
+                //.snippet(snippet)
+        );
+        mapMarker.put(marker, modelLocation);
+
     }
 
     @DebugLog
@@ -364,6 +253,28 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
 
     @DebugLog
     @Override
+    public View getInfoWindow(Marker marker) {
+        return null;
+    }
+
+    @DebugLog
+    @Override
+    public View getInfoContents(Marker marker) {
+        View vi = LayoutInflater.from(mContext).inflate(R.layout.custom_infowindow_layout, null, false);
+        TextView userMail = (TextView) vi.findViewById(R.id.TextView_UserMail);
+        TextView userLocTime = (TextView) vi.findViewById(R.id.TextView_UserLocTime);
+        TextView userLocAccuracy = (TextView) vi.findViewById(R.id.TextView_UserLocAccuracy);
+
+        ModelLocation modelLocation = (ModelLocation) mapMarker.get(marker);
+
+        userMail.setText(marker.getTitle());
+        userLocTime.setText(modelLocation.getFormatTime());
+        userLocAccuracy.setText(String.valueOf(modelLocation.getAccuracy()));
+        return vi;
+    }
+
+    @DebugLog
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         /*
         switch (item.getItemId()) {
@@ -382,5 +293,4 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback {
     public void onPause() {
         super.onPause();
     }
-
 }

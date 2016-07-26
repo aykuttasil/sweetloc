@@ -64,7 +64,7 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
         final int id = intent.getIntExtra("android.support.content.wakelockid", 0);
         Logger.i("android.support.content.wakelockid : " + id);
         this.mIntent = intent;
-        return START_FLAG_RETRY;
+        return START_REDELIVER_INTENT;
     }
 
     @DebugLog
@@ -118,6 +118,8 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
             Logger.i("Manifest Permission not granted !");
             return;
         }
+
+        FusedLocationApi.getLocationAvailability(mGoogleApiClient).isLocationAvailable();
         int LocationPeriod = 30;
 
         long intervalTime = LocationPeriod * 1000;
