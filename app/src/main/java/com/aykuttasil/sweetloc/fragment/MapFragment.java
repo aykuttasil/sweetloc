@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.aykuttasil.sweetloc.R;
@@ -72,7 +73,8 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
         setHasOptionsMenu(true);
         this.mContext = getContext();
         this.mActivity = (MainActivity) getActivity();
-
+        mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //
         stopPeriodicTask(mContext);
         setPeriodicTask(mContext);
         setMapInit();

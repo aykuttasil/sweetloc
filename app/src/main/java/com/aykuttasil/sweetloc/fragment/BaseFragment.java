@@ -85,8 +85,12 @@ public class BaseFragment extends Fragment {
 
         //alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP);
 
+
+        // AlarmManager.ELAPSED_REALTIME -> ELAPSED_REALTIME system başlangıcını baz alır. Eğer gerçek saat ile ilgili bir işlem yapılmıcak
+        // ise bu parametre kullanılmalıdır.
+        // RTC -> Cihazın local saatini baz alır. Örneğin perşembe saat 4 de yapılcak bi iş belirlemek istersen RTC kullanmalıyız.
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME,
-                SystemClock.currentThreadTimeMillis() + 3000,
+                SystemClock.elapsedRealtime() + 3000,
                 periodicTime,
                 pendingIntent);
     }
