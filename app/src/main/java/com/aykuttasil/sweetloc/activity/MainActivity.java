@@ -48,6 +48,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         setNavigationView();
         startFirebaseInstanceIDService();
         setFirebaseAuthListener();
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @DebugLog
@@ -69,7 +70,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
     }
 
 
@@ -80,16 +80,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    @DebugLog
-    private void startFragment() {
-        SuperHelper.ReplaceFragmentBeginTransaction(
-                this,
-                MainFragment_.builder().build(),
-                FRAGMENT_CONTAINER_ID,
-                MainFragment.class.getSimpleName(),
-                false);
     }
 
     @DebugLog
@@ -113,20 +103,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-
-    /*
     @DebugLog
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(FcmRegistraionIDEvent event) {
-        FirebaseInstanceId.getInstance().getToken();
-        ModelSweetLocPreference modelSweetLocPreference = DbManager.getModelSweetLocPreference();
-        if (modelSweetLocPreference == null) {
-            modelSweetLocPreference = new ModelSweetLocPreference();
-        }
-        modelSweetLocPreference.setRegId(event.getRegID());
-        modelSweetLocPreference.save();
+    private void startFragment() {
+        SuperHelper.ReplaceFragmentBeginTransaction(
+                this,
+                MainFragment_.builder().build(),
+                FRAGMENT_CONTAINER_ID,
+                MainFragment.class.getSimpleName(),
+                false);
     }
-    */
 
     @DebugLog
     @Override

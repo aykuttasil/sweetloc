@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.aykuttasil.androidbasichelperlib.UiHelper;
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.activity.MainActivity;
 import com.aykuttasil.sweetloc.db.DbManager;
@@ -37,7 +40,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.orhanobut.logger.Logger;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.HashMap;
 
@@ -49,6 +54,9 @@ import hugo.weaving.DebugLog;
 @EFragment(R.layout.fragment_map_layout)
 public class MapFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.InfoWindowAdapter {
 
+    @ViewById(R.id.fab)
+    FloatingActionButton mFab;
+    //
     View mView;
     Context mContext;
     MainActivity mActivity;
@@ -289,6 +297,12 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
         return false;
     }
 
+
+    @Click(R.id.fab)
+    public void FabClick() {
+        //Location location =
+        UiHelper.UiSnackBar.showSimpleSnackBar(getView(), "Son Konum:", Snackbar.LENGTH_INDEFINITE);
+    }
 
     @DebugLog
     @Override
