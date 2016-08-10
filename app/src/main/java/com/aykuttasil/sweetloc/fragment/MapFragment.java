@@ -3,11 +3,13 @@ package com.aykuttasil.sweetloc.fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,7 +54,7 @@ import hugo.weaving.DebugLog;
  * Created by aykutasil on 11.07.2016.
  */
 @EFragment(R.layout.fragment_map_layout)
-public class MapFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.InfoWindowAdapter {
+public class MapFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
 
     @ViewById(R.id.fab)
     FloatingActionButton mFab;
@@ -63,17 +65,12 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
     GoogleMap mGoogleMap;
     SupportMapFragment mapFragment;
     HashMap<Object, Object> mapMarker = new HashMap();
+    Location mLastLocation;
     //
     private LatLngBounds TURKEY = new LatLngBounds(
             new LatLng(36.299172, 26.248221),//Güney Batı
             new LatLng(41.835412, 44.781357) //Kuzey Doğu
     );
-
-    @DebugLog
-    public static MapFragment newInstance() {
-        MapFragment rotalamaHaritaFragment = new MapFragment_();
-        return rotalamaHaritaFragment;
-    }
 
     @DebugLog
     @AfterViews
@@ -98,12 +95,6 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
     }
 
     @DebugLog
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @DebugLog
     private void setMapInit() {
         mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -125,6 +116,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
         googleMap.getUiSettings().setZoomGesturesEnabled(true);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(TURKEY, 0));
         googleMap.setInfoWindowAdapter(this);
+        googleMap.setOnInfoWindowClickListener(this);
 
         setMap();
     }
@@ -169,7 +161,6 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
                                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                         ModelLocation modelLocation = dataSnapshot.getValue(ModelLocation.class);
                                         Logger.d(modelLocation);
-
                                         addMarker(modelUser, modelLocation);
                                     }
 
@@ -208,16 +199,6 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
         });
     }
 
-    /*
-    @DebugLog
-    public void onEventMainThread(List<ModelRotaPoint> list) {
-        modelRotaPointList = list;
-        setMarker();
-        //setPolyLine();
-
-    }
-    */
-
     @DebugLog
     private void addMarker(ModelUser modelUser, ModelLocation modelLocation) {
         LatLng latLng = new LatLng(modelLocation.getLatitude(), modelLocation.getLongitude());
@@ -230,8 +211,10 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
                 //.title(title)
                 //.snippet(snippet)
         );
-        mapMarker.put(marker, modelLocation);
 
+        mapMarker.put(marker, modelLocation);
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 10.0f));
+        marker.showInfoWindow();
     }
 
     @DebugLog
@@ -261,26 +244,55 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
         */
     }
 
+    /**
+     * InfoWindow için custom view oluştururken ilk buraya firer.Eğer null dönerse getInfoContents e girer.
+     *
+     * @param marker
+     * @return
+     */
     @DebugLog
     @Override
     public View getInfoWindow(Marker marker) {
         return null;
     }
 
+    /**
+     * InfoWindow customview oluşturulması için bu fonksiyon düzenlenir..
+     *
+     * @param marker
+     * @return
+     */
     @DebugLog
     @Override
     public View getInfoContents(Marker marker) {
         View vi = LayoutInflater.from(mContext).inflate(R.layout.custom_infowindow_layout, null, false);
-        TextView userMail = (TextView) vi.findViewById(R.id.TextView_UserMail);
-        TextView userLocTime = (TextView) vi.findViewById(R.id.TextView_UserLocTime);
-        TextView userLocAccuracy = (TextView) vi.findViewById(R.id.TextView_UserLocAccuracy);
+        try {
+            TextView userMail = (TextView) vi.findViewById(R.id.TextView_UserMail);
+            TextView userLocTime = (TextView) vi.findViewById(R.id.TextView_UserLocTime);
+            TextView userLocAccuracy = (TextView) vi.findViewById(R.id.TextView_UserLocAccuracy);
+            TextView userSpeed = (TextView) vi.findViewById(R.id.TextView_UserSpeed);
 
-        ModelLocation modelLocation = (ModelLocation) mapMarker.get(marker);
+            ModelLocation modelLocation = (ModelLocation) mapMarker.get(marker);
 
-        userMail.setText(marker.getTitle());
-        userLocTime.setText(modelLocation.getFormatTime());
-        userLocAccuracy.setText(String.valueOf(modelLocation.getAccuracy()));
+            userMail.setText(Html.fromHtml("<b>Email: </b>" + marker.getTitle()));
+            userLocTime.setText(Html.fromHtml("<b>Zaman: </b>" + modelLocation.getFormatTime()));
+            userLocAccuracy.setText(Html.fromHtml("<b>Sapma: </b>" + String.valueOf(modelLocation.getAccuracy())));
+
+            if (modelLocation.getLocation() != null) {
+                userSpeed.setText(Html.fromHtml("<b>Hız: </b>" + modelLocation.getLocation().getSpeed()));
+            }
+        } catch (Exception e) {
+            //
+        }
         return vi;
+    }
+
+
+    @DebugLog
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        LatLng markerLatLng = marker.getPosition();
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 15.0f));
     }
 
     @DebugLog
@@ -298,6 +310,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
     }
 
 
+    @DebugLog
     @Click(R.id.fab)
     public void FabClick() {
         //Location location =
@@ -309,4 +322,5 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
     public void onPause() {
         super.onPause();
     }
+
 }
