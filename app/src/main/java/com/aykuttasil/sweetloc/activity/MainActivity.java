@@ -1,6 +1,8 @@
 package com.aykuttasil.sweetloc.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -43,12 +45,34 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     FirebaseAuth.AuthStateListener mAuthListener;
 
     @DebugLog
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        startFirebaseInstanceIDService();
+        setFirebaseAuthListener();
+    }
+
+    @DebugLog
     @AfterViews
     public void MainActivityInit() {
         setNavigationView();
-        startFirebaseInstanceIDService();
-        setFirebaseAuthListener();
+    }
+
+    @DebugLog
+    @Override
+    public void onStart() {
+        super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+    }
+
+
+    @DebugLog
+    public void setNavigationView() {
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @DebugLog
@@ -64,22 +88,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
             updateUI(user);
         };
-    }
-
-    @DebugLog
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-
-    @DebugLog
-    public void setNavigationView() {
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @DebugLog
@@ -159,5 +167,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void onStop() {
         FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
         super.onStop();
+    }
+
+    @DebugLog
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

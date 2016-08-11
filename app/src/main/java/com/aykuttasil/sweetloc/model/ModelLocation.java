@@ -63,9 +63,12 @@ public class ModelLocation extends Model {
     @Expose
     private String FormatTime;
 
+    @Column
+    @SerializedName("LocSpeed")
     @Expose
-    private Location Location;
+    private long LocSpeed;
 
+    @Column
     @Expose
     private String CreateDate;
 
@@ -113,7 +116,6 @@ public class ModelLocation extends Model {
         Accuracy = accuracy;
     }
 
-
     public long getTime() {
         return Time;
     }
@@ -130,14 +132,6 @@ public class ModelLocation extends Model {
         FormatTime = formatTime;
     }
 
-    public android.location.Location getLocation() {
-        return Location;
-    }
-
-    public void setLocation(android.location.Location location) {
-        Location = location;
-    }
-
     public String getCreateDate() {
         return CreateDate;
     }
@@ -145,4 +139,13 @@ public class ModelLocation extends Model {
     public void setCreateDate(String createDate) {
         CreateDate = createDate;
     }
+
+    public long getLocSpeed() {
+        return LocSpeed;
+    }
+
+    public void setLocSpeed(long locSpeed) {
+        LocSpeed = locSpeed;
+    }
+
 }

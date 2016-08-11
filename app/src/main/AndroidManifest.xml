@@ -98,7 +98,7 @@
 
         <meta-data
             android:name="AA_DB_NAME"
-            android:value="sweetloc_11.db" />
+            android:value="sweetloc_12.db" />
 
         <meta-data
             android:name="AA_DB_VERSION"

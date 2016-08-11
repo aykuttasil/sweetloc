@@ -39,6 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import org.androidannotations.annotations.AfterViews;
@@ -159,8 +160,9 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
                                 .addChildEventListener(new ChildEventListener() {
                                     @Override
                                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                        Logger.i(s);
+                                        Logger.i(new Gson().toJson(dataSnapshot.getValue()));
                                         ModelLocation modelLocation = dataSnapshot.getValue(ModelLocation.class);
-                                        Logger.d(modelLocation);
                                         addMarker(modelUser, modelLocation);
                                     }
 
@@ -277,10 +279,8 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
             userMail.setText(Html.fromHtml("<b>Email: </b>" + marker.getTitle()));
             userLocTime.setText(Html.fromHtml("<b>Zaman: </b>" + modelLocation.getFormatTime()));
             userLocAccuracy.setText(Html.fromHtml("<b>Sapma: </b>" + String.valueOf(modelLocation.getAccuracy())));
+            userSpeed.setText(Html.fromHtml("<b>Hız: </b>" + modelLocation.getLocSpeed()));
 
-            if (modelLocation.getLocation() != null) {
-                userSpeed.setText(Html.fromHtml("<b>Hız: </b>" + modelLocation.getLocation().getSpeed()));
-            }
         } catch (Exception e) {
             //
         }

@@ -200,7 +200,6 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
         modelLocation.setAddress(location.getProvider());
         modelLocation.setTime(location.getTime());
         modelLocation.setFormatTime(SuperHelper.getFormatTime(location.getTime()));
-        modelLocation.setLocation(location);
         modelLocation.setCreateDate(SuperHelper.getFormatTime());
 
         FirebaseDatabase.getInstance().getReference()

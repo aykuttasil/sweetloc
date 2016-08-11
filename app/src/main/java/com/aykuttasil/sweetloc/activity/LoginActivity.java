@@ -51,28 +51,29 @@ public class LoginActivity extends BaseActivity {
         }
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(mEditText_Email.getText().toString(),
-                mEditText_Parola.getText().toString()).addOnCompleteListener(task -> {
+                mEditText_Parola.getText().toString())
+                .addOnCompleteListener(task -> {
 
-            if (task.isSuccessful()) {
+                    if (task.isSuccessful()) {
 
-                ModelUser modelUser = new ModelUser();
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        ModelUser modelUser = new ModelUser();
+                        FirebaseUser user = task.getResult().getUser();
 
-                modelUser.setUUID(user.getUid());
-                modelUser.setEmail(user.getEmail());
-                modelUser.setParola(user.getDisplayName());
-                modelUser.setToken(mEditText_Token.getText().toString());
-                modelUser.setImageUrl(mEditText_ImageUrl.getText().toString().isEmpty() ? null : mEditText_ImageUrl.getText().toString());
-                modelUser.save();
+                        modelUser.setUUID(user.getUid());
+                        modelUser.setEmail(user.getEmail());
+                        modelUser.setParola(user.getDisplayName());
+                        modelUser.setToken(mEditText_Token.getText().toString());
+                        modelUser.setImageUrl(mEditText_ImageUrl.getText().toString().isEmpty() ? null : mEditText_ImageUrl.getText().toString());
+                        modelUser.save();
 
-                setResult(RESULT_OK);
-                finish();
+                        setResult(RESULT_OK);
+                        finish();
 
-            } else {
-                UiHelper.UiDialog.newInstance(LoginActivity.this).getOKDialog("Hata", task.getException().getMessage(), null).show();
-            }
+                    } else {
+                        UiHelper.UiDialog.newInstance(LoginActivity.this).getOKDialog("Hata", task.getException().getMessage(), null).show();
+                    }
 
-        });
+                });
 
     }
 

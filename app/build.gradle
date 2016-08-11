@@ -38,8 +38,8 @@ android {
         applicationId "com.aykuttasil.sweetloc"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
         multiDexEnabled true
     }
     productFlavors {
@@ -48,7 +48,7 @@ android {
             buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
         }
         prod {
-            minSdkVersion 21
+            minSdkVersion 17
             buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
         }
     }
