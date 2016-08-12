@@ -278,7 +278,7 @@ public class MapFragment extends BaseFragment implements OnMapReadyCallback, Goo
 
             userMail.setText(Html.fromHtml("<b>Email: </b>" + marker.getTitle()));
             userLocTime.setText(Html.fromHtml("<b>Zaman: </b>" + modelLocation.getFormatTime()));
-            userLocAccuracy.setText(Html.fromHtml("<b>Sapma: </b>" + String.valueOf(modelLocation.getAccuracy())));
+            userLocAccuracy.setText(Html.fromHtml("<b>Sapma: </b>" + String.valueOf(modelLocation.getAccuracy()) + " m"));
             userSpeed.setText(Html.fromHtml("<b>Hız: </b>" + modelLocation.getLocSpeed()));
 
         } catch (Exception e) {
