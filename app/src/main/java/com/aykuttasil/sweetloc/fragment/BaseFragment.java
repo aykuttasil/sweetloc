@@ -26,7 +26,7 @@ public class BaseFragment extends Fragment {
     @DebugLog
     public void setPeriodicTask(Context context) {
 
-        long cacheExpiration = 3600 * 1000; // 1 hour in seconds.
+        long cacheExpiration = 3600; // 1 hour in seconds.
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)

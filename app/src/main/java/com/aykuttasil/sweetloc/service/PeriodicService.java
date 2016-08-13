@@ -124,7 +124,7 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
         //addFireBaseLocation(location);
 
         FusedLocationApi.getLocationAvailability(mGoogleApiClient).isLocationAvailable();
-        int LocationPeriod = 20;
+        int LocationPeriod = 120;
 
         long intervalTime = LocationPeriod * 1000;
         long fastestTime = 10 * 1000;
@@ -208,7 +208,7 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
                 .push()
                 .setValue(modelLocation);
 
-        //FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+        FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         LocationReceiver.completeWakefulIntent(mIntent);
         stopService(mIntent);
         //PeriodicService_.intent(this).stop();
