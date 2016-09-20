@@ -12,6 +12,15 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
 
     @DebugLog
     public static void ResetSweetLoc() {
+        logoutUser();
+    }
+
+    @DebugLog
+    public static boolean checkUser() {
+        return FirebaseAuth.getInstance().getCurrentUser() != null && DbManager.getModelUser() != null;
+    }
+
+    public static void logoutUser() {
         FirebaseAuth.getInstance().signOut();
         DbManager.deleteModelUser();
     }

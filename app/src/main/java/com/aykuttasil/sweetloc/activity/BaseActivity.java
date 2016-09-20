@@ -36,8 +36,9 @@ public class BaseActivity extends AppCompatActivity {
     @DebugLog
     public void startFirebaseInstanceIDService() {
         String token = FirebaseInstanceId.getInstance().getToken();
-        Logger.i(token);
+        Logger.i("Token:" + token);
         if (token == null) {
+            Logger.i("in -> startFirebaseInstanceIDService , token = null");
             Intent intent = new Intent(this, MyFirebaseInstanceIdService.class);
             startService(intent);
         }

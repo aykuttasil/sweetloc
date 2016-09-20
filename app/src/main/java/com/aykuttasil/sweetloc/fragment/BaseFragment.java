@@ -27,10 +27,13 @@ public class BaseFragment extends Fragment {
     public void setPeriodicTask(Context context) {
 
         long cacheExpiration = 3600; // 1 hour in seconds.
+
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build();
+
         firebaseRemoteConfig.setConfigSettings(configSettings);
 
         firebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
@@ -38,6 +41,7 @@ public class BaseFragment extends Fragment {
         if (firebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
             cacheExpiration = 0;
         }
+
         firebaseRemoteConfig.fetch(cacheExpiration).addOnCompleteListener(
                 complete -> {
                     Logger.i("Remote Config Fetch complete.");

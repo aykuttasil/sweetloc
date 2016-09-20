@@ -9,14 +9,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
 
-import com.aykuttasil.androidbasichelperlib.SuperHelper;
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.fragment.MainFragment;
 import com.aykuttasil.sweetloc.fragment.MainFragment_;
 import com.aykuttasil.sweetloc.fragment.MapFragment;
 import com.aykuttasil.sweetloc.fragment.MapFragment_;
-import com.aykuttasil.sweetloc.fragment.ProfilFragment;
-import com.aykuttasil.sweetloc.fragment.ProfilFragment_;
+import com.aykuttasil.sweetloc.fragment.ProfileFragment;
+import com.aykuttasil.sweetloc.fragment.ProfileFragment_;
+import com.aykuttasil.sweetloc.helper.SuperHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.orhanobut.logger.Logger;
@@ -41,30 +41,23 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     NavigationView navigationView;
     //
     ActionBarDrawerToggle toggle;
-    FirebaseAuth mAuth;
+    FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     FirebaseAuth.AuthStateListener mAuthListener;
 
     @DebugLog
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startFirebaseInstanceIDService();
-        setFirebaseAuthListener();
+
     }
 
     @DebugLog
     @AfterViews
     public void MainActivityInit() {
         setNavigationView();
+        startFirebaseInstanceIDService();
+        setFirebaseAuthListener();
     }
-
-    @DebugLog
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
 
     @DebugLog
     public void setNavigationView() {
@@ -77,17 +70,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @DebugLog
     public void setFirebaseAuthListener() {
-        mAuth = FirebaseAuth.getInstance();
 
-        mAuthListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user != null) {
-                Logger.d("onAuthStateChanged:signed_in:" + user.getUid());
-            } else {
-                Logger.d("onAuthStateChanged:signed_out");
-            }
-            updateUI(user);
-        };
+        if (!SuperHelper.checkUser()) {
+
+            mAuthListener = firebaseAuth -> {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Logger.d("onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    Logger.d("onAuthStateChanged:signed_out");
+                }
+                updateUI(user);
+            };
+            mFirebaseAuth.addAuthStateListener(mAuthListener);
+        }
+
     }
 
     @DebugLog
@@ -100,25 +97,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
-
-    @DebugLog
-    @OnActivityResult(LOGIN_REQUEST_CODE)
-    public void ActivityResultLogin(int resultCode) {
-        switch (resultCode) {
-            case RESULT_OK: {
-                break;
-            }
-        }
-    }
-
     @DebugLog
     private void startFragment() {
         SuperHelper.ReplaceFragmentBeginTransaction(
                 this,
                 MainFragment_.builder().build(),
                 FRAGMENT_CONTAINER_ID,
-                MainFragment.class.getSimpleName(),
                 false);
+    }
+
+
+    @DebugLog
+    @OnActivityResult(LOGIN_REQUEST_CODE)
+    public void ActivityResultLogin(int resultCode) {
+        switch (resultCode) {
+            case RESULT_OK: {
+                updateUI(FirebaseAuth.getInstance().getCurrentUser());
+                break;
+            }
+        }
     }
 
     @DebugLog
@@ -130,9 +127,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 //WhichNestedFragment = GonderiListFragment.class.getSimpleName();
                 SuperHelper.ReplaceFragmentBeginTransaction(
                         this,
-                        ProfilFragment_.builder().build(),
+                        ProfileFragment_.builder().build(),
                         FRAGMENT_CONTAINER_ID,
-                        ProfilFragment.class.getSimpleName(),
+                        ProfileFragment.class.getSimpleName(),
                         false);
                 break;
             }
@@ -165,7 +162,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @DebugLog
     @Override
     protected void onStop() {
-        FirebaseAuth.getInstance().removeAuthStateListener(mAuthListener);
+        mFirebaseAuth.removeAuthStateListener(mAuthListener);
         super.onStop();
     }
 

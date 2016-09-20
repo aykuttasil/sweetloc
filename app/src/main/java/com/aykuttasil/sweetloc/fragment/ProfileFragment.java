@@ -20,7 +20,7 @@ import hugo.weaving.DebugLog;
  * Created by aykutasil on 10.07.2016.
  */
 @EFragment(R.layout.fragment_profil_layout)
-public class ProfilFragment extends BaseFragment {
+public class ProfileFragment extends BaseFragment {
 
     @ViewById(R.id.TextView_PeridicTime)
     TextView mTextView_PeriodicTime;
@@ -49,5 +49,6 @@ public class ProfilFragment extends BaseFragment {
         SuperHelper.ResetSweetLoc();
         stopPeriodicTask(mContext);
         PeriodicService_.intent(mContext).stop();
+        mActivity.finish();
     }
 }

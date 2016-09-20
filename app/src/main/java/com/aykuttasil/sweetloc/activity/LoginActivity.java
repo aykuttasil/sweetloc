@@ -70,7 +70,7 @@ public class LoginActivity extends BaseActivity {
                         finish();
 
                     } else {
-                        UiHelper.UiDialog.newInstance(LoginActivity.this).getOKDialog("Hata", task.getException().getMessage(), null).show();
+                        UiHelper.UiDialog.newInstance(LoginActivity.this).getOKDialog("Kullanıcı Bulunamadı", task.getException().getMessage(), null).show();
                     }
 
                 });
@@ -108,7 +108,7 @@ public class LoginActivity extends BaseActivity {
                 setResult(RESULT_OK);
                 finish();
             } else {
-                UiHelper.UiDialog.newInstance(LoginActivity.this).getOKDialog("Hata", task.getException().getMessage(), null).show();
+                UiHelper.UiDialog.newInstance(LoginActivity.this).getOKDialog("Uyarı", task.getException().getMessage(), null).show();
             }
         });
     }

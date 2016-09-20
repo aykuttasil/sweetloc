@@ -4,6 +4,7 @@ import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.aykuttasil.sweetloc.model.ModelSweetLocPreference;
 import com.aykuttasil.sweetloc.model.ModelUser;
+import com.google.firebase.auth.FirebaseAuth;
 
 import hugo.weaving.DebugLog;
 
@@ -21,7 +22,6 @@ public class DbManager {
     public static ModelUser getModelUser() {
         return new Select().from(ModelUser.class).executeSingle();
     }
-
 
     @DebugLog
     public static void deleteModelUser() {
