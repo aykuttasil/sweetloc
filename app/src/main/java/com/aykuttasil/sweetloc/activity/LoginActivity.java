@@ -1,9 +1,11 @@
 package com.aykuttasil.sweetloc.activity;
 
+import android.support.v7.widget.Toolbar;
 import android.widget.EditText;
 
 import com.aykuttasil.androidbasichelperlib.UiHelper;
 import com.aykuttasil.sweetloc.R;
+import com.aykuttasil.sweetloc.helper.SuperHelper;
 import com.aykuttasil.sweetloc.model.ModelUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,11 +36,26 @@ public class LoginActivity extends BaseActivity {
     @ViewById(R.id.EditText_ImageUrl)
     EditText mEditText_ImageUrl;
 
+    @ViewById(R.id.Toolbar)
+    Toolbar mToolbar;
     //
 
     @DebugLog
     @AfterViews
-    public void LoginActivityInit() {
+    @Override
+    void initializeAfterViews() {
+        initToolbar();
+    }
+
+    @DebugLog
+    @Override
+    void initToolbar() {
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("SweetLoc ...");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_indigo_300_24dp);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @DebugLog
@@ -49,6 +66,7 @@ public class LoginActivity extends BaseActivity {
         if (!validateInput()) {
             return;
         }
+
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(mEditText_Email.getText().toString(),
                 mEditText_Parola.getText().toString())
@@ -115,30 +133,6 @@ public class LoginActivity extends BaseActivity {
 
     @DebugLog
     private boolean validateInput() {
-        boolean flag = true;
-
-        if (mEditText_Email.getText().toString().isEmpty()) {
-            mEditText_Email.setError("Boş geçme !");
-            flag = false;
-        } else {
-            mEditText_Email.setError(null);
-        }
-
-        if (mEditText_Parola.getText().toString().isEmpty()) {
-            mEditText_Parola.setError("Boş geçme !");
-            flag = false;
-        } else {
-            mEditText_Parola.setError(null);
-        }
-
-        if (mEditText_Token.getText().toString().isEmpty()) {
-            mEditText_Token.setError("Boş geçme !");
-            flag = false;
-        } else {
-            mEditText_Token.setError(null);
-        }
-
-        return flag;
+        return !SuperHelper.validateIsEmpty(mEditText_Email, mEditText_Parola, mEditText_Token);
     }
-
 }

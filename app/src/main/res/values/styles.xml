@@ -49,7 +49,6 @@
         <item name="colorAccent">@color/accent</item>
 
 
-
         <!--<item name="android:windowBackground">@color/primary</item>-->
 
         <item name="colorControlNormal">@color/iron</item>

@@ -1,25 +1,16 @@
 package com.aykuttasil.sweetloc.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.aykuttasil.sweetloc.R;
-import com.aykuttasil.sweetloc.fragment.MainFragment;
-import com.aykuttasil.sweetloc.fragment.MainFragment_;
-import com.aykuttasil.sweetloc.fragment.MapFragment;
-import com.aykuttasil.sweetloc.fragment.MapFragment_;
-import com.aykuttasil.sweetloc.fragment.ProfileFragment;
-import com.aykuttasil.sweetloc.fragment.ProfileFragment_;
+import com.aykuttasil.sweetloc.fragment.NavFragment_;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.orhanobut.logger.Logger;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -31,59 +22,41 @@ import hugo.weaving.DebugLog;
 /**
  * Created by aykutasil on 23.06.2016.
  */
-@EActivity(R.layout.activity_main_layout)
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+@EActivity(R.layout.activity_main)
+public class MainActivity extends BaseActivity {
 
-    @ViewById(R.id.drawer_layout)
-    DrawerLayout drawer;
+    @ViewById(R.id.Toolbar)
+    Toolbar mToolbar;
 
-    @ViewById(R.id.nav_view)
-    NavigationView navigationView;
+    @ViewById(R.id.Container)
+    FrameLayout mContainer;
     //
-    ActionBarDrawerToggle toggle;
     FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
     FirebaseAuth.AuthStateListener mAuthListener;
 
     @DebugLog
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @DebugLog
     @AfterViews
-    public void MainActivityInit() {
-        setNavigationView();
-        startFirebaseInstanceIDService();
+    public void initializeAfterViews() {
+        initToolbar();
         setFirebaseAuthListener();
     }
 
     @DebugLog
-    public void setNavigationView() {
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+    @Override
+    void initToolbar() {
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("SweetLoc");
     }
 
     @DebugLog
     public void setFirebaseAuthListener() {
 
-        if (!SuperHelper.checkUser()) {
+        mAuthListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            updateUI(user);
+        };
 
-            mAuthListener = firebaseAuth -> {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Logger.d("onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    Logger.d("onAuthStateChanged:signed_out");
-                }
-                updateUI(user);
-            };
-            mFirebaseAuth.addAuthStateListener(mAuthListener);
-        }
+        mFirebaseAuth.addAuthStateListener(mAuthListener);
 
     }
 
@@ -93,19 +66,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             Intent intent = new Intent(this, LoginActivity_.class);
             startActivityForResult(intent, LOGIN_REQUEST_CODE);
         } else {
-            startFragment();
+            SuperHelper.ReplaceFragmentBeginTransaction(
+                    MainActivity.this,
+                    NavFragment_.builder().build(),
+                    R.id.Container,
+                    false);
         }
     }
-
-    @DebugLog
-    private void startFragment() {
-        SuperHelper.ReplaceFragmentBeginTransaction(
-                this,
-                MainFragment_.builder().build(),
-                FRAGMENT_CONTAINER_ID,
-                false);
-    }
-
 
     @DebugLog
     @OnActivityResult(LOGIN_REQUEST_CODE)
@@ -118,44 +85,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_mainactivity, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     @DebugLog
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.menuProfil: {
-                //WhichFragment = MainGonderiFragment.class.getSimpleName();
-                //WhichNestedFragment = GonderiListFragment.class.getSimpleName();
-                SuperHelper.ReplaceFragmentBeginTransaction(
-                        this,
-                        ProfileFragment_.builder().build(),
-                        FRAGMENT_CONTAINER_ID,
-                        ProfileFragment.class.getSimpleName(),
-                        false);
+                //Intent activityIntent = new Intent(MainActivity.this, ProfileActivity_.class);
+                ProfileActivity_.intent(this).start();
+                //activityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                //startActivity(activityIntent);
                 break;
             }
-            case R.id.menuHarita: {
-                //WhichFragment = MainGonderiFragment.class.getSimpleName();
-                //WhichNestedFragment = GonderiListFragment.class.getSimpleName();
-                SuperHelper.ReplaceFragmentBeginTransaction(
-                        this,
-                        MapFragment_.builder().build(),
-                        FRAGMENT_CONTAINER_ID,
-                        MapFragment.class.getSimpleName(),
-                        false);
-                break;
-            }
-            default: {
-                //WhichFragment = MainGonderiFragment.class.getSimpleName();
-                SuperHelper.ReplaceFragmentBeginTransaction(
-                        this,
-                        MainFragment_.builder().build(),
-                        FRAGMENT_CONTAINER_ID,
-                        MainFragment.class.getSimpleName(),
-                        false);
+            case R.id.menuMap: {
+                Intent activityIntent = new Intent(this, MapsActivity_.class);
+                activityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(activityIntent);
                 break;
             }
         }
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -166,9 +120,4 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onStop();
     }
 
-    @DebugLog
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

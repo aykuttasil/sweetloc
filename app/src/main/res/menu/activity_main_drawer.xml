@@ -13,6 +13,11 @@
                     android:id="@+id/menuHarita"
                     android:icon="@drawable/ic_chevron_right"
                     android:title="Harita" />
+
+                <item
+                    android:id="@+id/menuMap"
+                    android:icon="@drawable/ic_chevron_right"
+                    android:title="Map" />
             </group>
         </menu>
     </item>

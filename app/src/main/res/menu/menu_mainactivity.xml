@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menuProfil"
+        android:icon="@drawable/ic_account_circle_light_blue_300_24dp"
+        android:title="Profil"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menuMap"
+        android:icon="@drawable/ic_explore_light_blue_300_24dp"
+        android:title="Map"
+        app:showAsAction="ifRoom" />
+</menu>

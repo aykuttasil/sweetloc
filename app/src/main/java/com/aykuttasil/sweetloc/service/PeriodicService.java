@@ -51,6 +51,7 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
         return null;
     }
 
+
     @DebugLog
     @Override
     public void onCreate() {
@@ -70,7 +71,7 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
     @DebugLog
     public synchronized void buildAndConnectGoogleApiClient() {
 
-        Logger.i(mGoogleApiClient == null ? "null" : "not null");
+        Logger.i(mGoogleApiClient == null ? "Google Api Client is null" : "Google Api Client is not null");
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -79,7 +80,7 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
                     .build();
         }
 
-        Logger.i(mGoogleApiClient.isConnected() ? "connected" : "not connected");
+        Logger.i(mGoogleApiClient.isConnected() ? "Google Api Client is connected" : "Google Api Client is not connected");
         if (!mGoogleApiClient.isConnected()) {
             mGoogleApiClient.connect();
         } else {

@@ -1,5 +1,9 @@
 package com.aykuttasil.sweetloc.helper;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+
 import com.aykuttasil.sweetloc.db.DbManager;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -24,4 +28,24 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
         FirebaseAuth.getInstance().signOut();
         DbManager.deleteModelUser();
     }
+
+    public static void addFragment(AppCompatActivity activity, Fragment fragment, int containerViewId) {
+
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        fragmentManager.saveFragmentInstanceState(fragment);
+        fragmentManager.putFragment(null, fragment.getClass().getSimpleName(), fragment);
+
+    }
+
+    public static void getFragment(AppCompatActivity activity, Fragment fragment, int containerViewId) {
+
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        fragmentManager.getFragment(null,fragment.getClass().getSimpleName());
+
+        fragmentManager.saveFragmentInstanceState(fragment);
+        fragmentManager.putFragment(null, fragment.getClass().getSimpleName(), fragment);
+
+    }
+
+
 }

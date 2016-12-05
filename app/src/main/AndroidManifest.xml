@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.aykuttasil.sweetloc">
 
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -18,7 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:name">
-
 
         <activity
             android:name=".activity.MainActivity_"
@@ -35,9 +33,22 @@
             android:label="Login" />
 
         <activity
-            android:name=".activity.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:name=".activity.MapsActivity_"
+            android:label="@string/title_activity_maps"
+            android:parentActivityName=".activity.MainActivity_">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.aykuttasil.sweetloc.activity.MainActivity_" />
+        </activity>
 
+        <activity
+            android:name=".activity.ProfileActivity_"
+            android:label="@string/title_activity_profile"
+            android:parentActivityName=".activity.MainActivity_">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.aykuttasil.sweetloc.activity.MainActivity_" />
+        </activity>
 
         <service
             android:name=".service.MyFirebaseInstanceIdService"
@@ -46,7 +57,6 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".service.MyFcmListenerService"
             android:exported="false">
@@ -54,7 +64,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".service.MyGcmTaskService"
             android:exported="true"
@@ -63,7 +72,6 @@
                 <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
             </intent-filter>
         </service>
-
 
         <receiver
             android:name=".receiver.BootupReceiver"
@@ -77,7 +85,7 @@
             </intent-filter>
         </receiver>
 
-        <!--Uygulama kapalı olsa bile broadcastreceiver ın çalışması için process=remote yapılıyor.-->
+        <!-- Uygulama kapalı olsa bile broadcastreceiver ın çalışması için process=remote yapılıyor. -->
         <receiver
             android:name=".receiver.LocationReceiver"
             android:process=":remote" />
@@ -87,22 +95,19 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="1180ed8815863b0006d4df63e666bc74901dc3ec" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <meta-data
             android:name="AA_DB_NAME"
             android:value="sweetloc_12.db" />
-
         <meta-data
             android:name="AA_DB_VERSION"
             android:value="1" />
+
     </application>
 
 </manifest>

@@ -20,36 +20,29 @@ apply plugin: 'com.neenbedankt.android-apt'
 def AAVersion = '4.0.0'
 apt {
     arguments {
-        //androidManifestFile variant.outputs[0].processResources.manifestFile
-        // if you have multiple outputs (when using splits), you may want to have other index than 0
-
-        // If you are using different applicationId than your manifest package name, add the manifest package name here
-        // resourcePackageName "org.androidannotations.sample"
-
-        // You can set optional annotation processing options here, like these commented options:
-        // logLevel 'INFO'
-        // logFile '/var/log/aa.log'
     }
 }
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion project.sdk
+    buildToolsVersion project.buildTools
+
     defaultConfig {
         applicationId "com.aykuttasil.sweetloc"
-        minSdkVersion 17
-        targetSdkVersion 24
-        versionCode 5
-        versionName "1.0.4"
+        minSdkVersion project.minSdk
+        targetSdkVersion project.sdk
+        versionCode 6
+        versionName "1.0.5"
         multiDexEnabled true
     }
+
     productFlavors {
         develop {
             minSdkVersion 21
             buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
         }
         prod {
-            minSdkVersion 17
+            minSdkVersion 21
             buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
         }
     }
@@ -92,39 +85,41 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    debugCompile 'com.facebook.stetho:stetho:1.3.0'
-    debugCompile 'com.facebook.stetho:stetho-js-rhino:1.3.0'
-    compile 'com.orhanobut:logger:1.15'
 
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:design:24.2.0'
-    compile 'com.android.support:cardview-v7:24.2.0'
-    compile 'com.android.support:recyclerview-v7:24.2.0'
+    compile "com.android.support:appcompat-v7:$project.supportVersion"
+    compile "com.android.support:design:$project.supportVersion"
+    compile "com.android.support:cardview-v7:$project.supportVersion"
+    compile "com.android.support:recyclerview-v7:$project.supportVersion"
 
-    compile 'com.android.support:multidex:1.0.1'
 
-    compile 'com.google.firebase:firebase-core:9.4.0'
-    compile 'com.google.firebase:firebase-messaging:9.4.0'
-    compile 'com.google.firebase:firebase-database:9.4.0'
-    compile 'com.google.firebase:firebase-config:9.4.0'
-    compile 'com.google.firebase:firebase-auth:9.4.0'
-    compile 'com.google.android.gms:play-services-maps:9.4.0'
-    compile 'com.google.android.gms:play-services-gcm:9.4.0'
-    compile 'com.google.android.gms:play-services-location:9.4.0'
-    //compile 'com.google.android.gms:play-services:9.2.0'
-    //compile 'com.google.android.gms:play-services-gcm:9.2.0'
+
+
+    compile "com.google.firebase:firebase-core:$project.playVersion"
+    compile "com.google.firebase:firebase-messaging:$project.playVersion"
+    compile "com.google.firebase:firebase-database:$project.playVersion"
+    compile "com.google.firebase:firebase-config:$project.playVersion"
+    compile "com.google.firebase:firebase-auth:$project.playVersion"
+    compile "com.google.firebase:firebase-crash:$project.playVersion"
+    compile "com.google.android.gms:play-services-maps:$project.playVersion"
+    compile "com.google.android.gms:play-services-gcm:$project.playVersion"
+    compile "com.google.android.gms:play-services-location:$project.playVersion"
+
+
     compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
         transitive = true;
     }
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
 
+
+
+
+    compile 'com.orhanobut:logger:1.15'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
-
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'io.reactivex:rxjava:1.1.5'
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
@@ -132,14 +127,18 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
     compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
-
     compile 'com.aykuttasil:androidbasichelperlib:1.0.23'
     compile 'com.google.android:flexbox:0.2.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.facebook.android:facebook-android-sdk:4.+'
-
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'com.google.android.gms:play-services:10.0.0'
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    testCompile 'junit:junit:4.12'
+    debugCompile 'com.facebook.stetho:stetho:1.3.0'
+    debugCompile 'com.facebook.stetho:stetho-js-rhino:1.3.0'
 }
 
 
