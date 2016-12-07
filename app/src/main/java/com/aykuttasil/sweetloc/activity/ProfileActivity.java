@@ -28,7 +28,7 @@ public class ProfileActivity extends BaseActivity {
     @Override
     void initToolbar() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Map");
+        getSupportActionBar().setTitle("Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_indigo_300_24dp);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

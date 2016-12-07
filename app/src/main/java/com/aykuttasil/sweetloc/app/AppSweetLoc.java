@@ -10,7 +10,10 @@ import com.aykuttasil.sweetloc.BuildConfig;
 import com.aykuttasil.sweetloc.model.ModelLocation;
 import com.aykuttasil.sweetloc.model.ModelSweetLocPreference;
 import com.aykuttasil.sweetloc.model.ModelUser;
+import com.aykuttasil.sweetloc.service.NotificationOpenedHandler;
+import com.aykuttasil.sweetloc.service.NotificationReceivedHandler;
 import com.crashlytics.android.Crashlytics;
+import com.onesignal.OneSignal;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
@@ -48,6 +51,16 @@ public class AppSweetLoc extends Application {
         //.logAdapter(new AndroidLogAdapter());      //default AndroidLogAdapter
 
         Fabric.with(this, new Crashlytics());
+
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.ERROR);
+        //OneSignal.init(this, "535821025252", "283c0725-f1ae-434a-8ea5-09f61b1246fc", new NotificationOpenedHandler(), new NotificationReceivedHandler());
+
+        OneSignal.startInit(this)
+                .setNotificationReceivedHandler(new NotificationReceivedHandler())
+                .setNotificationOpenedHandler(new NotificationOpenedHandler())
+                .autoPromptLocation(true)
+                .init();
+
     }
 
     @Override

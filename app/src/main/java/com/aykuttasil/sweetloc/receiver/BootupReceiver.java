@@ -15,8 +15,8 @@ public class BootupReceiver extends BroadcastReceiver {
     @DebugLog
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent _intent = new Intent(context, MainActivity_.class);
-        _intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(_intent);
+        //Intent _intent = new Intent(context, MainActivity_.class);
+        //_intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //context.startActivity(_intent);
     }
 }

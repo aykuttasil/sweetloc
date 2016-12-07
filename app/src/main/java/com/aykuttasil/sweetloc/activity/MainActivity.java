@@ -11,6 +11,7 @@ import com.aykuttasil.sweetloc.fragment.NavFragment_;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;

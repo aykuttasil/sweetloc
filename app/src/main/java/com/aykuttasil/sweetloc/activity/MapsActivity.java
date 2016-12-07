@@ -6,12 +6,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.aykuttasil.androidbasichelperlib.UiHelper;
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.db.DbManager;
 import com.aykuttasil.sweetloc.model.ModelLocation;
@@ -33,19 +35,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.onesignal.OneSignal;
 import com.orhanobut.logger.Logger;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
 import hugo.weaving.DebugLog;
 
-@EActivity(R.layout.activity_maps2)
+@EActivity(R.layout.activity_maps)
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
 
     @FragmentById(R.id.map)
@@ -66,15 +72,33 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @DebugLog
     @AfterViews
     public void initializeAfterViews() {
-        mMapFragment.getMapAsync(this);
         initToolbar();
+        permissionControl();
     }
+
+    private void permissionControl() {
+        RxPermissions.getInstance(this)
+                .request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe(result -> {
+                    if (result) {
+                        mMapFragment.getMapAsync(this);
+                    } else {
+                        MaterialDialog dialog = UiHelper.UiDialog.newInstance(this).getOKDialog("Uyarı", "Haritanın doğru çalışması için tüm izinleri vermelisiniz.", null);
+                        dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(view -> {
+                            permissionControl();
+                        });
+                    }
+                }, error -> {
+                    Logger.e(error, "HATA");
+                });
+    }
+
 
     @DebugLog
     @Override
     void initToolbar() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Map");
+        getSupportActionBar().setTitle("Harita");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_indigo_300_24dp);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -264,9 +288,20 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 15.0f));
     }
 
+    @DebugLog
     @Click(R.id.FabMap)
     public void FabMapClick() {
-        Log.i("MapsActivity", getSupportActionBar().getTitle().toString());
+
+        OneSignal.promptLocation();
+
+        String userId = "428ef398-76d3-4ca9-ab4c-60d591879365";
+        //OneSignal.postNotification();
+        try {
+            OneSignal.postNotification(new JSONObject("{'contents': {'en':'Test Message'}, 'include_player_ids': ['" + userId + "']}"), null);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

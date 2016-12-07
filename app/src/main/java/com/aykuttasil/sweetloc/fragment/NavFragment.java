@@ -1,6 +1,9 @@
 package com.aykuttasil.sweetloc.fragment;
 
+import android.view.WindowManager;
+
 import com.aykuttasil.sweetloc.R;
+import com.aykuttasil.sweetloc.activity.MainActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -12,7 +15,8 @@ import org.androidannotations.annotations.EFragment;
 public class NavFragment extends BaseFragment {
 
     @AfterViews
-    public void initializeNavFragment() {
+    @Override
+    void initializeAfterViews() {
 
     }
 }

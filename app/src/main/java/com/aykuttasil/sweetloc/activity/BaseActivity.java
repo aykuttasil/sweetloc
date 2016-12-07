@@ -37,8 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     abstract void initToolbar();
 
     public static final int LOGIN_REQUEST_CODE = 1001;
-    //
-
+    FirebaseRemoteConfig firebaseRemoteConfig;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,15 +59,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @DebugLog
     public void SetNavigationHeader(MainActivity activity) {
-        NavigationView navHeader = (NavigationView) activity.findViewById(R.id.nav_view);
-        TextView email = (TextView) navHeader.getHeaderView(0).findViewById(R.id.navigationEmail);
+        //NavigationView navHeader = (NavigationView) activity.findViewById(R.id.nav_view);
+        //TextView email = (TextView) navHeader.getHeaderView(0).findViewById(R.id.navigationEmail);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        email.setText(user.getEmail());
+        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //email.setText(user.getEmail());
     }
 
-
-    FirebaseRemoteConfig firebaseRemoteConfig;
 
     @DebugLog
     public void setPeriodicTask(Context context) {

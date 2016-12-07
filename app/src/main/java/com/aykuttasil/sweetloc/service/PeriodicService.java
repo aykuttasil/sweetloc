@@ -124,7 +124,7 @@ public class PeriodicService extends Service implements GoogleApiClient.Connecti
         //Location location = FusedLocationApi.getLastLocation(mGoogleApiClient);
         //addFireBaseLocation(location);
 
-        FusedLocationApi.getLocationAvailability(mGoogleApiClient).isLocationAvailable();
+        //FusedLocationApi.getLocationAvailability(mGoogleApiClient).isLocationAvailable();
         int LocationPeriod = 120;
 
         long intervalTime = LocationPeriod * 1000;

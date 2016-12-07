@@ -62,7 +62,6 @@ public class LoginActivity extends BaseActivity {
     @Click(R.id.Button_GirisYap)
     public void Button_GirisYapClick() {
 
-
         if (!validateInput()) {
             return;
         }

@@ -20,7 +20,10 @@ import hugo.weaving.DebugLog;
 /**
  * Created by aykutasil on 8.07.2016.
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
+
+    abstract void initializeAfterViews();
+
     FirebaseRemoteConfig firebaseRemoteConfig;
 
     @DebugLog
