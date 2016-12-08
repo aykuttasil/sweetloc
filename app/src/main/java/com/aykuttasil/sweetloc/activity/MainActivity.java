@@ -11,7 +11,6 @@ import com.aykuttasil.sweetloc.fragment.NavFragment_;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.tbruyelle.rxpermissions.RxPermissions;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -31,15 +30,14 @@ public class MainActivity extends BaseActivity {
 
     @ViewById(R.id.Container)
     FrameLayout mContainer;
+
     //
-    FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-    FirebaseAuth.AuthStateListener mAuthListener;
 
     @DebugLog
     @AfterViews
     public void initializeAfterViews() {
         initToolbar();
-        setFirebaseAuthListener();
+        updateUi();
     }
 
     @DebugLog
@@ -50,22 +48,13 @@ public class MainActivity extends BaseActivity {
     }
 
     @DebugLog
-    public void setFirebaseAuthListener() {
+    @Override
+    void updateUi() {
 
-        mAuthListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            updateUI(user);
-        };
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        mFirebaseAuth.addAuthStateListener(mAuthListener);
-
-    }
-
-    @DebugLog
-    private void updateUI(FirebaseUser user) {
         if (user == null) {
-            Intent intent = new Intent(this, LoginActivity_.class);
-            startActivityForResult(intent, LOGIN_REQUEST_CODE);
+            goLoginActivity();
         } else {
             SuperHelper.ReplaceFragmentBeginTransaction(
                     MainActivity.this,
@@ -75,16 +64,18 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+
     @DebugLog
     @OnActivityResult(LOGIN_REQUEST_CODE)
     public void ActivityResultLogin(int resultCode) {
         switch (resultCode) {
             case RESULT_OK: {
-                updateUI(FirebaseAuth.getInstance().getCurrentUser());
+                updateUi();
                 break;
             }
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,16 +89,11 @@ public class MainActivity extends BaseActivity {
 
         switch (item.getItemId()) {
             case R.id.menuProfil: {
-                //Intent activityIntent = new Intent(MainActivity.this, ProfileActivity_.class);
-                ProfileActivity_.intent(this).start();
-                //activityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                //startActivity(activityIntent);
+                ProfileActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK).start();
                 break;
             }
             case R.id.menuMap: {
-                Intent activityIntent = new Intent(this, MapsActivity_.class);
-                activityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(activityIntent);
+                MapsActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK).start();
                 break;
             }
         }
@@ -117,8 +103,6 @@ public class MainActivity extends BaseActivity {
     @DebugLog
     @Override
     protected void onStop() {
-        mFirebaseAuth.removeAuthStateListener(mAuthListener);
         super.onStop();
     }
-
 }

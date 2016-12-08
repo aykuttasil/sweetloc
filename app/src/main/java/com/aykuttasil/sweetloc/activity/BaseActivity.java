@@ -4,21 +4,14 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.aykuttasil.sweetloc.BuildConfig;
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.app.Const;
 import com.aykuttasil.sweetloc.receiver.LocationReceiver;
 import com.aykuttasil.sweetloc.service.MyFirebaseInstanceIdService;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -36,15 +29,16 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     abstract void initToolbar();
 
+    abstract void updateUi();
+
     public static final int LOGIN_REQUEST_CODE = 1001;
-    FirebaseRemoteConfig firebaseRemoteConfig;
+    private FirebaseRemoteConfig firebaseRemoteConfig;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    @DebugLog
+    public void goLoginActivity() {
+        //activityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        LoginActivity2_.intent(BaseActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK).startForResult(LOGIN_REQUEST_CODE);
     }
-
 
     @DebugLog
     public void startFirebaseInstanceIDService() {
@@ -155,5 +149,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         alarmManager.cancel(pendingIntent);
     }
+
 
 }

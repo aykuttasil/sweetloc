@@ -6,7 +6,7 @@ import android.widget.TextView;
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.activity.ProfileActivity;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
-import com.aykuttasil.sweetloc.service.PeriodicService_;
+import com.facebook.login.LoginManager;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.onesignal.OneSignal;
 import com.orhanobut.logger.Logger;
@@ -68,9 +68,11 @@ public class ProfileActivityFragment extends BaseFragment {
     @DebugLog
     @Click(R.id.Button_CikisYap)
     public void Button_CikisYapClick() {
+        LoginManager.getInstance().logOut();
         SuperHelper.ResetSweetLoc();
-        mActivity.stopPeriodicTask(getContext());
-        PeriodicService_.intent(getContext()).stop();
-        mActivity.finish();
+        mActivity.goLoginActivity();
+        //mActivity.stopPeriodicTask(getContext());
+        //PeriodicService_.intent(getContext()).stop();
+        //mActivity.finish();
     }
 }

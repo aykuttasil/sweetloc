@@ -13,6 +13,8 @@ import com.aykuttasil.sweetloc.model.ModelUser;
 import com.aykuttasil.sweetloc.service.NotificationOpenedHandler;
 import com.aykuttasil.sweetloc.service.NotificationReceivedHandler;
 import com.crashlytics.android.Crashlytics;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.onesignal.OneSignal;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
@@ -60,6 +62,10 @@ public class AppSweetLoc extends Application {
                 .setNotificationOpenedHandler(new NotificationOpenedHandler())
                 .autoPromptLocation(true)
                 .init();
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+
 
     }
 

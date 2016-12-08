@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    
 
     <application
         android:name=".app.AppSweetLoc"
@@ -22,7 +21,8 @@
 
         <activity
             android:name=".activity.MainActivity_"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,6 +33,12 @@
         <activity
             android:name=".activity.LoginActivity_"
             android:label="Login" />
+
+
+        <activity
+            android:name=".activity.LoginActivity2_"
+            android:label="Login" />
+
 
         <activity
             android:name=".activity.MapsActivity_"
@@ -52,6 +58,31 @@
                 android:value="com.aykuttasil.sweetloc.activity.MainActivity_" />
         </activity>
 
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:theme" />
+
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1323769607674772"
+            android:exported="true" />
+
         <service
             android:name=".service.MyFirebaseInstanceIdService"
             android:exported="false">
@@ -59,6 +90,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <service
             android:name=".service.MyFcmListenerService"
             android:exported="false">
@@ -66,6 +98,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <service
             android:name=".service.MyGcmTaskService"
             android:exported="true"
@@ -95,17 +128,25 @@
         <service android:name=".service.PeriodicService_" />
 
         <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <meta-data
             android:name="io.fabric.ApiKey"
             android:value="1180ed8815863b0006d4df63e666bc74901dc3ec" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <meta-data
             android:name="AA_DB_NAME"
             android:value="sweetloc_12.db" />
+
         <meta-data
             android:name="AA_DB_VERSION"
             android:value="1" />

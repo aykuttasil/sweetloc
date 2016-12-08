@@ -52,10 +52,11 @@ public class LoginActivity extends BaseActivity {
     void initToolbar() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("SweetLoc ...");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_indigo_300_24dp);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    @Override
+    void updateUi() {
+
     }
 
     @DebugLog

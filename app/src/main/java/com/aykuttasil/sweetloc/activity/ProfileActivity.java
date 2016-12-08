@@ -34,4 +34,15 @@ public class ProfileActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
+
+    @Override
+    void updateUi() {
+
+    }
+
+    @DebugLog
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
 }
