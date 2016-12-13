@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.aykuttasil.sweetloc.db.DbManager;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import hugo.weaving.DebugLog;
@@ -26,6 +27,7 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
 
     public static void logoutUser() {
         FirebaseAuth.getInstance().signOut();
+        LoginManager.getInstance().logOut();
         DbManager.deleteModelUser();
     }
 
@@ -40,7 +42,7 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
     public static void getFragment(AppCompatActivity activity, Fragment fragment, int containerViewId) {
 
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        fragmentManager.getFragment(null,fragment.getClass().getSimpleName());
+        fragmentManager.getFragment(null, fragment.getClass().getSimpleName());
 
         fragmentManager.saveFragmentInstanceState(fragment);
         fragmentManager.putFragment(null, fragment.getClass().getSimpleName(), fragment);

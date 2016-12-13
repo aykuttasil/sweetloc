@@ -70,7 +70,7 @@ public class ProfileActivityFragment extends BaseFragment {
     public void Button_CikisYapClick() {
         LoginManager.getInstance().logOut();
         SuperHelper.ResetSweetLoc();
-        mActivity.goLoginActivity();
+        mActivity.goLoginFacebookActivity(mActivity);
         //mActivity.stopPeriodicTask(getContext());
         //PeriodicService_.intent(getContext()).stop();
         //mActivity.finish();

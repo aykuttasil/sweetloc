@@ -7,10 +7,8 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.aykuttasil.sweetloc.R;
-import com.aykuttasil.sweetloc.fragment.NavFragment_;
+import com.aykuttasil.sweetloc.fragment.UserTrackerListFragment_;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -51,19 +49,32 @@ public class MainActivity extends BaseActivity {
     @Override
     void updateUi() {
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user == null) {
-            goLoginActivity();
+        if (!SuperHelper.checkUser()) {
+            SuperHelper.logoutUser();
+            goLoginFacebookActivity(this);
         } else {
             SuperHelper.ReplaceFragmentBeginTransaction(
                     MainActivity.this,
-                    NavFragment_.builder().build(),
+                    UserTrackerListFragment_.builder().build(),
                     R.id.Container,
                     false);
         }
     }
 
+    /**
+     * Activity singleTop modunda çalıştırılır ise ve
+     * bu Activity zaten görünür durumda ise
+     * yani stack in en üstünde ise startActivity() ile bu activity ye gönderilen intent buraya ulaşır.
+     * Activity nin yeni bir instance ı oluşturulmaz.
+     *
+     * @param intent
+     */
+    @DebugLog
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        updateUi();
+    }
 
     @DebugLog
     @OnActivityResult(LOGIN_REQUEST_CODE)
@@ -100,9 +111,16 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
+
     @DebugLog
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @DebugLog
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -18,6 +18,7 @@ import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.db.DbManager;
 import com.aykuttasil.sweetloc.model.ModelLocation;
 import com.aykuttasil.sweetloc.model.ModelUser;
+import com.aykuttasil.sweetloc.model.ModelUserTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -146,9 +147,13 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     ModelUser modelUser = dataSnapshot1.getValue(ModelUser.class);
 
-                    // Aynı token a sahip diğer kullancılar buraya girer
+                    // Aynı token a sahip diğer kullanıcılar buraya girer
                     if (!modelUser.getUUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) &&
                             modelUser.getToken().equals(DbManager.getModelUser().getToken())) {
+
+
+                        ModelUserTracker modelUserTracker = new ModelUserTracker();
+                        //modelUserTracker modelUser.getAd();
 
                         Logger.i(modelUser.getEmail() + " konum dinleniyor.");
 
@@ -187,6 +192,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
                                     }
                                 });
+
                     }
 
                 }

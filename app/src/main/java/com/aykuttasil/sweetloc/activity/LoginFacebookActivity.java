@@ -26,6 +26,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.orhanobut.logger.Logger;
 
 import org.androidannotations.annotations.AfterViews;
@@ -38,8 +39,8 @@ import hugo.weaving.DebugLog;
  * Created by aykutasil on 7.12.2016.
  */
 
-@EActivity(R.layout.activity_login2)
-public class LoginActivity2 extends BaseActivity {
+@EActivity(R.layout.activity_login_facebook_layout)
+public class LoginFacebookActivity extends BaseActivity {
 
     @ViewById(R.id.LoginButton)
     LoginButton mLoginButton;
@@ -102,13 +103,15 @@ public class LoginActivity2 extends BaseActivity {
     @DebugLog
     private void initFacebookLoginButton() {
 
-        mLoginButton.setReadPermissions("email", "public_profile");
+        mLoginButton.setReadPermissions("email", "public_profile", "user_friends");
 
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @DebugLog
             @Override
             public void onSuccess(LoginResult loginResult) {
+
                 Logger.d("facebook:onSuccess:" + loginResult);
+
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
@@ -146,14 +149,16 @@ public class LoginActivity2 extends BaseActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        Logger.d("signInWithCredential:onComplete:" + task.isSuccessful());
+                        Logger.i("signInWithCredential:onComplete:" + task.isSuccessful());
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Logger.w("signInWithCredential", task.getException());
-                            Toast.makeText(LoginActivity2.this, "Authentication failed.",
+
+                            Logger.e(task.getException(), "HATA");
+
+                            Toast.makeText(LoginFacebookActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             takeSweetLocToken(task.getResult().getUser());
@@ -175,7 +180,6 @@ public class LoginActivity2 extends BaseActivity {
 
         tokenView.findViewById(R.id.DevamEt).setOnClickListener(view -> {
 
-
             EditText tokentext = ((EditText) tokenView.findViewById(R.id.EditTextTrackerId));
 
             if (!SuperHelper.validateIsEmpty(tokentext)) {
@@ -185,24 +189,28 @@ public class LoginActivity2 extends BaseActivity {
                 ModelUser modelUser = new ModelUser();
                 modelUser.setUUID(user.getUid());
                 modelUser.setEmail(user.getEmail());
-                modelUser.setParola(user.getDisplayName());
+                modelUser.setParola(user.getProviderId());
                 modelUser.setToken(tokentext.getText().toString());
+                modelUser.setImageUrl(user.getPhotoUrl().toString());
                 modelUser.save();
 
-                setResult(RESULT_OK);
+                FirebaseDatabase.getInstance().getReference()
+                        .child(ModelUser.class.getSimpleName())
+                        .child(user.getUid())
+                        .setValue(modelUser);
+
+                MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK).start();
                 finish();
             }
         });
 
         dialog.show();
 
-
     }
 
     @DebugLog
     @Override
     public void onBackPressed() {
-        // Disable going back to the MainActivity
         moveTaskToBack(true);
     }
 

@@ -36,7 +36,7 @@
 
 
         <activity
-            android:name=".activity.LoginActivity2_"
+            android:name=".activity.LoginFacebookActivity_"
             android:label="Login" />
 
 
@@ -133,7 +133,8 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="1180ed8815863b0006d4df63e666bc74901dc3ec" />
+            android:value="1180ed8815863b0006d4df63e666bc74901dc3ec"
+            tools:replace="android:value" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -145,7 +146,7 @@
 
         <meta-data
             android:name="AA_DB_NAME"
-            android:value="sweetloc_12.db" />
+            android:value="sweetloc_14.db" />
 
         <meta-data
             android:name="AA_DB_VERSION"

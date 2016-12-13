@@ -18,6 +18,8 @@ public class NotificationReceivedHandler implements OneSignal.NotificationReceiv
     @Override
     public void notificationReceived(OSNotification notification) {
 
+
+
         JSONObject data = notification.payload.additionalData;
         String customKey;
 

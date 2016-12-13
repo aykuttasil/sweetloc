@@ -108,7 +108,7 @@ dependencies {
     compile "com.android.support:design:$project.supportVersion"
     compile "com.android.support:cardview-v7:$project.supportVersion"
     compile "com.android.support:recyclerview-v7:$project.supportVersion"
-
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 
     compile "com.google.firebase:firebase-core:$project.playVersion"
     compile "com.google.firebase:firebase-messaging:$project.playVersion"
@@ -119,6 +119,8 @@ dependencies {
     compile "com.google.android.gms:play-services-maps:$project.playVersion"
     compile "com.google.android.gms:play-services-gcm:$project.playVersion"
     compile "com.google.android.gms:play-services-location:$project.playVersion"
+
+    compile 'com.firebaseui:firebase-ui:1.0.1'
 
 
 
@@ -132,6 +134,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'io.reactivex:rxjava:1.1.5'
@@ -147,7 +150,6 @@ dependencies {
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.facebook.android:facebook-android-sdk:4.+'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile "com.andkulikov:transitionseverywhere:1.7.0"
     compile 'com.patloew.rxlocation:rxlocation:1.0.1'
     compile 'com.onesignal:OneSignal:3.+@aar'

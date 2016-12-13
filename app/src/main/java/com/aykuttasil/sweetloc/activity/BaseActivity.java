@@ -35,9 +35,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     private FirebaseRemoteConfig firebaseRemoteConfig;
 
     @DebugLog
-    public void goLoginActivity() {
+    public void goLoginFacebookActivity(AppCompatActivity activity) {
         //activityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        LoginActivity2_.intent(BaseActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK).startForResult(LOGIN_REQUEST_CODE);
+        LoginFacebookActivity_.intent(activity).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK).start();
     }
 
     @DebugLog

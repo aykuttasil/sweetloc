@@ -10,6 +10,7 @@ import com.aykuttasil.sweetloc.BuildConfig;
 import com.aykuttasil.sweetloc.model.ModelLocation;
 import com.aykuttasil.sweetloc.model.ModelSweetLocPreference;
 import com.aykuttasil.sweetloc.model.ModelUser;
+import com.aykuttasil.sweetloc.model.ModelUserTracker;
 import com.aykuttasil.sweetloc.service.NotificationOpenedHandler;
 import com.aykuttasil.sweetloc.service.NotificationReceivedHandler;
 import com.crashlytics.android.Crashlytics;
@@ -40,6 +41,7 @@ public class AppSweetLoc extends Application {
                 .addModelClass(ModelUser.class)
                 .addModelClass(ModelLocation.class)
                 .addModelClass(ModelSweetLocPreference.class)
+                .addModelClass(ModelUserTracker.class)
                 .create());
     }
 
