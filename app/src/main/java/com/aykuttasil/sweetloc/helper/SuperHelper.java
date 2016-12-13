@@ -17,6 +17,7 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
 
     @DebugLog
     public static void ResetSweetLoc() {
+        DbManager.deleteModelUser();
         logoutUser();
     }
 
@@ -28,7 +29,6 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
     public static void logoutUser() {
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
-        DbManager.deleteModelUser();
     }
 
     public static void addFragment(AppCompatActivity activity, Fragment fragment, int containerViewId) {

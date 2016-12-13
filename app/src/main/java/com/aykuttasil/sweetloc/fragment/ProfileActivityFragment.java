@@ -5,14 +5,11 @@ import android.widget.TextView;
 
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.activity.ProfileActivity;
-import com.aykuttasil.sweetloc.helper.SuperHelper;
-import com.facebook.login.LoginManager;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.onesignal.OneSignal;
 import com.orhanobut.logger.Logger;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -65,14 +62,4 @@ public class ProfileActivityFragment extends BaseFragment {
                 });
     }
 
-    @DebugLog
-    @Click(R.id.Button_CikisYap)
-    public void Button_CikisYapClick() {
-        LoginManager.getInstance().logOut();
-        SuperHelper.ResetSweetLoc();
-        mActivity.goLoginFacebookActivity(mActivity);
-        //mActivity.stopPeriodicTask(getContext());
-        //PeriodicService_.intent(getContext()).stop();
-        //mActivity.finish();
-    }
 }

@@ -16,14 +16,23 @@
             android:id="@+id/Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
+            android:background="@color/tw__blue_pressed"
+            app:collapseIcon="@drawable/md_nav_back"
+            app:navigationIcon="@drawable/md_nav_back"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="Profile"
-            app:titleTextColor="@color/colorPrimary" />
+            app:titleTextColor="@color/white" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_profile" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include layout="@layout/content_profile" />
+
+    </FrameLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>
