@@ -4,6 +4,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.aykuttasil.androidbasichelperlib.UiHelper;
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
 
@@ -55,9 +58,17 @@ public class ProfileActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.actionCikisYap: {
 
-                SuperHelper.ResetSweetLoc();
+                MaterialDialog dialog = UiHelper.UiDialog.newInstance(this).getOKCancelDialog("Çıkış Yap", "Devam edilsin mi?", null);
+                dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(view -> {
 
-                goLoginFacebookActivity(this);
+                    dialog.dismiss();
+
+                    SuperHelper.ResetSweetLoc();
+
+                    goLoginFacebookActivity(ProfileActivity.this);
+                });
+
+                dialog.show();
 
                 return true;
             }
