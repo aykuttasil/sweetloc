@@ -28,8 +28,8 @@ task clean(type: Delete) {
 
 ext {
     sdk = 25
-    buildTools = "25.0.1"
+    buildTools = "25.0.2"
     minSdk = 21
-    supportVersion = "25.0.1"
+    supportVersion = "25.1.0"
     playVersion = "10.0.0"
 }
