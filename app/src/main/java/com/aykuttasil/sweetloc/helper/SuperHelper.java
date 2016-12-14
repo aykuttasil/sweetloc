@@ -1,15 +1,18 @@
 package com.aykuttasil.sweetloc.helper;
 
+import android.location.Location;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.aykuttasil.sweetloc.db.DbManager;
+import com.aykuttasil.sweetloc.model.ModelLocation;
 import com.aykuttasil.sweetloc.model.ModelUser;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.orhanobut.logger.Logger;
 
 import hugo.weaving.DebugLog;
 
@@ -65,4 +68,27 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
                     .setValue(modelUser);
         }
     }
+
+    @DebugLog
+    public static void sendLocationInformation(Location location) {
+
+        Logger.i("Location gönderildi");
+        Logger.d(location);
+
+        ModelLocation modelLocation = new ModelLocation();
+        modelLocation.setLatitude(location.getLatitude());
+        modelLocation.setLongitude(location.getLongitude());
+        modelLocation.setAccuracy(location.getAccuracy());
+        modelLocation.setAddress(location.getProvider());
+        modelLocation.setTime(location.getTime());
+        modelLocation.setFormatTime(com.aykuttasil.androidbasichelperlib.SuperHelper.getFormatTime(location.getTime()));
+        modelLocation.setCreateDate(com.aykuttasil.androidbasichelperlib.SuperHelper.getFormatTime());
+
+        FirebaseDatabase.getInstance().getReference()
+                .child(ModelLocation.class.getSimpleName())
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .push()
+                .setValue(modelLocation);
+    }
+
 }

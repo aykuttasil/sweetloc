@@ -110,6 +110,8 @@ public class UserTrackerListFragment extends BaseFragment {
                         modelUserTracker.setSoyAd(modelUser.getSoyAd());
                         modelUserTracker.setProfilePictureUrl(modelUser.getImageUrl());
                         modelUserTracker.setOneSignalUserId(modelUser.getOneSignalUserId());
+                        modelUserTracker.setUUID(modelUser.getUUID());
+                        modelUserTracker.setToken(modelUser.getToken());
                         modelUserTracker.save();
 
                         mAdapter.addItem(modelUserTracker);

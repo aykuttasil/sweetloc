@@ -108,6 +108,18 @@
             </intent-filter>
         </service>
 
+        <service android:name=".service.PeriodicService_" />
+
+        <service
+            android:name=".service.NotificationExtenderService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.onesignal.NotificationExtender" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".service.SingleLocationRequestService" />
+
         <receiver
             android:name=".receiver.BootupReceiver"
             android:enabled="true"
@@ -125,7 +137,9 @@
             android:name=".receiver.LocationReceiver"
             android:process=":remote" />
 
-        <service android:name=".service.PeriodicService_" />
+        <receiver
+            android:name=".receiver.SingleLocationRequestReceiver"
+            android:process=":remote" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -144,9 +158,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <!-- Uygulama iconu üzerindeki bildirim sayısının gösterilmesini disable ediyoruz. -->
+        <meta-data
+            android:name="com.onesignal.BadgeCount"
+            android:value="DISABLE" />
+
         <meta-data
             android:name="AA_DB_NAME"
-            android:value="sweetloc_16.db" />
+            android:value="sweetloc_17.db" />
 
         <meta-data
             android:name="AA_DB_VERSION"

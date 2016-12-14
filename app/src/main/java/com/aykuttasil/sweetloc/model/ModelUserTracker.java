@@ -38,6 +38,16 @@ public class ModelUserTracker extends Model {
     @SerializedName("OneSignalUserId")
     private String OneSignalUserId;
 
+    @Column
+    @Expose
+    @SerializedName("Token")
+    private String Token;
+
+    @Column
+    @Expose
+    @SerializedName("UUID")
+    private String UUID;
+
     public String getAd() {
         return Ad;
     }
@@ -76,5 +86,21 @@ public class ModelUserTracker extends Model {
 
     public void setOneSignalUserId(String oneSignalUserId) {
         OneSignalUserId = oneSignalUserId;
+    }
+
+    public String getToken() {
+        return Token;
+    }
+
+    public void setToken(String token) {
+        Token = token;
+    }
+
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
     }
 }
