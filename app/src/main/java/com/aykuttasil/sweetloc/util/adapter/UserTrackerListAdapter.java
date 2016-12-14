@@ -78,7 +78,7 @@ public class UserTrackerListAdapter extends RecyclerView.Adapter<UserTrackerList
         UserTrackerViewHolder(View itemView) {
             super(itemView);
             mImageViewProfilePicture = (ImageView) itemView.findViewById(R.id.ImageViewProfilePicture);
-            mTextViewAdSoyad = (TextView) itemView.findViewById(R.id.TextViewAdSoyad);
+            //mTextViewAdSoyad = (TextView) itemView.findViewById(R.id.TextViewAdSoyad);
             mTextViewEmail = (TextView) itemView.findViewById(R.id.TextViewEmail);
             //mSeekBarTracker = (SeekBar) itemView.findViewById(R.id.SeekBarTracker);
         }
@@ -99,8 +99,10 @@ public class UserTrackerListAdapter extends RecyclerView.Adapter<UserTrackerList
                 mImageViewProfilePicture.setImageDrawable(itemView.getContext().getResources().getDrawable(R.drawable.ic_account_circle_light_blue_300_24dp));
             }
 
-            mTextViewAdSoyad.setText(modelUserTracker.getAd() + " " + modelUserTracker.getSoyAd());
             mTextViewEmail.setText(modelUserTracker.getEmail());
+
+
+            //mTextViewAdSoyad.setText(modelUserTracker.getAd() + " " + modelUserTracker.getSoyAd());
             /*mSeekBarTracker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
                 @Override
