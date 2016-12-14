@@ -57,6 +57,11 @@ public class ModelUser extends Model {
     @SerializedName("ImageUrl")
     private String ImageUrl;
 
+    @Column
+    @Expose
+    @SerializedName("OneSignalUserId")
+    private String OneSignalUserId;
+
     public ModelUser() {
         super();
     }
@@ -131,5 +136,13 @@ public class ModelUser extends Model {
 
     public void setImageUrl(String imageUrl) {
         ImageUrl = imageUrl;
+    }
+
+    public String getOneSignalUserId() {
+        return OneSignalUserId;
+    }
+
+    public void setOneSignalUserId(String oneSignalUserId) {
+        OneSignalUserId = oneSignalUserId;
     }
 }

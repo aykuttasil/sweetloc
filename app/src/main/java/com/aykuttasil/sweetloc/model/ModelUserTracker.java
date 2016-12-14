@@ -33,6 +33,11 @@ public class ModelUserTracker extends Model {
     @SerializedName("ProfilePictureUrl")
     private String ProfilePictureUrl;
 
+    @Column
+    @Expose
+    @SerializedName("OneSignalUserId")
+    private String OneSignalUserId;
+
     public String getAd() {
         return Ad;
     }
@@ -63,5 +68,13 @@ public class ModelUserTracker extends Model {
 
     public void setEmail(String email) {
         Email = email;
+    }
+
+    public String getOneSignalUserId() {
+        return OneSignalUserId;
+    }
+
+    public void setOneSignalUserId(String oneSignalUserId) {
+        OneSignalUserId = oneSignalUserId;
     }
 }

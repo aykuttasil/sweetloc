@@ -5,8 +5,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.aykuttasil.sweetloc.db.DbManager;
+import com.aykuttasil.sweetloc.model.ModelUser;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import hugo.weaving.DebugLog;
 
@@ -49,5 +52,17 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
 
     }
 
+    @DebugLog
+    public static void updateUser(ModelUser modelUser) {
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+
+            FirebaseDatabase.getInstance().getReference()
+                    .child(ModelUser.class.getSimpleName())
+                    .child(user.getUid())
+                    .setValue(modelUser);
+        }
+    }
 }

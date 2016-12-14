@@ -38,28 +38,6 @@ public class ProfileActivityFragment extends BaseFragment {
     @DebugLog
     private void setInformation() {
 
-        Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-                OneSignal.idsAvailable((userId, registrationId) -> {
-                    Logger.i("OneSignal userId: " + userId);
-                    Logger.i("OneSignal regId: " + registrationId);
-
-                    subscriber.onNext(registrationId);
-                });
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-
-                    long periodicTime = FirebaseRemoteConfig.getInstance().getLong("periodic_time");
-
-                    String text = "";
-                    text += "Periodic Time: " + periodicTime + "\n";
-                    text += "Reg id: " + result;
-
-                    mTextView_PeriodicTime.setText(text);
-                });
     }
 
 }

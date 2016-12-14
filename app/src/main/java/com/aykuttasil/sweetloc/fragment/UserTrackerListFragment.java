@@ -102,12 +102,14 @@ public class UserTrackerListFragment extends BaseFragment {
                             modelUser.getToken().equals(me.getToken())) {
 
                         Logger.i("Add Item: " + modelUser.getEmail());
+                        Logger.i("User Tracker OneSignalUserId: " + modelUser.getOneSignalUserId());
 
                         ModelUserTracker modelUserTracker = new ModelUserTracker();
                         modelUserTracker.setEmail(modelUser.getEmail());
                         modelUserTracker.setAd(modelUser.getAd());
                         modelUserTracker.setSoyAd(modelUser.getSoyAd());
                         modelUserTracker.setProfilePictureUrl(modelUser.getImageUrl());
+                        modelUserTracker.setOneSignalUserId(modelUser.getOneSignalUserId());
                         modelUserTracker.save();
 
                         mAdapter.addItem(modelUserTracker);

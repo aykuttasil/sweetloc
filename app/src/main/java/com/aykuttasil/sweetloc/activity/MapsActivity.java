@@ -303,15 +303,34 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @Click(R.id.FabMap)
     public void FabMapClick() {
 
-        OneSignal.promptLocation();
+        //String userId = "428ef398-76d3-4ca9-ab4c-60d591879365";
 
-        String userId = "428ef398-76d3-4ca9-ab4c-60d591879365";
-        //OneSignal.postNotification();
-        try {
-            OneSignal.postNotification(new JSONObject("{'contents': {'en':'Test Message'}, 'include_player_ids': ['" + userId + "']}"), null);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (ModelUserTracker modelUserTracker : DbManager.getModelUserTracker()) {
+            if (modelUserTracker.getOneSignalUserId() != null) {
+                stringBuilder.append(modelUserTracker.getOneSignalUserId());
+                stringBuilder.append(",");
+            }
         }
+
+        if (stringBuilder.length() > 0) {
+
+            stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+
+            Logger.i("UserTracker OneSignal User Id: " + stringBuilder.toString());
+
+            try {
+                OneSignal.postNotification(new JSONObject("{'contents': {'en':'Sweet Loc'}, 'include_player_ids': ['" + stringBuilder.toString() + "']}"), null);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+
 
     }
 

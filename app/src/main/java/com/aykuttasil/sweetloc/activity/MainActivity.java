@@ -7,8 +7,12 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.aykuttasil.sweetloc.R;
+import com.aykuttasil.sweetloc.db.DbManager;
 import com.aykuttasil.sweetloc.fragment.UserTrackerListFragment_;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
+import com.aykuttasil.sweetloc.model.ModelUser;
+import com.onesignal.OneSignal;
+import com.orhanobut.logger.Logger;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -16,6 +20,11 @@ import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import hugo.weaving.DebugLog;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by aykutasil on 23.06.2016.
@@ -53,12 +62,61 @@ public class MainActivity extends BaseActivity {
             SuperHelper.logoutUser();
             goLoginFacebookActivity(this);
         } else {
-            SuperHelper.ReplaceFragmentBeginTransaction(
-                    MainActivity.this,
-                    UserTrackerListFragment_.builder().build(),
-                    R.id.Container,
-                    false);
+            initMain();
         }
+    }
+
+    @DebugLog
+    private void initMain() {
+
+        if (DbManager.getOneSignalUserId() == null) {
+
+            Observable.create(
+                    new Observable.OnSubscribe<String>() {
+                        @Override
+                        public void call(Subscriber<? super String> subscriber) {
+
+                            OneSignal.idsAvailable((userId, registrationId) -> {
+
+                                Logger.i("OneSignal userId: " + userId);
+                                Logger.i("OneSignal regId: " + registrationId);
+
+                                subscriber.onNext(userId);
+
+                            });
+                        }
+                    })
+                    .flatMap(new Func1<String, Observable<String>>() {
+                        @Override
+                        public Observable<String> call(String userId) {
+
+                            ModelUser modelUser = DbManager.getModelUser();
+                            modelUser.setOneSignalUserId(userId);
+                            modelUser.save();
+
+                            SuperHelper.updateUser(modelUser);
+
+                            return Observable.just(userId);
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(result -> {
+                        goFragment();
+                    });
+        } else {
+            goFragment();
+        }
+
+    }
+
+    @DebugLog
+    private void goFragment() {
+        SuperHelper.ReplaceFragmentBeginTransaction(
+                MainActivity.this,
+                UserTrackerListFragment_.builder().build(),
+                R.id.Container,
+                false);
     }
 
     /**
@@ -86,7 +144,6 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
