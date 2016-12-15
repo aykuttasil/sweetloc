@@ -363,9 +363,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
         mapMarker.put(marker, modelLocation);
 
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 10.0f));
+        //mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 10.0f));
 
-        marker.showInfoWindow();
+        //marker.showInfoWindow();
     }
 
     /**
