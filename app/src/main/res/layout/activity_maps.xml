@@ -53,6 +53,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_margin="10dp"
+        app:backgroundTint="?android:attr/colorPrimary"
+        app:elevation="8dp"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_compass"
         app:useCompatPadding="true" />
 
 

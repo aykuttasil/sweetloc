@@ -31,12 +31,12 @@ android {
         applicationId "com.aykuttasil.sweetloc"
         minSdkVersion project.minSdk
         targetSdkVersion project.sdk
-        versionCode 6
-        versionName "1.0.5"
+        versionCode 5
+        versionName "1.0.4"
         multiDexEnabled true
 
-        manifestPlaceholders = [onesignal_app_id: "283c0725-f1ae-434a-8ea5-09f61b1246fc",
-        // Project number pulled from dashboard, local value is ignored.
+        manifestPlaceholders = [onesignal_app_id               : "283c0725-f1ae-434a-8ea5-09f61b1246fc",
+                                // Project number pulled from dashboard, local value is ignored.
                                 onesignal_google_project_number: "REMOTE"]
     }
 
@@ -144,7 +144,7 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
 
-    compile 'com.aykuttasil:androidbasichelperlib:1.0.23'
+    compile 'com.aykuttasil:androidbasichelperlib:1.0.24'
     compile 'com.google.android:flexbox:0.2.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'

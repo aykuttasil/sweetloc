@@ -69,6 +69,8 @@ public class MainActivity extends BaseActivity {
     @DebugLog
     private void initMain() {
 
+        SuperHelper.startPeriodicTask(this);
+
         if (DbManager.getOneSignalUserId() == null) {
 
             Observable.create(

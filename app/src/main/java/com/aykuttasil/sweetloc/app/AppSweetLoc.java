@@ -55,8 +55,8 @@ public class AppSweetLoc extends Application {
                 .methodCount(3)                              // default 2
                 .logLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE)        // default LogLevel.FULL
                 .methodOffset(0);                            // default 0
-                //.hideThreadInfo()                          // default shown
-                //.logAdapter(new AndroidLogAdapter());      //default AndroidLogAdapter
+        //.hideThreadInfo()                          // default shown
+        //.logAdapter(new AndroidLogAdapter());      //default AndroidLogAdapter
 
         Fabric.with(this, new Crashlytics());
 
@@ -66,7 +66,7 @@ public class AppSweetLoc extends Application {
         OneSignal.startInit(this)
                 .setNotificationReceivedHandler(new NotificationReceivedHandler())
                 .setNotificationOpenedHandler(new NotificationOpenedHandler())
-                .autoPromptLocation(true)
+                //.autoPromptLocation(true)
                 .init();
 
         FacebookSdk.sdkInitialize(getApplicationContext());

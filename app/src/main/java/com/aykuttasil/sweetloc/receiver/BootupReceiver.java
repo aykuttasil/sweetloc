@@ -18,5 +18,6 @@ public class BootupReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         SuperHelper.startPeriodicTask(context);
+
     }
 }

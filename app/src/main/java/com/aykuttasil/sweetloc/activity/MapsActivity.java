@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
@@ -63,6 +64,7 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Locale;
 
 import hugo.weaving.DebugLog;
 import io.reactivex.Observable;
@@ -85,6 +87,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     CompositeDisposable mCompositeDisposible;
     GoogleMap mGoogleMap;
     HashMap<Object, Object> mapMarker = new HashMap();
+    Snackbar mSnackBarKonum;
 
     private LatLngBounds TURKEY = new LatLngBounds(
             new LatLng(36.299172, 26.248221),//Güney Batı
@@ -321,6 +324,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @DebugLog
     private void addMarker(ModelUserTracker modelUserTracker, ModelLocation modelLocation) {
 
+        if (mSnackBarKonum != null && mSnackBarKonum.isShown()) {
+            mSnackBarKonum.dismiss();
+        }
+
         LatLng latLng = new LatLng(modelLocation.getLatitude(), modelLocation.getLongitude());
 
         Marker marker = mGoogleMap.addMarker(
@@ -402,7 +409,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
             userMail.setText(Html.fromHtml("<b>Email: </b>" + marker.getTitle()));
             userLocTime.setText(Html.fromHtml("<b>Zaman: </b>" + modelLocation.getFormatTime()));
-            userLocAccuracy.setText(Html.fromHtml("<b>Sapma: </b>" + Double.toString(modelLocation.getAccuracy()) + " m"));
+            userLocAccuracy.setText(Html.fromHtml("<b>Sapma: </b>" + String.format(Locale.getDefault(), "%.2f", modelLocation.getAccuracy()) + " m"));
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -420,6 +428,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @DebugLog
     @Click(R.id.FabMap)
     public void FabMapClick() {
+
+        mSnackBarKonum = UiHelper.UiSnackBar.newInstance(mToolbar, "Son konumlar getiriliyor.\n" +
+                "Lütfen bekleyiniz... ", Snackbar.LENGTH_INDEFINITE);
+
+        mSnackBarKonum.show();
 
         try {
 
