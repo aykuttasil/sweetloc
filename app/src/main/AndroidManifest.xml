@@ -108,8 +108,6 @@
             </intent-filter>
         </service>
 
-        <service android:name=".service.PeriodicService_" />
-
         <service
             android:name=".service.NotificationExtenderService"
             android:exported="false">
@@ -133,10 +131,6 @@
         </receiver>
 
         <!-- Uygulama kapalı olsa bile broadcastreceiver ın çalışması için process=remote yapılıyor. -->
-        <receiver
-            android:name=".receiver.LocationReceiver"
-            android:process=":remote" />
-
         <receiver
             android:name=".receiver.SingleLocationRequestReceiver"
             android:process=":remote" />

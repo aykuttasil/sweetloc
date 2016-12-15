@@ -1,13 +1,17 @@
 package com.aykuttasil.sweetloc.helper;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import android.os.SystemClock;
 
+import com.aykuttasil.sweetloc.app.Const;
 import com.aykuttasil.sweetloc.db.DbManager;
 import com.aykuttasil.sweetloc.model.ModelLocation;
 import com.aykuttasil.sweetloc.model.ModelUser;
+import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,27 +36,10 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
         return FirebaseAuth.getInstance().getCurrentUser() != null && DbManager.getModelUser() != null;
     }
 
+    @DebugLog
     public static void logoutUser() {
         FirebaseAuth.getInstance().signOut();
         LoginManager.getInstance().logOut();
-    }
-
-    public static void addFragment(AppCompatActivity activity, Fragment fragment, int containerViewId) {
-
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        fragmentManager.saveFragmentInstanceState(fragment);
-        fragmentManager.putFragment(null, fragment.getClass().getSimpleName(), fragment);
-
-    }
-
-    public static void getFragment(AppCompatActivity activity, Fragment fragment, int containerViewId) {
-
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        fragmentManager.getFragment(null, fragment.getClass().getSimpleName());
-
-        fragmentManager.saveFragmentInstanceState(fragment);
-        fragmentManager.putFragment(null, fragment.getClass().getSimpleName(), fragment);
-
     }
 
     @DebugLog
@@ -89,6 +76,39 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .push()
                 .setValue(modelLocation);
+    }
+
+    @DebugLog
+    public static void startPeriodicTask(Context context) {
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(context.getApplicationContext(), SingleLocationRequestReceiver.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                Const.REQUEST_CODE_BROADCAST_LOCATION,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+                SystemClock.elapsedRealtime() + 3000,
+                AlarmManager.INTERVAL_HALF_HOUR,
+                pendingIntent);
+    }
+
+    @DebugLog
+    public static void stopPeriodicTask(Context context) {
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(context.getApplicationContext(), SingleLocationRequestReceiver.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                Const.REQUEST_CODE_BROADCAST_LOCATION,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.cancel(pendingIntent);
     }
 
 }

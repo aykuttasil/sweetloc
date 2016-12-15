@@ -27,10 +27,13 @@ import io.fabric.sdk.android.Fabric;
  * Created by aykutasil on 23.06.2016.
  */
 public class AppSweetLoc extends Application {
+
     @Override
     public void onCreate() {
         super.onCreate();
+
         initializeActiveAndroid();
+
         initSweetLoc();
     }
 
@@ -47,12 +50,13 @@ public class AppSweetLoc extends Application {
 
     @DebugLog
     public void initSweetLoc() {
-        Logger.init("SweetLocLogger")                // default PRETTYLOGGER or use just init()
-                .methodCount(3)                      // default 2
+
+        Logger.init("SweetLocLogger")                        // default PRETTYLOGGER or use just init()
+                .methodCount(3)                              // default 2
                 .logLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE)        // default LogLevel.FULL
-                .methodOffset(0);                    // default 0
-        //.hideThreadInfo()                          // default shown
-        //.logAdapter(new AndroidLogAdapter());      //default AndroidLogAdapter
+                .methodOffset(0);                            // default 0
+                //.hideThreadInfo()                          // default shown
+                //.logAdapter(new AndroidLogAdapter());      //default AndroidLogAdapter
 
         Fabric.with(this, new Crashlytics());
 
@@ -66,6 +70,7 @@ public class AppSweetLoc extends Application {
                 .init();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
+
         AppEventsLogger.activateApp(this);
 
 
@@ -80,7 +85,6 @@ public class AppSweetLoc extends Application {
             // Multidex support doesn't play well with Robolectric yet
         }
     }
-
 
     @Override
     public void onTerminate() {

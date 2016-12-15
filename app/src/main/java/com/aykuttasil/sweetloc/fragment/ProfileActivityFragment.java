@@ -1,30 +1,33 @@
 package com.aykuttasil.sweetloc.fragment;
 
 import android.text.method.ScrollingMovementMethod;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.activity.ProfileActivity;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.onesignal.OneSignal;
-import com.orhanobut.logger.Logger;
+import com.aykuttasil.sweetloc.db.DbManager;
+import com.aykuttasil.sweetloc.model.ModelUser;
+import com.aykuttasil.sweetloc.util.PicassoCircleTransform;
+import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import hugo.weaving.DebugLog;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 @EFragment(R.layout.fragment_profile)
 public class ProfileActivityFragment extends BaseFragment {
 
-    @ViewById(R.id.TextView_PeridicTime)
-    TextView mTextView_PeriodicTime;
+    @ViewById(R.id.ImageViewProfilePicture)
+    ImageView mImageViewProfilePicture;
+
+    @ViewById(R.id.TextViewEmail)
+    TextView mTextViewEmail;
+
     //
+
     ProfileActivity mActivity;
 
     @DebugLog
@@ -32,11 +35,20 @@ public class ProfileActivityFragment extends BaseFragment {
     public void initializeAfterViews() {
         mActivity = (ProfileActivity) getActivity();
         setInformation();
-        mTextView_PeriodicTime.setMovementMethod(new ScrollingMovementMethod());
+        mTextViewEmail.setMovementMethod(new ScrollingMovementMethod());
     }
 
     @DebugLog
     private void setInformation() {
+
+        ModelUser modelUser = DbManager.getModelUser();
+
+        mTextViewEmail.setText(modelUser.getEmail());
+
+        Picasso.with(getContext())
+                .load(modelUser.getImageUrl())
+                .transform(new PicassoCircleTransform())
+                .into(mImageViewProfilePicture);
 
     }
 

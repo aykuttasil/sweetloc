@@ -4,11 +4,9 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +23,7 @@ import com.aykuttasil.sweetloc.BuildConfig;
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.app.Const;
 import com.aykuttasil.sweetloc.db.DbManager;
+import com.aykuttasil.sweetloc.helper.SuperHelper;
 import com.aykuttasil.sweetloc.model.ModelLocation;
 import com.aykuttasil.sweetloc.model.ModelUser;
 import com.aykuttasil.sweetloc.model.ModelUserTracker;
@@ -66,9 +65,10 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 import hugo.weaving.DebugLog;
-import io.reactivex.MaybeSource;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 
 @EActivity(R.layout.activity_maps)
@@ -82,6 +82,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
     //
 
+    CompositeDisposable mCompositeDisposible;
     GoogleMap mGoogleMap;
     HashMap<Object, Object> mapMarker = new HashMap();
 
@@ -95,6 +96,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCompositeDisposible = new CompositeDisposable();
     }
 
     @DebugLog
@@ -113,6 +115,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_indigo_300_24dp);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    @Override
+    void updateUi() {
     }
 
     @DebugLog
@@ -140,72 +146,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
         mMapFragment.getMapAsync(this);
 
-        sendLocationRequest();
-
         initLocationListener();
-
-    }
-
-    @DebugLog
-    private void sendLocationRequest() {
-
-    }
-
-    @DebugLog
-    private void initLocationListener() {
-
-        RxLocation rxLocation = new RxLocation(this);
-
-        LocationRequest locationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(50000)
-                .setFastestInterval(5000);
-
-        LocationSettingsRequest locationSettingsRequest = new LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest)
-                .setAlwaysShow(true)
-                .build();
-
-
-        rxLocation.settings().checkAndHandleResolution(locationSettingsRequest)
-                .flatMapObservable(new Function<Boolean, ObservableSource<Location>>() {
-                    @DebugLog
-                    @Override
-                    public ObservableSource<Location> apply(Boolean granted) throws Exception {
-
-                        if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                                ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            return Observable.error(new Exception("Permission is not granted"));
-                        }
-
-                        if (granted) {
-                            return rxLocation.location().updates(locationRequest);
-                        } else {
-                            return Observable.error(new Exception("GPS ayarlarında hata var."));
-                        }
-                    }
-                })
-                .retry()
-                .flatMapMaybe(new Function<Location, MaybeSource<Address>>() {
-                    @DebugLog
-                    @Override
-                    public MaybeSource<Address> apply(Location location) throws Exception {
-                        return rxLocation.geocoding().fromLocation(location);
-                    }
-                })
-                .filter(address -> address.getCountryName() != null && !address.getCountryName().isEmpty())
-                .subscribe(result -> {
-                    UiHelper.UiSnackBar.showSimpleSnackBar(mToolbar, result.getCountryName(), Snackbar.LENGTH_SHORT);
-                    //Toast.makeText(MapsActivity.this, result.getCountryName(), Toast.LENGTH_LONG).show();
-                }, error -> {
-                    Logger.e(error, "HATA");
-                });
-
-
-    }
-
-    @Override
-    void updateUi() {
 
     }
 
@@ -214,9 +155,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
             Logger.i("Permissinon is not Granted !");
-
             return;
         }
 
@@ -237,6 +176,71 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
         setMap();
 
+    }
+
+    @DebugLog
+    private void initLocationListener() {
+
+        RxLocation rxLocation = new RxLocation(this);
+
+        LocationRequest locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(30000)
+                .setFastestInterval(5000);
+
+        LocationSettingsRequest locationSettingsRequest = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest)
+                .setAlwaysShow(true)
+                .build();
+
+
+        Disposable disposable = rxLocation.settings().checkAndHandleResolution(locationSettingsRequest)
+                .flatMapObservable(new Function<Boolean, ObservableSource<Location>>() {
+                    @DebugLog
+                    @Override
+                    public ObservableSource<Location> apply(Boolean granted) throws Exception {
+
+                        if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                                ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            return Observable.error(new Exception("Permission is not granted"));
+                        }
+
+                        if (granted) {
+                            return rxLocation.location().updates(locationRequest);
+                        } else {
+                            return Observable.error(new Exception("GPS ayarlarında hata var."));
+                        }
+                    }
+                })
+                .retry()
+                .subscribe(location -> {
+                    SuperHelper.sendLocationInformation(location);
+                });
+
+        mCompositeDisposible.add(disposable);
+
+
+                /*
+                .flatMapMaybe(new Function<Location, MaybeSource<Address>>() {
+                    @DebugLog
+                    @Override
+                    public MaybeSource<Address> apply(Location location) throws Exception {
+
+                        SuperHelper.sendLocationInformation(location);
+
+                        return rxLocation.geocoding().fromLocation(location);
+                    }
+                })
+                .filter(address -> address.getCountryName() != null && !address.getCountryName().isEmpty())
+                .subscribe(result -> {
+
+
+                    //UiHelper.UiSnackBar.showSimpleSnackBar(mToolbar, result.getCountryName(), Snackbar.LENGTH_SHORT);
+                    //Toast.makeText(MapsActivity.this, result.getCountryName(), Toast.LENGTH_LONG).show();
+                }, error -> {
+                    Logger.e(error, "HATA");
+                });
+                */
     }
 
     @DebugLog
@@ -289,74 +293,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
                     });
 
         }
-
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-//
-//        Query queryUser = databaseReference.child(ModelUser.class.getSimpleName());
-//
-//        queryUser.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-//                    ModelUser modelUser = dataSnapshot1.getValue(ModelUser.class);
-//
-//                    // Aynı token a sahip diğer kullanıcılar buraya girer
-//                    if (!modelUser.getUUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) &&
-//                            modelUser.getToken().equals(DbManager.getModelUser().getToken())) {
-//
-//
-//                        ModelUserTracker modelUserTracker = new ModelUserTracker();
-//                        //modelUserTracker modelUser.getAd();
-//
-//                        Logger.i(modelUser.getEmail() + " konum dinleniyor.");
-//
-//                        databaseReference.child(ModelLocation.class.getSimpleName())
-//                                .child(modelUser.getUUID())
-//                                .limitToLast(2)
-//                                .addChildEventListener(new ChildEventListener() {
-//                                    @Override
-//                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                                        Logger.i(s);
-//                                        Logger.i(new Gson().toJson(dataSnapshot.getValue()));
-//                                        ModelLocation modelLocation = dataSnapshot.getValue(ModelLocation.class);
-//                                        addMarker(modelUser, modelLocation);
-//                                    }
-//
-//                                    @Override
-//                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                                        ModelLocation modelLocation = dataSnapshot.getValue(ModelLocation.class);
-//                                        Logger.d(modelLocation);
-//
-//                                        addMarker(modelUser, modelLocation);
-//                                    }
-//
-//                                    @Override
-//                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//                                    }
-//
-//                                    @Override
-//                                    public void onCancelled(DatabaseError databaseError) {
-//
-//                                    }
-//                                });
-//
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
     }
 
     @DebugLog
@@ -430,33 +366,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 10.0f));
 
         marker.showInfoWindow();
-    }
-
-    @DebugLog
-    private void setPolyLine() {
-        /*
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(-18.142, 178.431), 2));
-
-        // Polylines are useful for marking paths and routes on the map.
-        mGoogleMap.addPolyline(new PolylineOptions().geodesic(true)
-                .add(new LatLng(-33.866, 151.195))  // Sydney
-                .add(new LatLng(-18.142, 178.431))  // Fiji
-                .add(new LatLng(21.291, -157.821))  // Hawaii
-                .add(new LatLng(37.423, -122.091))  // Mountain View
-        );
-        */
-
-        /*
-        PolylineOptions polylineOptions = new PolylineOptions();
-        polylineOptions.geodesic(true);
-        for (int a = 0; a < modelRotaPointList.size(); a++) //ModelRotaPoint modelRotaPoint : modelRotaPointList) {
-        {
-            polylineOptions.add(new LatLng(Double.parseDouble(modelRotaPointList.get(a).getEnlem()),
-                    Double.parseDouble(modelRotaPointList.get(a).getBoylam())));
-        }
-        mGoogleMap.addPolyline(polylineOptions);
-        */
     }
 
     /**
@@ -577,4 +486,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         return super.onOptionsItemSelected(item);
     }
 
+    @DebugLog
+    @Override
+    protected void onDestroy() {
+        mCompositeDisposible.dispose();
+        super.onDestroy();
+    }
 }
