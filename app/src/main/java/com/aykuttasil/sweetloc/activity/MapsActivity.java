@@ -65,6 +65,7 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import hugo.weaving.DebugLog;
 import io.reactivex.Observable;
@@ -255,8 +256,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
             databaseReference.child(ModelLocation.class.getSimpleName())
                     .child(modelUserTracker.getUUID())
-                    .limitToLast(2)
+                    .limitToLast(1)
                     .addChildEventListener(new ChildEventListener() {
+
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -329,6 +331,18 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         }
 
         LatLng latLng = new LatLng(modelLocation.getLatitude(), modelLocation.getLongitude());
+
+        for (Map.Entry<Object, Object> entry : mapMarker.entrySet()) {
+
+            Marker marker = (Marker) entry.getKey();
+
+            ModelLocation location = (ModelLocation) entry.getValue();
+
+            if (marker.getTitle().equals(modelUserTracker.getEmail())) {
+                marker.remove();
+            }
+
+        }
 
         Marker marker = mGoogleMap.addMarker(
                 new MarkerOptions()
