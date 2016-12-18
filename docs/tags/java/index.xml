@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SweetLoc</title>
+    <link>https://aykuttasil.github.io/SweetLoc/tags/java/index.xml</link>
+    <description>Recent content on SweetLoc</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>tr-TR</language>
+    <copyright>Aykut Asil</copyright>
+    <atom:link href="https://aykuttasil.github.io/SweetLoc/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Rxjava_1</title>
+      <link>https://aykuttasil.github.io/SweetLoc/yazilim/Rxjava_1/</link>
+      <pubDate>Sun, 18 Dec 2016 21:14:27 +0300</pubDate>
+      
+      <guid>https://aykuttasil.github.io/SweetLoc/yazilim/Rxjava_1/</guid>
+      <description>
+
+&lt;h1 id=&#34;rxjava-reduce&#34;&gt;RxJava Reduce&lt;/h1&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
