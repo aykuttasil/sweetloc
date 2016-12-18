@@ -12,6 +12,7 @@ import com.aykuttasil.sweetloc.db.DbManager;
 import com.aykuttasil.sweetloc.model.ModelLocation;
 import com.aykuttasil.sweetloc.model.ModelUser;
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -110,5 +111,30 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
 
         alarmManager.cancel(pendingIntent);
     }
+
+    @DebugLog
+    public static void CrashlyticsError(Throwable error) {
+
+        if (DbManager.getModelUser() != null && DbManager.getModelUser().getEmail() != null) {
+            Crashlytics.setUserEmail(DbManager.getModelUser().getEmail());
+            Crashlytics.logException(error);
+        } else {
+            Crashlytics.logException(error);
+        }
+
+    }
+
+    @DebugLog
+    public static void CrashlyticsLog(String log) {
+
+        if (DbManager.getModelUser() != null && DbManager.getModelUser().getEmail() != null) {
+            Crashlytics.setUserEmail(DbManager.getModelUser().getEmail());
+            Crashlytics.log(log);
+        } else {
+            Crashlytics.log(log);
+        }
+
+    }
+
 
 }

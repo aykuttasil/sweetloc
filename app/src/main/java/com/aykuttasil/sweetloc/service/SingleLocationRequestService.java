@@ -4,19 +4,18 @@ import android.Manifest;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.support.v4.app.ActivityCompat;
 
+import com.aykuttasil.sweetloc.app.AppSweetLoc;
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver;
 import com.google.android.gms.location.LocationRequest;
 import com.orhanobut.logger.Logger;
-import com.patloew.rxlocation.RxLocation;
+
+import java.util.concurrent.TimeUnit;
 
 import hugo.weaving.DebugLog;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 
 import static com.aykuttasil.sweetloc.helper.SuperHelper.sendLocationInformation;
 
@@ -26,6 +25,9 @@ import static com.aykuttasil.sweetloc.helper.SuperHelper.sendLocationInformation
 
 public class SingleLocationRequestService extends IntentService {
 
+
+    // Konum belirlenip yollanabilmesi için max beklenecek zaman
+    private static long LOCATION_TIMEOUT_IN_SECONDS = 45;
     Disposable mDisposable;
 
     @DebugLog
@@ -37,32 +39,36 @@ public class SingleLocationRequestService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        RxLocation rxLocation = new RxLocation(this);
-
-        LocationRequest locationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(50000)
-                .setFastestInterval(5000);
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            Logger.i("RxLocation disposed");
+            mDisposable.dispose();
+        }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Logger.i("Permission is not granted");
             return;
         }
 
-        mDisposable = rxLocation.location()
+
+        LocationRequest locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(10000)
+                .setFastestInterval(5000)
+                //.setNumUpdates(1) // Sadece belirttiğimiz miktar kadar (1) location güncellemesi alır
+                //.setExpirationTime() // gerçek zaman vererek location güncellemesi kontrolü yapılabilir. (gereksiz)
+                //.setMaxWaitTime() // her bir location güncellemesi için max bekleme süresini belirtebiliriz. setInterval ile ilişkilidir. dikkat et.
+                .setExpirationDuration(TimeUnit.SECONDS.toMillis(LOCATION_TIMEOUT_IN_SECONDS)); // Belirttiğimiz süre kadar location güncellemesi alır
+
+        mDisposable = ((AppSweetLoc) getApplication()).rxLocation.location()
                 .updates(locationRequest)
-                .flatMap(new Function<Location, ObservableSource<Location>>() {
-                    @DebugLog
-                    @Override
-                    public ObservableSource<Location> apply(Location location) throws Exception {
-                        if (location.getAccuracy() < 200) {
-                            return Observable.just(location);
-                        } else {
-                            return Observable.error(new Exception("Accuracy > 300"));
-                        }
-                    }
+                .filter(location -> {
+
+                    Logger.i("Accuracy: " + location.getAccuracy());
+
+                    return location.getAccuracy() < 150;
+
                 })
-                .retry()
+                .timeout(LOCATION_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS, Observable.error(new Exception("Konum sapması çok yüksek.")))
                 .subscribe(location -> {
 
                     sendLocationInformation(location);
@@ -72,11 +78,13 @@ public class SingleLocationRequestService extends IntentService {
                     SingleLocationRequestReceiver.completeWakefulIntent(intent);
 
                 }, error -> {
+
+                    mDisposable.dispose();
+
                     Logger.e(error, "HATA");
                 });
+
     }
-
-
 
     @DebugLog
     @Override

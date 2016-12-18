@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(result -> {
                         goFragment();
-                    });
+                    }, SuperHelper::CrashlyticsError);
         } else {
             goFragment();
         }
@@ -114,6 +114,7 @@ public class MainActivity extends BaseActivity {
 
     @DebugLog
     private void goFragment() {
+
         SuperHelper.ReplaceFragmentBeginTransaction(
                 MainActivity.this,
                 UserTrackerListFragment_.builder().build(),
@@ -133,12 +134,14 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+
         updateUi();
     }
 
     @DebugLog
     @OnActivityResult(LOGIN_REQUEST_CODE)
     public void ActivityResultLogin(int resultCode) {
+
         switch (resultCode) {
             case RESULT_OK: {
                 updateUi();
@@ -149,6 +152,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_mainactivity, menu);
         return super.onCreateOptionsMenu(menu);
     }

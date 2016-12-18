@@ -19,6 +19,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.onesignal.OneSignal;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
+import com.patloew.rxlocation.RxLocation;
 
 import hugo.weaving.DebugLog;
 import io.fabric.sdk.android.Fabric;
@@ -27,6 +28,8 @@ import io.fabric.sdk.android.Fabric;
  * Created by aykutasil on 23.06.2016.
  */
 public class AppSweetLoc extends Application {
+
+    public RxLocation rxLocation;
 
     @Override
     public void onCreate() {
@@ -70,9 +73,9 @@ public class AppSweetLoc extends Application {
                 .init();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-
         AppEventsLogger.activateApp(this);
 
+        rxLocation = new RxLocation(this);
 
     }
 

@@ -125,6 +125,7 @@ public class LoginFacebookActivity extends BaseActivity {
             @Override
             public void onError(FacebookException error) {
                 Logger.e(error, "facebook:onError");
+                SuperHelper.CrashlyticsError(error);
             }
         });
     }
@@ -155,6 +156,8 @@ public class LoginFacebookActivity extends BaseActivity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
+
+                            SuperHelper.CrashlyticsError(task.getException());
 
                             Logger.e(task.getException(), "HATA");
 

@@ -22,6 +22,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.aykuttasil.androidbasichelperlib.UiHelper;
 import com.aykuttasil.sweetloc.BuildConfig;
 import com.aykuttasil.sweetloc.R;
+import com.aykuttasil.sweetloc.app.AppSweetLoc;
 import com.aykuttasil.sweetloc.app.Const;
 import com.aykuttasil.sweetloc.db.DbManager;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
@@ -45,10 +46,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 import com.onesignal.OneSignal;
 import com.orhanobut.logger.Logger;
-import com.patloew.rxlocation.RxLocation;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -73,6 +72,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 @EActivity(R.layout.activity_maps)
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
@@ -100,6 +100,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mCompositeDisposible = new CompositeDisposable();
     }
 
@@ -185,10 +186,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @DebugLog
     private void initLocationListener() {
 
-        RxLocation rxLocation = new RxLocation(this);
-
         LocationRequest locationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
                 .setInterval(30000)
                 .setFastestInterval(5000);
 
@@ -198,7 +197,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
                 .build();
 
 
-        Disposable disposable = rxLocation.settings().checkAndHandleResolution(locationSettingsRequest)
+        Disposable disposable = ((AppSweetLoc) getApplication()).rxLocation.settings().checkAndHandleResolution(locationSettingsRequest)
                 .flatMapObservable(new Function<Boolean, ObservableSource<Location>>() {
                     @DebugLog
                     @Override
@@ -210,16 +209,22 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
                         }
 
                         if (granted) {
-                            return rxLocation.location().updates(locationRequest);
+                            return ((AppSweetLoc) getApplication()).rxLocation.location().updates(locationRequest);
                         } else {
                             return Observable.error(new Exception("GPS ayarlarında hata var."));
                         }
                     }
                 })
-                .retry()
-                .subscribe(location -> {
-                    SuperHelper.sendLocationInformation(location);
-                });
+                .retry() // Eğer onError çalışırsa tekrar subscribe olunuyor
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                        SuperHelper::sendLocationInformation,
+                        error -> {
+                            Logger.e(error, "HATA");
+                            SuperHelper.CrashlyticsError(error);
+                        }
+
+                );
 
         mCompositeDisposible.add(disposable);
 
@@ -261,9 +266,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                            Logger.i(s);
-                            Logger.i(new Gson().toJson(dataSnapshot.getValue()));
+                            //Logger.i(new Gson().toJson(dataSnapshot.getValue()));
 
                             ModelLocation modelLocation = dataSnapshot.getValue(ModelLocation.class);
 
@@ -427,6 +430,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
 
         } catch (Exception e) {
+            SuperHelper.CrashlyticsError(e);
             e.printStackTrace();
         }
         return vi;
@@ -435,6 +439,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @DebugLog
     @Override
     public void onInfoWindowClick(Marker marker) {
+
         LatLng markerLatLng = marker.getPosition();
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 15.0f));
     }

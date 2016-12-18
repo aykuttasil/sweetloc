@@ -31,8 +31,8 @@ android {
         applicationId "com.aykuttasil.sweetloc"
         minSdkVersion project.minSdk
         targetSdkVersion project.sdk
-        versionCode 5
-        versionName "1.0.4"
+        versionCode 6
+        versionName "1.0.5"
         multiDexEnabled true
 
         manifestPlaceholders = [onesignal_app_id               : "283c0725-f1ae-434a-8ea5-09f61b1246fc",
@@ -124,7 +124,7 @@ dependencies {
 
 
 
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.1@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
     apt "org.androidannotations:androidannotations:$AAVersion"
