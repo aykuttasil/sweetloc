@@ -63,7 +63,7 @@ public class ProfileActivity extends BaseActivity {
 
                     dialog.dismiss();
 
-                    SuperHelper.ResetSweetLoc();
+                    SuperHelper.ResetSweetLoc(this);
 
                     goLoginFacebookActivity(ProfileActivity.this);
                 });

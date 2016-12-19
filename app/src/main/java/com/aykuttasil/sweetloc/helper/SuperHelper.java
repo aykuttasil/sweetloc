@@ -27,8 +27,9 @@ import hugo.weaving.DebugLog;
 public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelper {
 
     @DebugLog
-    public static void ResetSweetLoc() {
+    public static void ResetSweetLoc(Context context) {
         DbManager.deleteModelUser();
+        SuperHelper.stopPeriodicTask(context);
         logoutUser();
     }
 
