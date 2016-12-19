@@ -12,6 +12,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'io.fabric'
 apply plugin: 'com.jakewharton.hugo'
+apply plugin: 'com.fernandocejas.frodo'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 
@@ -21,6 +22,12 @@ def AAVersion = '4.0.0'
 apt {
     arguments {
     }
+}
+
+//By default frodo is ON on debug build variants, although
+//we can enable-disable it with this configuration.
+frodo {
+    enabled = true
 }
 
 android {

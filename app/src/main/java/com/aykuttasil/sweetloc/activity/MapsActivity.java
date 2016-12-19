@@ -65,6 +65,7 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import hugo.weaving.DebugLog;
 import io.reactivex.Observable;
@@ -85,10 +86,15 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
     //
 
+    private static final int WAIT_LOCATION_SECOND = 30;
+    private boolean isReceiveLocation = false;
+
+
     CompositeDisposable mCompositeDisposible;
     GoogleMap mGoogleMap;
     HashMap<Object, Object> mapMarker = new HashMap();
     Snackbar mSnackBarKonum;
+
 
     private LatLngBounds TURKEY = new LatLngBounds(
             new LatLng(36.299172, 26.248221),//Güney Batı
@@ -329,6 +335,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @DebugLog
     private void addMarker(ModelUserTracker modelUserTracker, ModelLocation modelLocation) {
 
+        isReceiveLocation = true;
+
         if (mSnackBarKonum != null && mSnackBarKonum.isShown()) {
             mSnackBarKonum.dismiss();
         }
@@ -337,12 +345,18 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
         for (Map.Entry<Object, Object> entry : mapMarker.entrySet()) {
 
-            Marker marker = (Marker) entry.getKey();
+            try {
+                Marker marker = (Marker) entry.getKey();
 
-            ModelLocation location = (ModelLocation) entry.getValue();
+                ModelLocation location = (ModelLocation) entry.getValue();
 
-            if (marker.getTitle().equals(modelUserTracker.getEmail())) {
-                marker.remove();
+                if (marker.getTitle().equals(modelUserTracker.getEmail())) {
+                    marker.remove();
+                }
+            } catch (Exception e) {
+                SuperHelper.CrashlyticsError(e);
+                mGoogleMap.clear();
+                break;
             }
 
         }
@@ -450,8 +464,19 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
         mSnackBarKonum = UiHelper.UiSnackBar.newInstance(mToolbar, "Son konumlar getiriliyor.\n" +
                 "Lütfen bekleyiniz... ", Snackbar.LENGTH_INDEFINITE);
-
         mSnackBarKonum.show();
+
+        isReceiveLocation = false;
+
+        mSnackBarKonum.getView().postDelayed(() -> {
+
+            // Eğer location bilgisi alınmış ise isReceiveLocation = true olur
+            if (!isReceiveLocation) {
+                UiHelper.UiSnackBar.showSimpleSnackBar(mToolbar, "Konum alınamadı!", Snackbar.LENGTH_LONG);
+            }
+
+        }, TimeUnit.SECONDS.toMillis(WAIT_LOCATION_SECOND));
+
 
         try {
 
