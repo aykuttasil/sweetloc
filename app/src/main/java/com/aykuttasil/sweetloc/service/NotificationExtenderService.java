@@ -1,10 +1,11 @@
 package com.aykuttasil.sweetloc.service;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 
 import com.aykuttasil.sweetloc.app.Const;
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver;
-import com.onesignal.OSNotificationDisplayedResult;
 import com.onesignal.OSNotificationReceivedResult;
 import com.orhanobut.logger.Logger;
 
@@ -53,6 +54,15 @@ public class NotificationExtenderService extends com.onesignal.NotificationExten
                         Intent singleLocationRequestIntent = new Intent(this, SingleLocationRequestReceiver.class);
                         sendBroadcast(singleLocationRequestIntent);
                         Logger.i("singleLocationRequestIntent Broadcast gönderildi");
+                        break;
+                    }
+                    case Const.ACTION_PHONE_UNMUTE: {
+                        AudioManager audioManager = (AudioManager) this.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+                        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
+                        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                        audioManager.setStreamVolume(AudioManager.STREAM_RING, maxVolume, AudioManager.FLAG_SHOW_UI + AudioManager.FLAG_PLAY_SOUND);
+
+                        
                         break;
                     }
                     default: {

@@ -1,6 +1,9 @@
 package com.aykuttasil.sweetloc.activity;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,6 +70,7 @@ public class MainActivity extends BaseActivity {
     @DebugLog
     private void initMain() {
         SuperHelper.startPeriodicTask(this);
+        checkAndOpenAudioSettings();
         if (DbManager.getOneSignalUserId() == null) {
             Observable.create(
                     (Observable.OnSubscribe<String>) subscriber -> OneSignal.idsAvailable((userId, registrationId) -> {
@@ -127,6 +131,17 @@ public class MainActivity extends BaseActivity {
                 updateUi();
                 break;
             }
+        }
+    }
+
+    private void checkAndOpenAudioSettings() {
+        NotificationManager notificationManager =
+                (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+                && !notificationManager.isNotificationPolicyAccessGranted()) {
+            Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            startActivity(intent);
         }
     }
 

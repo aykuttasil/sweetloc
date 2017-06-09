@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aykuttasil.androidbasichelperlib.UiHelper;
-import com.aykuttasil.sweetloc.BuildConfig;
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.app.AppSweetLoc;
 import com.aykuttasil.sweetloc.app.Const;
@@ -46,7 +45,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.onesignal.OneSignal;
 import com.orhanobut.logger.Logger;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -57,9 +55,6 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -262,11 +257,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
     @DebugLog
     private void setMap() {
-
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
         for (ModelUserTracker modelUserTracker : DbManager.getModelUserTracker()) {
-
             databaseReference.child(ModelLocation.class.getSimpleName())
                     .child(modelUserTracker.getUUID())
                     .limitToLast(1)
@@ -274,21 +266,14 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            //Logger.i(new Gson().toJson(dataSnapshot.getValue()));
-
                             ModelLocation modelLocation = dataSnapshot.getValue(ModelLocation.class);
-
                             addMarker(modelUserTracker, modelLocation);
-
                         }
 
                         @Override
                         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
                             ModelLocation modelLocation = dataSnapshot.getValue(ModelLocation.class);
-
                             Logger.d(modelLocation);
-
                             addMarker(modelUserTracker, modelLocation);
                         }
 
@@ -336,22 +321,15 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
     @DebugLog
     private void addMarker(ModelUserTracker modelUserTracker, ModelLocation modelLocation) {
-
         isReceiveLocation = true;
-
         if (mSnackBarKonum != null && mSnackBarKonum.isShown()) {
             mSnackBarKonum.dismiss();
         }
-
         LatLng latLng = new LatLng(modelLocation.getLatitude(), modelLocation.getLongitude());
-
         for (Map.Entry<Object, Object> entry : mapMarker.entrySet()) {
-
             try {
                 Marker marker = (Marker) entry.getKey();
-
                 ModelLocation location = (ModelLocation) entry.getValue();
-
                 if (marker.getTitle().equals(modelUserTracker.getEmail())) {
                     marker.remove();
                 }
@@ -360,7 +338,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
                 mGoogleMap.clear();
                 break;
             }
-
         }
 
         Marker marker = mGoogleMap.addMarker(
@@ -372,23 +349,17 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
                 //.title(title)
                 //.snippet(snippet)
         );
-
         WeakReference<Marker> weakReference = new WeakReference<>(marker);
-
         Target target = new Target() {
-
             @DebugLog
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 weakReference.get().setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
             }
-
             @DebugLog
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-
             }
-
             @DebugLog
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
@@ -400,11 +371,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
                 .load(modelUserTracker.getProfilePictureUrl())
                 .transform(new PicassoCircleTransform())
                 .into(target);
-
         mapMarker.put(marker, modelLocation);
-
         //mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 10.0f));
-
         //marker.showInfoWindow();
     }
 
@@ -429,11 +397,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @DebugLog
     @Override
     public View getInfoContents(Marker marker) {
-
         View vi = LayoutInflater.from(this).inflate(R.layout.custom_infowindow_layout, null, false);
-
         try {
-
             TextView userMail = (TextView) vi.findViewById(R.id.TextView_UserMail);
             TextView userLocTime = (TextView) vi.findViewById(R.id.TextView_UserLocTime);
             TextView userLocAccuracy = (TextView) vi.findViewById(R.id.TextView_UserLocAccuracy);
@@ -443,8 +408,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
             userMail.setText(Html.fromHtml("<b>Email: </b>" + marker.getTitle()));
             userLocTime.setText(Html.fromHtml("<b>Zaman: </b>" + modelLocation.getFormatTime()));
             userLocAccuracy.setText(Html.fromHtml("<b>Sapma: </b>" + String.format(Locale.getDefault(), "%.2f", modelLocation.getAccuracy()) + " m"));
-
-
         } catch (Exception e) {
             SuperHelper.CrashlyticsError(e);
             e.printStackTrace();
@@ -455,7 +418,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @DebugLog
     @Override
     public void onInfoWindowClick(Marker marker) {
-
         LatLng markerLatLng = marker.getPosition();
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 15.0f));
     }
@@ -463,76 +425,18 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @DebugLog
     @Click(R.id.FabMap)
     public void FabMapClick() {
-
         mSnackBarKonum = UiHelper.UiSnackBar.newInstance(mToolbar, "Son konumlar getiriliyor.\n" +
                 "Lütfen bekleyiniz... ", Snackbar.LENGTH_INDEFINITE);
         mSnackBarKonum.show();
-
         isReceiveLocation = false;
-
         mSnackBarKonum.getView().postDelayed(() -> {
-
             // Eğer location bilgisi alınmış ise isReceiveLocation = true olur
             if (!isReceiveLocation) {
                 UiHelper.UiSnackBar.showSimpleSnackBar(mToolbar, "Konum alınamadı!", Snackbar.LENGTH_LONG);
             }
-
         }, TimeUnit.SECONDS.toMillis(WAIT_LOCATION_SECOND));
 
-
-        try {
-
-            JSONObject mainObject = new JSONObject();
-
-            JSONObject contents = new JSONObject();
-            contents.put("en", "SweetLoc - Hello");
-            contents.put("tr", "SweetLoc - Merhaba");
-            mainObject.put("contents", contents);
-
-            JSONObject headings = new JSONObject();
-            headings.put("en", "SweetLoc - Title");
-            headings.put("tr", "SweetLoc - Başlık");
-            mainObject.put("headings", headings);
-
-            JSONObject data = new JSONObject();
-            data.put(Const.ACTION, Const.ACTION_KONUM_YOLLA);
-            mainObject.put("data", data);
-
-            JSONArray playerIds = new JSONArray();
-            for (ModelUserTracker modelUserTracker : DbManager.getModelUserTracker()) {
-                if (modelUserTracker.getOneSignalUserId() != null) {
-                    playerIds.put(modelUserTracker.getOneSignalUserId());
-                }
-            }
-
-            if (BuildConfig.DEBUG) {
-                playerIds.put("428ef398-76d3-4ca9-ab4c-60d591879365");
-                //playerIds.put("cebff33f-4274-49d1-b8ee-b1126325e169");
-            }
-
-            mainObject.put("include_player_ids", playerIds);
-
-            Logger.json(mainObject.toString());
-
-            if (playerIds.length() > 0) {
-
-                OneSignal.postNotification(mainObject, new OneSignal.PostNotificationResponseHandler() {
-                    @Override
-                    public void onSuccess(JSONObject response) {
-                        Logger.json(response.toString());
-                    }
-
-                    @Override
-                    public void onFailure(JSONObject response) {
-                        Logger.json(response.toString());
-                    }
-                });
-            }
-
-        } catch (JSONException e) {
-            Logger.e(e, "HATA");
-        }
-
+        SuperHelper.sendNotif(Const.ACTION_KONUM_YOLLA);
     }
 
     @Override
@@ -551,4 +455,5 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         mCompositeDisposible.dispose();
         super.onDestroy();
     }
+
 }

@@ -5,10 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aykuttasil.sweetloc.R;
+import com.aykuttasil.sweetloc.app.Const;
+import com.aykuttasil.sweetloc.helper.SuperHelper;
 import com.aykuttasil.sweetloc.model.ModelUserTracker;
 import com.aykuttasil.sweetloc.util.PicassoCircleTransform;
 import com.orhanobut.logger.Logger;
@@ -73,33 +76,39 @@ public class UserTrackerListAdapter extends RecyclerView.Adapter<UserTrackerList
         ImageView mImageViewProfilePicture;
         TextView mTextViewAdSoyad;
         TextView mTextViewEmail;
+        Button mButtonWakeUp;
         //SeekBar mSeekBarTracker;
 
         UserTrackerViewHolder(View itemView) {
             super(itemView);
             mImageViewProfilePicture = (ImageView) itemView.findViewById(R.id.ImageViewProfilePicture);
-            //mTextViewAdSoyad = (TextView) itemView.findViewById(R.id.TextViewAdSoyad);
             mTextViewEmail = (TextView) itemView.findViewById(R.id.TextViewEmail);
-            //mSeekBarTracker = (SeekBar) itemView.findViewById(R.id.SeekBarTracker);
+            mButtonWakeUp = (Button) itemView.findViewById(R.id.ButtonWakeUp);
         }
 
         @DebugLog
         void bind(ModelUserTracker modelUserTracker) {
-
             if (modelUserTracker.getProfilePictureUrl() != null && !modelUserTracker.getProfilePictureUrl().isEmpty()) {
-
                 Logger.i("Picture Url: " + modelUserTracker.getProfilePictureUrl());
-
                 Picasso.with(mContext)
                         .load(modelUserTracker.getProfilePictureUrl())
                         .transform(new PicassoCircleTransform())
                         .into(mImageViewProfilePicture);
-
             } else {
                 mImageViewProfilePicture.setImageDrawable(itemView.getContext().getResources().getDrawable(R.drawable.ic_account_circle_light_blue_300_24dp));
             }
-
             mTextViewEmail.setText(modelUserTracker.getEmail());
+            mButtonWakeUp.setOnClickListener(v -> {
+                Logger.i("mButtonWakeUp click");
+                SuperHelper.sendNotif(Const.ACTION_PHONE_UNMUTE);
+                /*
+                AudioManager audioManager = (AudioManager) mContext.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+                int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                audioManager.setStreamVolume(AudioManager.STREAM_RING, maxVolume, AudioManager.FLAG_SHOW_UI + AudioManager.FLAG_PLAY_SOUND);
+                */
+
+            });
 
 
             //mTextViewAdSoyad.setText(modelUserTracker.getAd() + " " + modelUserTracker.getSoyAd());
