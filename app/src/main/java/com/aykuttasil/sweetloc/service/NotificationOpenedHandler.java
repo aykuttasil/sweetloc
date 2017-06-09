@@ -15,8 +15,6 @@ public class NotificationOpenedHandler implements OneSignal.NotificationOpenedHa
     @DebugLog
     @Override
     public void notificationOpened(OSNotificationOpenResult result) {
-
         Logger.json(result.toJSONObject().toString());
-
     }
 }

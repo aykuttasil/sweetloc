@@ -13,6 +13,5 @@ public class MyFcmListenerService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage message) {
         String from = message.getFrom();
         Map data = message.getData();
-
     }
 }

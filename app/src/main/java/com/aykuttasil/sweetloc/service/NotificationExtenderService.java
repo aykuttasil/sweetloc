@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import com.aykuttasil.sweetloc.app.Const;
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver;
+import com.onesignal.OSNotificationDisplayedResult;
 import com.onesignal.OSNotificationReceivedResult;
 import com.orhanobut.logger.Logger;
 
@@ -31,7 +32,6 @@ public class NotificationExtenderService extends com.onesignal.NotificationExten
             // Sets the background notification color to Green on Android 5.0+ devices.
             //builder.setContentText("Merhaba");
             builder.setColor(new BigInteger("FF00FF00", 16).intValue());
-
             return builder;
         };
 
@@ -41,27 +41,18 @@ public class NotificationExtenderService extends com.onesignal.NotificationExten
 
         try {
             Logger.json(notification.payload.toJSONObject().toString());
-
             JSONObject data = notification.payload.additionalData;
-
             String customKey;
-
             if (data != null) {
-
                 Logger.json(data.toString());
-
                 String action = data.getString(Const.ACTION);
-
                 Logger.i("Action: " + action);
 
                 switch (action) {
                     case Const.ACTION_KONUM_YOLLA: {
-
                         Intent singleLocationRequestIntent = new Intent(this, SingleLocationRequestReceiver.class);
                         sendBroadcast(singleLocationRequestIntent);
-
                         Logger.i("singleLocationRequestIntent Broadcast gönderildi");
-
                         break;
                     }
                     default: {

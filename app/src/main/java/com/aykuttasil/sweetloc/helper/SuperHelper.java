@@ -82,16 +82,12 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
 
     @DebugLog
     public static void startPeriodicTask(Context context) {
-
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
         Intent intent = new Intent(context.getApplicationContext(), SingleLocationRequestReceiver.class);
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
                 Const.REQUEST_CODE_BROADCAST_LOCATION,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
                 SystemClock.elapsedRealtime() + 3000,
                 AlarmManager.INTERVAL_HALF_HOUR,

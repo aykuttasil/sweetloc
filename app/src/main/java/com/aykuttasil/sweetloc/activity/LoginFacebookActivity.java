@@ -2,7 +2,6 @@ package com.aykuttasil.sweetloc.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +18,12 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import org.androidannotations.annotations.AfterViews;
@@ -57,25 +54,17 @@ public class LoginFacebookActivity extends BaseActivity {
         moveTaskToBack(false);
         mCallbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
-        //
         initAuthListener();
     }
 
     @DebugLog
     private void initAuthListener() {
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @DebugLog
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-
-                if (user != null) {
-                    Logger.d("onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    Logger.d("onAuthStateChanged:signed_out");
-                }
+        mAuthListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                Logger.d("onAuthStateChanged:signed_in:" + user.getUid());
+            } else {
+                Logger.d("onAuthStateChanged:signed_out");
             }
         };
     }
@@ -91,27 +80,21 @@ public class LoginFacebookActivity extends BaseActivity {
     @DebugLog
     @Override
     void initToolbar() {
-
     }
 
     @DebugLog
     @Override
     void updateUi() {
-
     }
 
     @DebugLog
     private void initFacebookLoginButton() {
-
         mLoginButton.setReadPermissions("email", "public_profile", "user_friends");
-
         mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @DebugLog
             @Override
             public void onSuccess(LoginResult loginResult) {
-
-                Logger.d("facebook:onSuccess:" + loginResult);
-
+                Logger.d("facebook:onSuccess:" + new Gson().toJson(loginResult));
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
@@ -139,42 +122,29 @@ public class LoginFacebookActivity extends BaseActivity {
 
     @DebugLog
     public void handleFacebookAccessToken(AccessToken token) {
-
         Logger.d("handleFacebookAccessToken:" + token);
-
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
 
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @DebugLog
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        Logger.i("signInWithCredential:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-
-                            SuperHelper.CrashlyticsError(task.getException());
-
-                            Logger.e(task.getException(), "HATA");
-
-                            Toast.makeText(LoginFacebookActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            takeSweetLocToken(task.getResult().getUser());
-                        }
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this,
+                task -> {
+                    Logger.i("signInWithCredential:onComplete:" + task.isSuccessful());
+                    // If sign in fails, display a message to the user. If sign in succeeds
+                    // the auth state listener will be notified and logic to handle the
+                    // signed in user can be handled in the listener.
+                    if (!task.isSuccessful()) {
+                        SuperHelper.CrashlyticsError(task.getException());
+                        Logger.e(task.getException(), "HATA");
+                        Toast.makeText(LoginFacebookActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        //task.getResult().getAdditionalUserInfo().getProfile()
+                        takeSweetLocToken(task.getResult().getUser());
                     }
                 });
     }
 
-
     private void takeSweetLocToken(FirebaseUser user) {
-
         View tokenView = LayoutInflater.from(this).inflate(R.layout.custom_view_give_token_layout, null);
-
         MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title("SweetLoc İzleme Anahtarı")
                 .customView(tokenView, true)
@@ -182,13 +152,9 @@ public class LoginFacebookActivity extends BaseActivity {
                 .build();
 
         tokenView.findViewById(R.id.DevamEt).setOnClickListener(view -> {
-
             EditText tokentext = ((EditText) tokenView.findViewById(R.id.EditTextTrackerId));
-
             if (!SuperHelper.validateIsEmpty(tokentext)) {
-
                 dialog.dismiss();
-
                 ModelUser modelUser = new ModelUser();
                 modelUser.setUUID(user.getUid());
                 modelUser.setEmail(user.getEmail());

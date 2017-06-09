@@ -52,8 +52,8 @@ public class SingleLocationRequestService extends IntentService {
 
         LocationRequest locationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10000)
-                .setFastestInterval(5000)
+                .setInterval(TimeUnit.SECONDS.toMillis(10))
+                .setFastestInterval(TimeUnit.SECONDS.toMillis(5))
                 //.setNumUpdates(1) // Sadece belirttiğimiz miktar kadar (1) location güncellemesi alır
                 //.setExpirationTime() // gerçek zaman vererek location güncellemesi kontrolü yapılabilir. (gereksiz)
                 //.setMaxWaitTime() // her bir location güncellemesi için max bekleme süresini belirtebiliriz. setInterval ile ilişkilidir. dikkat et.
@@ -62,25 +62,16 @@ public class SingleLocationRequestService extends IntentService {
         mDisposable = ((AppSweetLoc) getApplication()).rxLocation.location()
                 .updates(locationRequest)
                 .filter(location -> {
-
                     Logger.i("Accuracy: " + location.getAccuracy());
-
                     return location.getAccuracy() < 150;
-
                 })
                 .timeout(LOCATION_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS, Observable.error(new Exception("Konum sapması çok yüksek.")))
                 .subscribe(location -> {
-
                     sendLocationInformation(location);
-
                     mDisposable.dispose();
-
                     SingleLocationRequestReceiver.completeWakefulIntent(intent);
-
                 }, error -> {
-
                     mDisposable.dispose();
-
                     Logger.e(error, "HATA");
                 });
 

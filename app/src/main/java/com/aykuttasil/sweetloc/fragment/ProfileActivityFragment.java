@@ -7,8 +7,10 @@ import android.widget.TextView;
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.activity.ProfileActivity;
 import com.aykuttasil.sweetloc.db.DbManager;
+import com.aykuttasil.sweetloc.model.ModelLocation;
 import com.aykuttasil.sweetloc.model.ModelUser;
 import com.aykuttasil.sweetloc.util.PicassoCircleTransform;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
@@ -26,8 +28,6 @@ public class ProfileActivityFragment extends BaseFragment {
     @ViewById(R.id.TextViewEmail)
     TextView mTextViewEmail;
 
-    //
-
     ProfileActivity mActivity;
 
     @DebugLog
@@ -36,20 +36,28 @@ public class ProfileActivityFragment extends BaseFragment {
         mActivity = (ProfileActivity) getActivity();
         setInformation();
         mTextViewEmail.setMovementMethod(new ScrollingMovementMethod());
+
+        //deleteAllRows();
+    }
+
+    private void deleteAllRows() {
+        FirebaseDatabase.getInstance().getReference()
+                .child(ModelUser.class.getSimpleName())
+                .removeValue();
+
+        FirebaseDatabase.getInstance().getReference()
+                .child(ModelLocation.class.getSimpleName())
+                .removeValue();
     }
 
     @DebugLog
     private void setInformation() {
-
         ModelUser modelUser = DbManager.getModelUser();
-
         mTextViewEmail.setText(modelUser.getEmail());
-
         Picasso.with(getContext())
                 .load(modelUser.getImageUrl())
                 .transform(new PicassoCircleTransform())
                 .into(mImageViewProfilePicture);
-
     }
 
 }

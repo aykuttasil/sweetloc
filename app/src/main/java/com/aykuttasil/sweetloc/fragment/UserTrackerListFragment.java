@@ -38,9 +38,6 @@ public class UserTrackerListFragment extends BaseFragment {
     @ViewById(R.id.RecyclerView)
     RecyclerView mRecyclerView;
 
-    //
-
-    //FirebaseRecyclerAdapter<ModelUserTracker, UserTrackerViewHolder> mFireBaseAdapter;
     List<ModelUserTracker> mList;
     UserTrackerListAdapter mAdapter;
 
@@ -48,9 +45,6 @@ public class UserTrackerListFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //initFirebaseAdapter();
-
         mList = new ArrayList<>();
         mAdapter = new UserTrackerListAdapter(getContext(), mList);
     }
@@ -73,34 +67,25 @@ public class UserTrackerListFragment extends BaseFragment {
 
     @DebugLog
     private void setItems() {
-
         DbManager.deleteModelUserTrackerList();
-
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
         Query queryUser = databaseReference.child(ModelUser.class.getSimpleName());
 
         queryUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @DebugLog
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 ModelUser me = DbManager.getModelUser();
-
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-
                     ModelUser modelUser = dataSnapshot1.getValue(ModelUser.class);
-
                     Logger.i("User: " + modelUser.getEmail());
                     Logger.i("User UUID: " + modelUser.getUUID());
                     Logger.i("Me: " + me.getEmail());
                     Logger.i("Me UUID: " + me.getUUID());
 
-
                     // Aynı token a sahip diğer kullanıcılar buraya girer
                     if (!modelUser.getUUID().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) &&
                             modelUser.getToken().equals(me.getToken())) {
-
                         Logger.i("Add Item: " + modelUser.getEmail());
                         Logger.i("User Tracker OneSignalUserId: " + modelUser.getOneSignalUserId());
 
@@ -113,9 +98,7 @@ public class UserTrackerListFragment extends BaseFragment {
                         modelUserTracker.setUUID(modelUser.getUUID());
                         modelUserTracker.setToken(modelUser.getToken());
                         modelUserTracker.save();
-
                         mAdapter.addItem(modelUserTracker);
-
                     }
 
                 }
@@ -123,88 +106,8 @@ public class UserTrackerListFragment extends BaseFragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 
     }
-
-    //    @DebugLog
-//    private void initFirebaseAdapter() {
-//
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-//
-//        Query queryUser = databaseReference.child(ModelUser.class.getSimpleName());
-//
-//        mFireBaseAdapter = new FirebaseRecyclerAdapter<ModelUserTracker, UserTrackerViewHolder>(
-//                ModelUserTracker.class,
-//                R.layout.listitem_user_tracker,
-//                UserTrackerViewHolder.class,
-//                queryUser) {
-//            @DebugLog
-//            @Override
-//            protected void populateViewHolder(UserTrackerViewHolder viewHolder, ModelUserTracker model, int position) {
-//                //Logger.i("Email: " + model.getEmail());
-//                model.save();
-//                viewHolder.bind(model);
-//            }
-//        };
-//    }
-
-//    public static class UserTrackerViewHolder extends RecyclerView.ViewHolder {
-//
-//        ImageView mImageViewProfilePicture;
-//        TextView mTextViewAdSoyad;
-//        TextView mTextViewEmail;
-//        SeekBar mSeekBarTracker;
-//
-//        public UserTrackerViewHolder(View itemView) {
-//            super(itemView);
-//            mImageViewProfilePicture = (ImageView) itemView.findViewById(R.id.ImageViewProfilePicture);
-//            mTextViewAdSoyad = (TextView) itemView.findViewById(R.id.TextViewAdSoyad);
-//            mTextViewEmail = (TextView) itemView.findViewById(R.id.TextViewEmail);
-//            mSeekBarTracker = (SeekBar) itemView.findViewById(R.id.SeekBarTracker);
-//        }
-//
-//        @DebugLog
-//        public void bind(ModelUserTracker modelUserTracker) {
-//
-//            Logger.i("Picture Url: " + modelUserTracker.getProfilePictureUrl());
-//
-//            if (modelUserTracker.getProfilePictureUrl() != null && !modelUserTracker.getProfilePictureUrl().isEmpty()) {
-//
-//                Logger.i("Picture Url: " + modelUserTracker.getProfilePictureUrl());
-//
-//                Picasso.with(itemView.getContext())
-//                        .load(modelUserTracker.getProfilePictureUrl())
-//                        .transform(new PicassoCircleTransform())
-//                        .into(mImageViewProfilePicture);
-//
-//            } else {
-//                mImageViewProfilePicture.setImageDrawable(itemView.getContext().getResources().getDrawable(R.drawable.ic_account_circle_light_blue_300_24dp));
-//            }
-//
-//            mTextViewAdSoyad.setText(modelUserTracker.getAd() + " " + modelUserTracker.getSoyAd());
-//            mTextViewEmail.setText(modelUserTracker.getEmail());
-//            mSeekBarTracker.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//
-//                @Override
-//                public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-//                    if (b) {
-//                        Toast.makeText(itemView.getContext(), "true", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//                @Override
-//                public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//                }
-//
-//                @Override
-//                public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//                }
-//            });
-//        }
-//    }
 }

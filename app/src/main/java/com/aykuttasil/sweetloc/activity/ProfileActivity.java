@@ -57,19 +57,13 @@ public class ProfileActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.actionCikisYap: {
-
                 MaterialDialog dialog = UiHelper.UiDialog.newInstance(this).getOKCancelDialog("Çıkış Yap", "Devam edilsin mi?", null);
                 dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(view -> {
-
                     dialog.dismiss();
-
                     SuperHelper.ResetSweetLoc(this);
-
                     goLoginFacebookActivity(ProfileActivity.this);
                 });
-
                 dialog.show();
-
                 return true;
             }
         }

@@ -21,7 +21,6 @@ import org.androidannotations.annotations.ViewById;
 
 import hugo.weaving.DebugLog;
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -57,7 +56,6 @@ public class MainActivity extends BaseActivity {
     @DebugLog
     @Override
     void updateUi() {
-
         if (!SuperHelper.checkUser()) {
             SuperHelper.logoutUser();
             goLoginFacebookActivity(this);
@@ -68,36 +66,21 @@ public class MainActivity extends BaseActivity {
 
     @DebugLog
     private void initMain() {
-
         SuperHelper.startPeriodicTask(this);
-
         if (DbManager.getOneSignalUserId() == null) {
-
             Observable.create(
-                    new Observable.OnSubscribe<String>() {
-                        @Override
-                        public void call(Subscriber<? super String> subscriber) {
-
-                            OneSignal.idsAvailable((userId, registrationId) -> {
-
-                                Logger.i("OneSignal userId: " + userId);
-                                Logger.i("OneSignal regId: " + registrationId);
-
-                                subscriber.onNext(userId);
-
-                            });
-                        }
-                    })
+                    (Observable.OnSubscribe<String>) subscriber -> OneSignal.idsAvailable((userId, registrationId) -> {
+                        Logger.i("OneSignal userId: " + userId);
+                        Logger.i("OneSignal regId: " + registrationId);
+                        subscriber.onNext(userId);
+                    }))
                     .flatMap(new Func1<String, Observable<String>>() {
                         @Override
                         public Observable<String> call(String userId) {
-
                             ModelUser modelUser = DbManager.getModelUser();
                             modelUser.setOneSignalUserId(userId);
                             modelUser.save();
-
                             SuperHelper.updateUser(modelUser);
-
                             return Observable.just(userId);
                         }
                     })
@@ -114,7 +97,6 @@ public class MainActivity extends BaseActivity {
 
     @DebugLog
     private void goFragment() {
-
         SuperHelper.ReplaceFragmentBeginTransaction(
                 MainActivity.this,
                 UserTrackerListFragment_.builder().build(),
@@ -134,14 +116,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
         updateUi();
     }
 
     @DebugLog
     @OnActivityResult(LOGIN_REQUEST_CODE)
     public void ActivityResultLogin(int resultCode) {
-
         switch (resultCode) {
             case RESULT_OK: {
                 updateUi();
@@ -152,7 +132,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_mainactivity, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -160,7 +139,6 @@ public class MainActivity extends BaseActivity {
     @DebugLog
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.menuProfil: {
                 ProfileActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK).start();

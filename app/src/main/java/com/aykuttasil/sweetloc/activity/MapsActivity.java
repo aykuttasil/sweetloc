@@ -134,6 +134,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
     @DebugLog
     private void permissionControl() {
+
         RxPermissions.getInstance(this)
                 .request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
                 .subscribe(result -> {
@@ -203,7 +204,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
                 .build();
 
 
-        Disposable disposable = ((AppSweetLoc) getApplication()).rxLocation.settings().checkAndHandleResolution(locationSettingsRequest)
+        Disposable disposable = ((AppSweetLoc) getApplication()).rxLocation.settings()
+                .checkAndHandleResolution(locationSettingsRequest)
                 .flatMapObservable(new Function<Boolean, ObservableSource<Location>>() {
                     @DebugLog
                     @Override
@@ -505,7 +507,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
             if (BuildConfig.DEBUG) {
                 playerIds.put("428ef398-76d3-4ca9-ab4c-60d591879365");
-                playerIds.put("cebff33f-4274-49d1-b8ee-b1126325e169");
+                //playerIds.put("cebff33f-4274-49d1-b8ee-b1126325e169");
             }
 
             mainObject.put("include_player_ids", playerIds);

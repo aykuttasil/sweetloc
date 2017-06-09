@@ -15,7 +15,6 @@ public class NotificationReceivedHandler implements OneSignal.NotificationReceiv
     @DebugLog
     @Override
     public void notificationReceived(OSNotification notification) {
-
         Logger.json(notification.toJSONObject().toString());
 
         /*
