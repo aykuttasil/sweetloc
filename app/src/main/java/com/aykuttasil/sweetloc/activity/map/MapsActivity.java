@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.activity;
+package com.aykuttasil.sweetloc.activity.map;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -21,7 +21,8 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aykuttasil.androidbasichelperlib.UiHelper;
 import com.aykuttasil.sweetloc.R;
-import com.aykuttasil.sweetloc.app.AppSweetLoc;
+import com.aykuttasil.sweetloc.activity.base.BaseActivity;
+import com.aykuttasil.sweetloc.app.App;
 import com.aykuttasil.sweetloc.app.Const;
 import com.aykuttasil.sweetloc.db.DbManager;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
@@ -101,7 +102,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mCompositeDisposible = new CompositeDisposable();
     }
 
@@ -113,8 +113,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     }
 
     @DebugLog
-    @Override
-    void initToolbar() {
+    public void initToolbar() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Harita");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -124,19 +123,17 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     }
 
     @Override
-    void updateUi() {
+    public void updateUi() {
+
     }
 
     @DebugLog
     private void permissionControl() {
-
-        RxPermissions.getInstance(this)
+        new RxPermissions(this)
                 .request(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
                 .subscribe(result -> {
                     if (result) {
-
                         initMap();
-
                     } else {
                         MaterialDialog dialog = UiHelper.UiDialog.newInstance(this).getOKDialog("Uyarı", "Haritanın doğru çalışması için tüm izinleri vermelisiniz.", null);
                         dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(view -> {
@@ -150,16 +147,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
     @DebugLog
     private void initMap() {
-
         mMapFragment.getMapAsync(this);
-
         initLocationListener();
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Logger.i("Permissinon is not Granted !");
@@ -187,7 +180,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
     @DebugLog
     private void initLocationListener() {
-
         LocationRequest locationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
                 .setInterval(30000)
@@ -198,24 +190,18 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
                 .setAlwaysShow(true)
                 .build();
 
-
-        Disposable disposable = ((AppSweetLoc) getApplication()).rxLocation.settings()
+        Disposable disposable = ((App) getApplication()).rxLocation.settings()
                 .checkAndHandleResolution(locationSettingsRequest)
-                .flatMapObservable(new Function<Boolean, ObservableSource<Location>>() {
-                    @DebugLog
-                    @Override
-                    public ObservableSource<Location> apply(Boolean granted) throws Exception {
+                .flatMapObservable(granted -> {
+                    if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                            ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return Observable.error(new Exception("Permission is not granted"));
+                    }
 
-                        if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                                ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            return Observable.error(new Exception("Permission is not granted"));
-                        }
-
-                        if (granted) {
-                            return ((AppSweetLoc) getApplication()).rxLocation.location().updates(locationRequest);
-                        } else {
-                            return Observable.error(new Exception("GPS ayarlarında hata var."));
-                        }
+                    if (granted) {
+                        return ((App) getApplication()).rxLocation.location().updates(locationRequest);
+                    } else {
+                        return Observable.error(new Exception("GPS ayarlarında hata var."));
                     }
                 })
                 .retry() // Eğer onError çalışırsa tekrar subscribe olunuyor
@@ -298,9 +284,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
     @DebugLog
     private void addMarker(ModelUser modelUser, ModelLocation modelLocation) {
-
         LatLng latLng = new LatLng(modelLocation.getLatitude(), modelLocation.getLongitude());
-
         Marker marker = mGoogleMap.addMarker(
                 new MarkerOptions()
                         .position(latLng)
@@ -313,9 +297,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         );
 
         mapMarker.put(marker, modelLocation);
-
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 10.0f));
-
         marker.showInfoWindow();
     }
 
@@ -356,10 +338,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 weakReference.get().setIcon(BitmapDescriptorFactory.fromBitmap(bitmap));
             }
+
             @DebugLog
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
             }
+
             @DebugLog
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {

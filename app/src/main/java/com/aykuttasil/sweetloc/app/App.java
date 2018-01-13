@@ -27,16 +27,14 @@ import io.fabric.sdk.android.Fabric;
 /**
  * Created by aykutasil on 23.06.2016.
  */
-public class AppSweetLoc extends Application {
+public class App extends Application {
 
     public RxLocation rxLocation;
 
     @Override
     public void onCreate() {
         super.onCreate();
-
         initializeActiveAndroid();
-
         initSweetLoc();
     }
 
@@ -53,7 +51,6 @@ public class AppSweetLoc extends Application {
 
     @DebugLog
     public void initSweetLoc() {
-
         Logger.init("SweetLocLogger")                        // default PRETTYLOGGER or use just init()
                 .methodCount(3)                              // default 2
                 .logLevel(BuildConfig.DEBUG ? LogLevel.FULL : LogLevel.NONE)        // default LogLevel.FULL

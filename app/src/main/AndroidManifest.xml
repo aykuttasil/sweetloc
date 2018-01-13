@@ -16,7 +16,7 @@
 
 
     <application
-        android:name=".app.AppSweetLoc"
+        android:name=".app.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -25,7 +25,7 @@
         tools:replace="android:name">
 
         <activity
-            android:name=".activity.MainActivity_"
+            android:name=".activity.main.MainActivity_"
             android:label="@string/app_name"
             android:launchMode="singleTop">
             <intent-filter>
@@ -36,31 +36,31 @@
         </activity>
 
         <activity
-            android:name=".activity.LoginActivity_"
+            android:name=".activity.login.LoginActivity_"
             android:label="Login" />
 
 
         <activity
-            android:name=".activity.LoginFacebookActivity_"
+            android:name=".activity.login.LoginFacebookActivity_"
             android:label="Login" />
 
 
         <activity
-            android:name=".activity.MapsActivity_"
+            android:name=".activity.map.MapsActivity_"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".activity.MainActivity_">
+            android:parentActivityName=".activity.main.MainActivity_">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aykuttasil.sweetloc.activity.MainActivity_" />
+                android:value="com.aykuttasil.sweetloc.activity.main.MainActivity_" />
         </activity>
 
         <activity
-            android:name=".activity.ProfileActivity_"
+            android:name=".activity.profile.ProfileActivity_"
             android:label="@string/title_activity_profile"
-            android:parentActivityName=".activity.MainActivity_">
+            android:parentActivityName=".activity.main.MainActivity_">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aykuttasil.sweetloc.activity.MainActivity_" />
+                android:value="com.aykuttasil.sweetloc.activity.main.MainActivity_" />
         </activity>
 
         <activity
@@ -87,6 +87,12 @@
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider1323769607674772"
             android:exported="true" />
+
+        <provider
+            android:name=".util.DatabaseContentProvider"
+            android:authorities="${applicationId}"
+            android:enabled="true"
+            android:exported="false" />
 
         <service
             android:name=".service.MyFirebaseInstanceIdService"

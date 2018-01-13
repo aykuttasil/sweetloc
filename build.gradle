@@ -1,5 +1,15 @@
 
+ext {
+    sdk = 27
+    minSdk = 21
+    supportVersion = "27.0.2"
+    playVersion = "11.8.0"
+    anko_version = '0.10.3'
+}
+
 buildscript {
+    ext.kotlin_version = '1.2.10'
+
     repositories {
         jcenter()
         mavenCentral()
@@ -12,6 +22,7 @@ buildscript {
         classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
         classpath 'io.fabric.tools:gradle:1.+'
         classpath "com.fernandocejas.frodo:frodo-plugin:0.8.3"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -31,11 +42,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext {
-    sdk = 27
-    minSdk = 21
-    supportVersion = "27.0.2"
-    playVersion = "11.8.0"
 }

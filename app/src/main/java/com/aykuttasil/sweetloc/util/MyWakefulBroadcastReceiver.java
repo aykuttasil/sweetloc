@@ -17,8 +17,7 @@ public abstract class MyWakefulBroadcastReceiver extends BroadcastReceiver {
 
     private static final String EXTRA_WAKE_LOCK_ID = "android.support.content.wakelockid";
 
-    private static final SparseArray<PowerManager.WakeLock> mActiveWakeLocks
-            = new SparseArray<PowerManager.WakeLock>();
+    private static final SparseArray<PowerManager.WakeLock> mActiveWakeLocks = new SparseArray<>();
     private static int mNextId = 1;
 
     /**
@@ -74,7 +73,6 @@ public abstract class MyWakefulBroadcastReceiver extends BroadcastReceiver {
      * now released; returns false if there was no wake lock specified for it.
      */
     public static boolean completeWakefulIntent(Intent intent) {
-
         Logger.i("MyWakefulBroadcastReceiver completeWakefulIntent");
 
         final int id = intent.getIntExtra(EXTRA_WAKE_LOCK_ID, 0);

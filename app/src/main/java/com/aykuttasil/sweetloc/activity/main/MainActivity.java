@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.activity;
+package com.aykuttasil.sweetloc.activity.main;
 
 import android.app.NotificationManager;
 import android.content.Context;
@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.aykuttasil.sweetloc.R;
+import com.aykuttasil.sweetloc.activity.base.BaseActivity;
+import com.aykuttasil.sweetloc.activity.map.MapsActivity_;
+import com.aykuttasil.sweetloc.activity.profile.ProfileActivity_;
 import com.aykuttasil.sweetloc.db.DbManager;
 import com.aykuttasil.sweetloc.fragment.UserTrackerListFragment_;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
@@ -51,14 +54,14 @@ public class MainActivity extends BaseActivity {
 
     @DebugLog
     @Override
-    void initToolbar() {
+    public void initToolbar() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("SweetLoc");
     }
 
     @DebugLog
     @Override
-    void updateUi() {
+    public void updateUi() {
         if (!SuperHelper.checkUser()) {
             SuperHelper.logoutUser();
             goLoginFacebookActivity(this);

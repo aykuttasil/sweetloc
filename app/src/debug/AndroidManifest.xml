@@ -3,7 +3,7 @@
     package="com.aykuttasil.sweetloc">
 
     <application
-        android:name="com.aykuttasil.sweetloc.app.AppSweetLocDebug"
+        android:name="com.aykuttasil.sweetloc.app.AppDebug"
         tools:replace="android:name" />
 
 </manifest>

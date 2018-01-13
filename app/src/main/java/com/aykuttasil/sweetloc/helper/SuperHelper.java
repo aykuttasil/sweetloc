@@ -52,7 +52,6 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
 
     @DebugLog
     public static void updateUser(ModelUser modelUser) {
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null) {
@@ -143,7 +142,6 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
     public static void sendNotif(String action) {
         try {
             JSONObject mainObject = new JSONObject();
-
 
             JSONObject contents = new JSONObject();
             contents.put("en", "SweetLoc - Hello");

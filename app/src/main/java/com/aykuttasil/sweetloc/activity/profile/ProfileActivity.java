@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.activity;
+package com.aykuttasil.sweetloc.activity.profile;
 
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -8,6 +8,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aykuttasil.androidbasichelperlib.UiHelper;
 import com.aykuttasil.sweetloc.R;
+import com.aykuttasil.sweetloc.activity.base.BaseActivity;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
 
 import org.androidannotations.annotations.AfterViews;
@@ -26,13 +27,13 @@ public class ProfileActivity extends BaseActivity {
     @DebugLog
     @AfterViews
     @Override
-    void initializeAfterViews() {
+    public void initializeAfterViews() {
         initToolbar();
     }
 
     @DebugLog
     @Override
-    void initToolbar() {
+    public void initToolbar() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -42,7 +43,7 @@ public class ProfileActivity extends BaseActivity {
 
     @DebugLog
     @Override
-    void updateUi() {
+    public void updateUi() {
 
     }
 

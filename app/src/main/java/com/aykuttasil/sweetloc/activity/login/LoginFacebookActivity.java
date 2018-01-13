@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.activity;
+package com.aykuttasil.sweetloc.activity.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aykuttasil.sweetloc.R;
+import com.aykuttasil.sweetloc.activity.base.BaseActivity;
+import com.aykuttasil.sweetloc.activity.main.MainActivity_;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
 import com.aykuttasil.sweetloc.model.ModelUser;
 import com.facebook.AccessToken;
@@ -72,19 +74,19 @@ public class LoginFacebookActivity extends BaseActivity {
     @DebugLog
     @AfterViews
     @Override
-    void initializeAfterViews() {
+    public void initializeAfterViews() {
         initToolbar();
         initFacebookLoginButton();
     }
 
     @DebugLog
     @Override
-    void initToolbar() {
+    public void initToolbar() {
     }
 
     @DebugLog
     @Override
-    void updateUi() {
+    public void updateUi() {
     }
 
     @DebugLog

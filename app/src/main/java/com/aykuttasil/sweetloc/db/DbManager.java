@@ -32,7 +32,6 @@ public class DbManager {
 
     @DebugLog
     public static String getOneSignalUserId() {
-
         ModelUser modelUser = new Select().from(ModelUser.class).executeSingle();
 
         if (modelUser.getOneSignalUserId() != null && !modelUser.getOneSignalUserId().isEmpty()) {

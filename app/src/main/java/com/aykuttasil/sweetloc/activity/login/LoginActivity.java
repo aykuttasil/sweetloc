@@ -1,10 +1,11 @@
-package com.aykuttasil.sweetloc.activity;
+package com.aykuttasil.sweetloc.activity.login;
 
 import android.support.v7.widget.Toolbar;
 import android.widget.EditText;
 
 import com.aykuttasil.androidbasichelperlib.UiHelper;
 import com.aykuttasil.sweetloc.R;
+import com.aykuttasil.sweetloc.activity.base.BaseActivity;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
 import com.aykuttasil.sweetloc.model.ModelUser;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,19 +44,19 @@ public class LoginActivity extends BaseActivity {
     @DebugLog
     @AfterViews
     @Override
-    void initializeAfterViews() {
+    public void initializeAfterViews() {
         initToolbar();
     }
 
     @DebugLog
     @Override
-    void initToolbar() {
+    public void initToolbar() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("SweetLoc ...");
     }
 
     @Override
-    void updateUi() {
+    public void updateUi() {
 
     }
 

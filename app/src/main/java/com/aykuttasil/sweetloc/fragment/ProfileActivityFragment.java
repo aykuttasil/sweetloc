@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aykuttasil.sweetloc.R;
-import com.aykuttasil.sweetloc.activity.ProfileActivity;
+import com.aykuttasil.sweetloc.activity.profile.ProfileActivity;
 import com.aykuttasil.sweetloc.db.DbManager;
 import com.aykuttasil.sweetloc.model.ModelLocation;
 import com.aykuttasil.sweetloc.model.ModelUser;

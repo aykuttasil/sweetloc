@@ -1,8 +1,9 @@
-package com.aykuttasil.sweetloc.activity;
+package com.aykuttasil.sweetloc.activity.base;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
+import com.aykuttasil.sweetloc.activity.login.LoginFacebookActivity_;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import hugo.weaving.DebugLog;
@@ -12,12 +13,11 @@ import hugo.weaving.DebugLog;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
+    public abstract void initializeAfterViews();
 
-    abstract void initializeAfterViews();
+    public abstract void initToolbar();
 
-    abstract void initToolbar();
-
-    abstract void updateUi();
+    public abstract void updateUi();
 
     public static final int LOGIN_REQUEST_CODE = 1001;
     private FirebaseRemoteConfig firebaseRemoteConfig;
