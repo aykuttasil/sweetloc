@@ -11,26 +11,16 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aykuttasil.sweetloc.R;
 import com.aykuttasil.sweetloc.activity.base.BaseActivity;
-import com.aykuttasil.sweetloc.activity.main.MainActivity_;
 import com.aykuttasil.sweetloc.helper.SuperHelper;
 import com.aykuttasil.sweetloc.model.ModelUser;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
 
 import hugo.weaving.DebugLog;
 
@@ -38,13 +28,7 @@ import hugo.weaving.DebugLog;
  * Created by aykutasil on 7.12.2016.
  */
 
-@EActivity(R.layout.activity_login_facebook_layout)
 public class LoginFacebookActivity extends BaseActivity {
-
-    @ViewById(R.id.LoginButton)
-    LoginButton mLoginButton;
-
-    //
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
@@ -53,6 +37,7 @@ public class LoginFacebookActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login_facebook_layout);
         mCallbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
         initAuthListener();
@@ -71,27 +56,16 @@ public class LoginFacebookActivity extends BaseActivity {
     }
 
     @DebugLog
-    @AfterViews
-    @Override
     public void initializeAfterViews() {
-        initToolbar();
+        //initToolbar();
         initFacebookLoginButton();
     }
 
     @DebugLog
-    @Override
-    public void initToolbar() {
-    }
-
-    @DebugLog
-    @Override
-    public void updateUi() {
-    }
-
-    @DebugLog
     private void initFacebookLoginButton() {
-        mLoginButton.setReadPermissions("email", "public_profile", "user_friends");
-        mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        /*
+        LoginButton.setReadPermissions("email", "public_profile", "user_friends");
+        LoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @DebugLog
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -112,6 +86,7 @@ public class LoginFacebookActivity extends BaseActivity {
                 SuperHelper.CrashlyticsError(error);
             }
         });
+        */
     }
 
     @DebugLog
@@ -169,7 +144,7 @@ public class LoginFacebookActivity extends BaseActivity {
                         .child(user.getUid())
                         .setValue(modelUser);
 
-                MainActivity_.intent(this).start();
+                //MainActivity_.intent(this).start();
                 finish();
             }
         });

@@ -45,27 +45,23 @@ import hugo.weaving.DebugLog
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_maps.*
-import org.androidannotations.annotations.AfterViews
-import org.androidannotations.annotations.Click
-import org.androidannotations.annotations.EActivity
-import org.androidannotations.annotations.FragmentById
+import org.jetbrains.anko.sdk25.coroutines.onClick
 import rx.Observable
 import java.lang.ref.WeakReference
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-@EActivity(R.layout.activity_maps)
 open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
 
     @Inject
     lateinit var rxLocation: RxLocation
 
-    @FragmentById(R.id.map)
-    lateinit var mMapFragment: SupportMapFragment
+    companion object {
+        private val WAIT_LOCATION_SECOND = 30
+    }
 
     private var isReceiveLocation = false
-
 
     lateinit var mCompositeDisposible: CompositeDisposable
     var mGoogleMap: GoogleMap? = null
@@ -82,28 +78,26 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     @DebugLog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_maps)
+        initializeAfterViews()
+        FabMap.onClick { FabMapClick() }
         mCompositeDisposible = CompositeDisposable()
     }
 
     @DebugLog
-    @AfterViews
-    override fun initializeAfterViews() {
+    fun initializeAfterViews() {
         initToolbar()
         permissionControl()
     }
 
     @DebugLog
-    override fun initToolbar() {
+    fun initToolbar() {
         setSupportActionBar(Toolbar)
         supportActionBar!!.title = "Harita"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_arrow_back_indigo_300_24dp)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setHomeButtonEnabled(true)
-    }
-
-    override fun updateUi() {
-
     }
 
     @DebugLog
@@ -122,7 +116,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
     @DebugLog
     private fun initMap() {
-        mMapFragment.getMapAsync(this)
+        (map as SupportMapFragment).getMapAsync(this)
         initLocationListener()
     }
 
@@ -364,8 +358,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 15.0f))
     }
 
-    @DebugLog
-    @Click(R.id.FabMap)
     fun FabMapClick() {
         mSnackBarKonum = UiHelper.UiSnackBar.newInstance(Toolbar, "Son konumlar getiriliyor.\n" + "Lütfen bekleyiniz... ", Snackbar.LENGTH_INDEFINITE)
         mSnackBarKonum!!.show()
@@ -395,9 +387,4 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         mCompositeDisposible.dispose()
         super.onDestroy()
     }
-
-    companion object {
-        private val WAIT_LOCATION_SECOND = 30
-    }
-
 }

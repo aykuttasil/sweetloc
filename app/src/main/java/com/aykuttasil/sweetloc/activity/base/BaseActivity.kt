@@ -1,12 +1,9 @@
 package com.aykuttasil.sweetloc.activity.base
 
-import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import com.aykuttasil.sweetloc.activity.login.LoginFacebookActivity_
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import hugo.weaving.DebugLog
 import javax.inject.Inject
 
 /**
@@ -20,21 +17,7 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun supportFragmentInjector(): DispatchingAndroidInjector<Fragment> {
         return dispatchingAndroidInjector
     }
-
-    // private val firebaseRemoteConfig: FirebaseRemoteConfig? = null
-
-    abstract fun initializeAfterViews()
-
-    abstract fun initToolbar()
-
-    abstract fun updateUi()
-
-
-    @DebugLog
-    fun goLoginFacebookActivity(activity: AppCompatActivity) {
-        LoginFacebookActivity_.intent(activity).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK).start()
-    }
-
+    
     companion object {
         const val LOGIN_REQUEST_CODE = 1001
     }

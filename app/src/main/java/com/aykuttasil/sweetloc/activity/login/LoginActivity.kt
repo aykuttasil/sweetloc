@@ -1,6 +1,7 @@
 package com.aykuttasil.sweetloc.activity.login
 
 import android.app.Activity
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -15,34 +16,29 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import hugo.weaving.DebugLog
 import kotlinx.android.synthetic.main.activity_login_layout.*
-import org.androidannotations.annotations.AfterViews
-import org.androidannotations.annotations.Click
-import org.androidannotations.annotations.EActivity
+import org.jetbrains.anko.sdk25.coroutines.onClick
 
 /**
  * Created by aykutasil on 4.07.2016.
  */
-@EActivity(R.layout.activity_login_layout)
 open class LoginActivity : BaseActivity() {
 
-    @DebugLog
-    @AfterViews
-    override fun initializeAfterViews() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login_layout)
         initToolbar()
+
+        Button_GirisYap.onClick { btnGirisYapClick() }
+        Button_KayitOl.onClick { btnRegisterClick() }
+
     }
 
-    @DebugLog
-    override fun initToolbar() {
+    fun initToolbar() {
         setSupportActionBar(Toolbar)
         supportActionBar!!.title = "SweetLoc"
     }
 
-    override fun updateUi() {
 
-    }
-
-    @DebugLog
-    @Click(R.id.Button_GirisYap)
     fun btnGirisYapClick() {
         if (!validateInput()) {
             return
@@ -61,8 +57,6 @@ open class LoginActivity : BaseActivity() {
                 }
     }
 
-    @DebugLog
-    @Click(R.id.Button_KayitOl)
     fun btnRegisterClick() {
         if (!validateInput()) {
             return

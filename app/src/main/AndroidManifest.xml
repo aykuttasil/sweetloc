@@ -25,7 +25,7 @@
         tools:replace="android:name">
 
         <activity
-            android:name=".activity.main.MainActivity_"
+            android:name=".activity.main.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">
             <intent-filter>
@@ -36,31 +36,31 @@
         </activity>
 
         <activity
-            android:name=".activity.login.LoginActivity_"
+            android:name=".activity.login.LoginActivity"
             android:label="Login" />
 
 
         <activity
-            android:name=".activity.login.LoginFacebookActivity_"
+            android:name=".activity.login.LoginFacebookActivity"
             android:label="Login" />
 
 
         <activity
-            android:name=".activity.map.MapsActivity_"
+            android:name=".activity.map.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".activity.main.MainActivity_">
+            android:parentActivityName=".activity.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aykuttasil.sweetloc.activity.main.MainActivity_" />
+                android:value="com.aykuttasil.sweetloc.activity.main.MainActivity" />
         </activity>
 
         <activity
-            android:name=".activity.profile.ProfileActivity_"
+            android:name=".activity.profile.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:parentActivityName=".activity.main.MainActivity_">
+            android:parentActivityName=".activity.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aykuttasil.sweetloc.activity.main.MainActivity_" />
+                android:value="com.aykuttasil.sweetloc.activity.main.MainActivity" />
         </activity>
 
         <activity

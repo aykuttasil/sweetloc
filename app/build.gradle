@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 
-def AAVersion = '4.4.0'
+//def AAVersion = '4.4.0'
 
 //By default frodo is ON on debug build variants, although
 //we can enable-disable it with this configuration.
@@ -24,7 +24,6 @@ android {
         versionCode 7
         versionName "1.0.6"
         multiDexEnabled true
-
         manifestPlaceholders = [onesignal_app_id               : "283c0725-f1ae-434a-8ea5-09f61b1246fc",
                                 // Project number pulled from dashboard, local value is ignored.
                                 onesignal_google_project_number: "REMOTE"]
@@ -114,6 +113,10 @@ android {
     androidExtensions {
         experimental = true
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 kotlin {
@@ -165,8 +168,9 @@ dependencies {
     implementation('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true
     }
-    kapt "org.androidannotations:androidannotations:$AAVersion"
-    implementation "org.androidannotations:androidannotations-api:$AAVersion"
+
+    //kapt "org.androidannotations:androidannotations:$AAVersion"
+    //implementation "org.androidannotations:androidannotations-api:$AAVersion"
 
     implementation 'com.squareup.okhttp3:logging-interceptor:3.3.0'
     implementation 'com.squareup.retrofit2:retrofit:2.1.0'
@@ -226,5 +230,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.4.0"
     kapt "com.github.bumptech.glide:compiler:4.4.0"
     implementation "com.github.bumptech.glide:okhttp3-integration:4.4.0"
+
+    // DataBinding
+    kapt "com.android.databinding:compiler:3.0.1"
 }
 apply plugin: 'com.google.gms.google-services'

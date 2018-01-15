@@ -38,25 +38,12 @@ open class App : Application(), HasActivityInjector {
     override fun onCreate() {
         super.onCreate()
         AppInjector.init(this)
-        // initializeActiveAndroid();
         initSweetLoc()
     }
 
     override fun activityInjector(): DispatchingAndroidInjector<Activity> {
         return activityDispatchingAndroidInjector
     }
-
-    /*
-    @DebugLog
-    public void initializeActiveAndroid() {
-        ActiveAndroid.initialize(new Configuration.Builder(getApplicationContext())
-                .addModelClass(ModelUser.class)
-                .addModelClass(ModelLocation.class)
-                .addModelClass(ModelSweetLocPreference.class)
-                .addModelClass(ModelUserTracker.class)
-                .create());
-    }
-    */
 
     @DebugLog
     private fun initSweetLoc() {
