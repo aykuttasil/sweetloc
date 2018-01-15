@@ -53,9 +53,7 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
     @DebugLog
     public static void updateUser(ModelUser modelUser) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         if (user != null) {
-
             FirebaseDatabase.getInstance().getReference()
                     .child(ModelUser.class.getSimpleName())
                     .child(user.getUid())
@@ -65,7 +63,6 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
 
     @DebugLog
     public static void sendLocationInformation(Location location) {
-
         Logger.i("Location gönderildi");
         Logger.d(location);
 
@@ -101,11 +98,8 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
 
     @DebugLog
     public static void stopPeriodicTask(Context context) {
-
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
         Intent intent = new Intent(context.getApplicationContext(), SingleLocationRequestReceiver.class);
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
                 Const.REQUEST_CODE_BROADCAST_LOCATION,
                 intent,
@@ -116,26 +110,22 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
 
     @DebugLog
     public static void CrashlyticsError(Throwable error) {
-
         if (DbManager.getModelUser() != null && DbManager.getModelUser().getEmail() != null) {
             Crashlytics.setUserEmail(DbManager.getModelUser().getEmail());
             Crashlytics.logException(error);
         } else {
             Crashlytics.logException(error);
         }
-
     }
 
     @DebugLog
     public static void CrashlyticsLog(String log) {
-
         if (DbManager.getModelUser() != null && DbManager.getModelUser().getEmail() != null) {
             Crashlytics.setUserEmail(DbManager.getModelUser().getEmail());
             Crashlytics.log(log);
         } else {
             Crashlytics.log(log);
         }
-
     }
 
 
@@ -188,8 +178,5 @@ public class SuperHelper extends com.aykuttasil.androidbasichelperlib.SuperHelpe
         } catch (Exception e) {
             Logger.e(e,"HATA");
         }
-
     }
-
-
 }

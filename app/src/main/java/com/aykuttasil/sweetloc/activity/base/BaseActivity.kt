@@ -1,0 +1,141 @@
+package com.aykuttasil.sweetloc.activity.base
+
+import android.content.Intent
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
+import com.aykuttasil.sweetloc.activity.login.LoginFacebookActivity_
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
+import hugo.weaving.DebugLog
+import javax.inject.Inject
+
+/**
+ * Created by aykutasil on 23.06.2016.
+ */
+abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector(): DispatchingAndroidInjector<Fragment> {
+        return dispatchingAndroidInjector
+    }
+
+    // private val firebaseRemoteConfig: FirebaseRemoteConfig? = null
+
+    abstract fun initializeAfterViews()
+
+    abstract fun initToolbar()
+
+    abstract fun updateUi()
+
+
+    @DebugLog
+    fun goLoginFacebookActivity(activity: AppCompatActivity) {
+        LoginFacebookActivity_.intent(activity).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK).start()
+    }
+
+    companion object {
+        const val LOGIN_REQUEST_CODE = 1001
+    }
+
+
+    //    @DebugLog
+    //    public void setPeriodicTask(Context context) {
+    //
+    //        long cacheExpiration = 3600; // 1 hour in seconds.
+    //
+    //        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+    //
+    //        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+    //                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+    //                .build();
+    //
+    //        firebaseRemoteConfig.setConfigSettings(configSettings);
+    //
+    //        firebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+    //
+    //        if (firebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
+    //            cacheExpiration = 0;
+    //        }
+    //
+    //        firebaseRemoteConfig.fetch(cacheExpiration).addOnCompleteListener(
+    //                complete -> {
+    //                    Logger.i("Remote Config Fetch complete.");
+    //                    if (complete.isSuccessful()) {
+    //                        Logger.i("Remote Config Fetch is succesful.");
+    //                        firebaseRemoteConfig.activateFetched();
+    //                        Logger.i("Remote Config activated..");
+    //                        setAlarm(context);
+    //
+    //                    } else {
+    //                        Logger.i("Remote Config Fetch is not succesful.");
+    //                    }
+    //                });
+    //
+    //        //long periodicTime = FirebaseRemoteConfig.getInstance().getLong("periodic_time") * 1000;
+    //        //setAlarm(context, periodicTime);
+    //
+    //    }
+    //
+    //    @DebugLog
+    //    private void setAlarm(Context context) {
+    //
+    //        long periodicTime = firebaseRemoteConfig.getLong("periodic_time") * 1000;
+    //        Logger.i("Remote Config Periodic Time: " + periodicTime);
+    //
+    //        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    //
+    //        Intent intent = new Intent(context.getApplicationContext(), LocationReceiver.class);
+    //
+    //        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+    //                Const.REQUEST_CODE_BROADCAST_LOCATION,
+    //                intent,
+    //                PendingIntent.FLAG_UPDATE_CURRENT);
+    //
+    //
+    //        // setInexactRepeating() kullanıldığında sabit aralıklar verilmek zorundadır. Uygulamalar genelde bu şekilde periodic
+    //        // servislerini çalıştırır. Android, düzenlenmiş diğer işlemlerle aynı anda periodic servisi çalıştıracağından
+    //        // pil ömrü uzar.
+    //        // -----
+    //        // Eğer kendimiz zaman belirlemek istiyorsak (her 10 saniyede bir çalıştır gibi) setRepeating() kullanmamamız gerekir.
+    //        // -----
+    //        // Alarmı hemen çalıştırmaya başla ve her 15 dakikada bir tekrarla.
+    //        /*alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+    //                SystemClock.currentThreadTimeMillis(),
+    //                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+    //                pendingIntent);*/
+    //
+    //        //alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP);
+    //
+    //
+    //        // AlarmManager.ELAPSED_REALTIME -> ELAPSED_REALTIME system başlangıcını baz alır. Eğer gerçek saat ile ilgili bir işlem yapılmıcak
+    //        // ise bu parametre kullanılmalıdır.
+    //        // RTC -> Cihazın local saatini baz alır. Örneğin perşembe saat 4 de yapılcak bi iş belirlemek istersen RTC kullanmalıyız.
+    //        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME,
+    //                SystemClock.elapsedRealtime() + 3000,
+    //                periodicTime,
+    //                pendingIntent);
+    //
+    //        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+    //                AlarmManager.INTERVAL_HALF_HOUR,
+    //                periodicTime,
+    //                pendingIntent);
+    //    }
+    //
+    //
+    //    @DebugLog
+    //    public void stopPeriodicTask(Context context) {
+    //        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    //        Intent intent = new Intent(context, LocationReceiver.class);
+    //        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+    //                Const.REQUEST_CODE_BROADCAST_LOCATION,
+    //                intent,
+    //                PendingIntent.FLAG_UPDATE_CURRENT);
+    //
+    //        alarmManager.cancel(pendingIntent);
+    //    }
+
+
+}

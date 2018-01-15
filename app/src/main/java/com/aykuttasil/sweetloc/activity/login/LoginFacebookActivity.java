@@ -53,7 +53,6 @@ public class LoginFacebookActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        moveTaskToBack(false);
         mCallbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
         initAuthListener();
@@ -154,7 +153,7 @@ public class LoginFacebookActivity extends BaseActivity {
                 .build();
 
         tokenView.findViewById(R.id.DevamEt).setOnClickListener(view -> {
-            EditText tokentext = ((EditText) tokenView.findViewById(R.id.EditTextTrackerId));
+            EditText tokentext = tokenView.findViewById(R.id.EditTextTrackerId);
             if (!SuperHelper.validateIsEmpty(tokentext)) {
                 dialog.dismiss();
                 ModelUser modelUser = new ModelUser();
@@ -170,7 +169,7 @@ public class LoginFacebookActivity extends BaseActivity {
                         .child(user.getUid())
                         .setValue(modelUser);
 
-                MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK).start();
+                MainActivity_.intent(this).start();
                 finish();
             }
         });

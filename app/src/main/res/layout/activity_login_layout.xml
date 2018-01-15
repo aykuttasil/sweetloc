@@ -2,24 +2,27 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/side_nav_bar">
 
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/bpTransparent"
+        android:elevation="0dp"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:elevation="9dp"
+            android:elevation="0dp"
             android:minHeight="110dp"
             app:logo="@mipmap/ic_launcher"
             app:title="SweetLoc"
             app:titleMarginStart="50dp"
-            app:titleTextColor="@color/colorPrimary" />
+            app:titleTextColor="@color/white" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -35,7 +38,8 @@
             android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:textColorHint="@color/white">
 
             <EditText
                 android:id="@+id/EditText_Email"
@@ -43,7 +47,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="Email"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textColor="@color/white" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -52,7 +57,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/view2"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:hint="Parola"
+            android:textColorHint="@color/white">
 
             <EditText
                 android:id="@+id/EditText_Parola"
@@ -60,59 +67,28 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="Parola"
-                android:inputType="numberPassword" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/view3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/view"
-            android:layout_gravity="center">
-
-            <EditText
-                android:id="@+id/EditText_Token"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:hint="Token"
-                android:inputType="numberPassword" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/view4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/Button_GirisYap"
-            android:layout_below="@+id/view3"
-            android:layout_gravity="center">
-
-            <EditText
-                android:id="@+id/EditText_ImageUrl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:hint="Resim URL"
-                android:inputType="text" />
+                android:inputType="textPassword"
+                android:textColor="@color/white" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/Button_GirisYap"
-            android:layout_width="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="center_horizontal|bottom"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
             android:text="Giriş Yap" />
 
         <Button
             android:id="@+id/Button_KayitOl"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/Button_GirisYap"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal|bottom"
-            android:text="Kayıt Ol" />
+            android:text="Kayıt Ol"
+            android:textColor="@color/white" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

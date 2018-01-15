@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.aykuttasil.sweetloc.app.App
 import com.aykuttasil.sweetloc.di.ApplicationContext
+import com.patloew.rxlocation.RxLocation
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -34,6 +35,12 @@ class AppModule {
     @Provides
     internal fun provideSharedPreference(application: Application): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(application.applicationContext)
+    }
+
+    @Singleton
+    @Provides
+    internal fun provideRxLocation(application: Application): RxLocation {
+        return RxLocation(application)
     }
 
     /*

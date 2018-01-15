@@ -100,7 +100,6 @@ public class UserTrackerListFragment extends BaseFragment {
                         modelUserTracker.save();
                         mAdapter.addItem(modelUserTracker);
                     }
-
                 }
             }
 
@@ -108,6 +107,5 @@ public class UserTrackerListFragment extends BaseFragment {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
     }
 }

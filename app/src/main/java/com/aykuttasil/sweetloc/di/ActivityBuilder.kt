@@ -1,6 +1,16 @@
 package com.aykuttasil.sweetloc.di
 
+import com.aykuttasil.sweetloc.activity.login.LoginActivityModule
+import com.aykuttasil.sweetloc.activity.login.LoginActivity_
+import com.aykuttasil.sweetloc.activity.main.MainActivityModule
+import com.aykuttasil.sweetloc.activity.main.MainActivity_
+import com.aykuttasil.sweetloc.activity.map.MapsActivityModule
+import com.aykuttasil.sweetloc.activity.map.MapsActivity_
+import com.aykuttasil.sweetloc.activity.profile.ProfileActivityModule
+import com.aykuttasil.sweetloc.activity.profile.ProfileActivity_
+import com.aykuttasil.sweetloc.di.scopes.PerActivity
 import dagger.Module
+import dagger.android.ContributesAndroidInjector
 
 
 /**
@@ -9,14 +19,19 @@ import dagger.Module
 @Module
 abstract class ActivityBuilder {
 
-    /*
     @PerActivity
-    @ContributesAndroidInjector(modules = arrayOf(MainActivityModule::class))
-    internal abstract fun bindMainActivity(): MainActivity
+    @ContributesAndroidInjector(modules = [(LoginActivityModule::class)])
+    internal abstract fun bindLoginActivity(): LoginActivity_
 
     @PerActivity
-    @ContributesAndroidInjector(modules = arrayOf(UserActivityModule::class))
-    internal abstract fun bindUserActivity(): UserActivity
-    */
+    @ContributesAndroidInjector(modules = [(ProfileActivityModule::class)])
+    internal abstract fun bindProfileActivity(): ProfileActivity_
 
+    @PerActivity
+    @ContributesAndroidInjector(modules = [(MapsActivityModule::class)])
+    internal abstract fun bindMapsActivity(): MapsActivity_
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = [(MainActivityModule::class)])
+    internal abstract fun bindMainActivity(): MainActivity_
 }

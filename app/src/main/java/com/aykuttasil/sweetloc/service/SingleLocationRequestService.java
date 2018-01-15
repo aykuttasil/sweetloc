@@ -59,7 +59,7 @@ public class SingleLocationRequestService extends IntentService {
                 //.setMaxWaitTime() // her bir location güncellemesi için max bekleme süresini belirtebiliriz. setInterval ile ilişkilidir. dikkat et.
                 .setExpirationDuration(TimeUnit.SECONDS.toMillis(LOCATION_TIMEOUT_IN_SECONDS)); // Belirttiğimiz süre kadar location güncellemesi alır
 
-        mDisposable = ((App) getApplication()).rxLocation.location()
+        mDisposable = ((App) getApplication()).getRxLocation().location()
                 .updates(locationRequest)
                 .filter(location -> {
                     Logger.i("Accuracy: " + location.getAccuracy());

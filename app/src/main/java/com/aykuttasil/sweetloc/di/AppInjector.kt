@@ -18,6 +18,7 @@ import dagger.android.support.HasSupportFragmentInjector
  */
 object AppInjector {
 
+    @JvmStatic
     fun init(app: App) {
         DaggerAppComponent.builder()
                 .application(app)
