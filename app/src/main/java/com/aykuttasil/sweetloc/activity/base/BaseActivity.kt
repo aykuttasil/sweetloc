@@ -4,7 +4,6 @@ import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.aykuttasil.sweetloc.activity.login.LoginFacebookActivity_
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import hugo.weaving.DebugLog

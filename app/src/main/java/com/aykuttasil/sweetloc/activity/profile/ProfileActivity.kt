@@ -57,7 +57,7 @@ open class ProfileActivity : BaseActivity() {
                     SuperHelper.ResetSweetLoc(this)
                     // goLoginFacebookActivity(ProfileActivity.this);
                     // finish();
-                    MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK).start()
+                    MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK).start()
                 }
                 dialog.show()
                 return true
