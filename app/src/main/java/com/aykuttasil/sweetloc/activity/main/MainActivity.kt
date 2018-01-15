@@ -61,19 +61,6 @@ open class MainActivity : BaseActivity() {
         supportActionBar?.title = "SweetLoc"
     }
 
-    /*
-    @DebugLog
-    override fun updateUi() {
-        if (!SuperHelper.checkUser()) {
-            SuperHelper.logoutUser()
-            LoginActivity_.intent(this).startForResult(BaseActivity.LOGIN_REQUEST_CODE)
-            // goLoginFacebookActivity(this);
-        } else {
-            initMain()
-        }
-    }
-    */
-
     @DebugLog
     override fun updateUi() {
 
