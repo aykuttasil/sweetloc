@@ -15,13 +15,64 @@
       },
       "oauth_client": [
         {
+          "client_id": "535821025252-opk9baq2i3fvh9uns4ktdt1s78pelv12.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aykuttasil.sweetloc",
+            "certificate_hash": "79476ade7225bc6c2c340a07dd94be44360f2351"
+          }
+        },
+        {
+          "client_id": "535821025252-ngv91smbnclpo0lc0rciu9fkpskcqnlu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aykuttasil.sweetloc",
+            "certificate_hash": "9e7718df09d5a197b875d737555bdb5dc64145c2"
+          }
+        },
+        {
           "client_id": "535821025252-98sdbrmtjujbmjofs44cht12tgtei5qf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.aykuttasil.sweetloc",
-            "certificate_hash": "DBB5C0A24C9A551FE99937452AC2C03BA4AB2CF8"
+            "certificate_hash": "dbb5c0a24c9a551fe99937452ac2c03ba4ab2cf8"
           }
         },
+        {
+          "client_id": "535821025252-msipukucilrgfk2jskvnfracsgncqi72.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "535821025252-900ior2vv23as7h7pnjd2pjn6inb6q6s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDx291mIGINNAu5jT-arL1sbFhs1H9YJmM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535821025252:android:74932f8924270c1e",
+        "android_client_info": {
+          "package_name": "com.aykuttasil.sweetloc.demo"
+        }
+      },
+      "oauth_client": [
         {
           "client_id": "535821025252-msipukucilrgfk2jskvnfracsgncqi72.apps.googleusercontent.com",
           "client_type": 3

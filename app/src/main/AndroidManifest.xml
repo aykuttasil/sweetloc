@@ -25,7 +25,7 @@
         tools:replace="android:name">
 
         <activity
-            android:name=".activity.main.MainActivity"
+            android:name=".ui.activity.main.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">
             <intent-filter>
@@ -36,32 +36,31 @@
         </activity>
 
         <activity
-            android:name=".activity.login.LoginActivity"
+            android:name=".ui.activity.login.LoginActivity"
             android:label="Login" />
 
-
         <activity
-            android:name=".activity.login.LoginFacebookActivity"
-            android:label="Login" />
-
-
-        <activity
-            android:name=".activity.map.MapsActivity"
-            android:label="@string/title_activity_maps"
-            android:parentActivityName=".activity.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aykuttasil.sweetloc.activity.main.MainActivity" />
-        </activity>
-
-        <activity
-            android:name=".activity.profile.ProfileActivity"
+            android:name=".ui.activity.profile.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:parentActivityName=".activity.main.MainActivity">
+            android:parentActivityName=".ui.activity.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aykuttasil.sweetloc.activity.main.MainActivity" />
+                android:value=".ui.activity.main.MainActivity" />
         </activity>
+
+        <activity
+            android:name=".ui.activity.login.LoginFacebookActivity"
+            android:label="Login" />
+
+        <activity
+            android:name=".ui.activity.map.MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:parentActivityName=".ui.activity.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.main.MainActivity" />
+        </activity>
+
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -88,11 +87,12 @@
             android:authorities="com.facebook.app.FacebookContentProvider1323769607674772"
             android:exported="true" />
 
+        <!--
         <provider
             android:name=".util.DatabaseContentProvider"
             android:authorities="${applicationId}"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false" />-->
 
         <service
             android:name=".service.MyFirebaseInstanceIdService"
@@ -127,7 +127,15 @@
             </intent-filter>
         </service>
 
-        <service android:name=".service.SingleLocationRequestService" />
+        <service
+            android:name=".service.SingleLocationRequestService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".service.GeofenceTransitionsJobIntentService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <receiver
             android:name=".receiver.BootupReceiver"
@@ -145,6 +153,11 @@
         <receiver
             android:name=".receiver.SingleLocationRequestReceiver"
             android:process=":remote" />
+
+        <receiver
+            android:name=".receiver.GeofenceBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

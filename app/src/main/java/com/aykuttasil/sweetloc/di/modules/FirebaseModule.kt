@@ -5,15 +5,18 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 class FirebaseModule {
 
     @Provides
-    internal fun databaseReference(): DatabaseReference = FirebaseDatabase.getInstance().reference
+    @Singleton
+    fun databaseReference(): DatabaseReference = FirebaseDatabase.getInstance().reference
 
     @Provides
-    internal fun firebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+    @Singleton
+    fun firebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
     /*
     @Singleton

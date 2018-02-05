@@ -15,6 +15,6 @@ class BootupReceiver : BroadcastReceiver() {
 
     @DebugLog
     override fun onReceive(context: Context, intent: Intent) {
-        SuperHelper.startPeriodicTask(context)
+        //SuperHelper.startPeriodicTask(context)
     }
 }

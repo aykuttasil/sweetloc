@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.aykuttasil.sweetloc.app.App
 import com.aykuttasil.sweetloc.di.ApplicationContext
+import com.aykuttasil.sweetloc.di.ViewModelBuilder
 import com.patloew.rxlocation.RxLocation
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,7 @@ import javax.inject.Singleton
  * Created by aykutasil on 8.12.2017.
  */
 
-@Module(includes = [(ViewModelModule::class)])
+@Module(includes = [(ViewModelBuilder::class)])
 class AppModule {
 
     @Singleton
@@ -43,17 +44,4 @@ class AppModule {
         return RxLocation(application)
     }
 
-    /*
-    @Singleton
-    @Provides
-    internal fun provideApiManager(apiService: ApiService): ApiManager {
-        return ApiManager(apiService)
-    }
-
-    @Singleton
-    @Provides
-    internal fun provideDataManager(apiManager: ApiManager, appDatabase: AppDatabase): DataManager {
-        return DataManager(apiManager, appDatabase)
-    }
-    */
 }

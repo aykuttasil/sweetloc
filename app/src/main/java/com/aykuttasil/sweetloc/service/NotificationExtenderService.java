@@ -61,8 +61,6 @@ public class NotificationExtenderService extends com.onesignal.NotificationExten
                         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
                         audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                         audioManager.setStreamVolume(AudioManager.STREAM_RING, maxVolume, AudioManager.FLAG_SHOW_UI + AudioManager.FLAG_PLAY_SOUND);
-
-                        
                         break;
                     }
                     default: {

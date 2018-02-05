@@ -20,5 +20,4 @@ public class SingleLocationRequestReceiver extends MyWakefulBroadcastReceiver {
         Intent intent_ = new Intent(context, SingleLocationRequestService.class);
         SingleLocationRequestReceiver.startWakefulService(context, intent_);
     }
-
 }

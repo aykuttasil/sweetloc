@@ -1,15 +1,10 @@
 package com.aykuttasil.sweetloc.model;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by aykutasil on 8.12.2016.
  */
 
+/*
 @Table(name = "UserTracker", id = "_id")
 public class ModelUserTracker extends Model {
 
@@ -104,3 +99,5 @@ public class ModelUserTracker extends Model {
         this.UUID = UUID;
     }
 }
+
+*/

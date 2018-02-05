@@ -6,9 +6,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-
-//def AAVersion = '4.4.0'
-
 //By default frodo is ON on debug build variants, although
 //we can enable-disable it with this configuration.
 frodo {
@@ -43,7 +40,7 @@ android {
 
         demoProduction {
             dimension "default"
-            applicationId "com.aykuttasil.sweetloc"
+            applicationId "com.aykuttasil.sweetloc.demo"
             resValue "string", "app_name", "SweetLoc Demo Prod"
             minSdkVersion 21
             buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
@@ -62,8 +59,6 @@ android {
             resValue "string", "app_name", "My ViewModel Skeleton Mock"
         }
     }
-
-
 
     signingConfigs {
         release {
@@ -86,7 +81,6 @@ android {
             debuggable true
             // signingConfig signingConfigs.release
             resValue "string", "GOOGLE_MAPS_ANDROID_API_KEY", "(your development Maps API key)"
-
         }
     }
 
@@ -165,25 +159,22 @@ dependencies {
 
     implementation 'com.firebaseui:firebase-ui:1.0.1'
 
-    implementation('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
         transitive = true
     }
 
-    //kapt "org.androidannotations:androidannotations:$AAVersion"
-    //implementation "org.androidannotations:androidannotations-api:$AAVersion"
-
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.3.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
 
     implementation 'com.aykuttasil:androidbasichelperlib:1.0.24'
-    implementation 'com.google.android:flexbox:0.2.2'
+    //implementation 'com.google.android:flexbox:0.2.2'
     implementation 'org.greenrobot:eventbus:3.1.1'
-    implementation 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    // implementation 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     // implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'com.facebook.android:facebook-android-sdk:4.+'
     implementation "com.andkulikov:transitionseverywhere:1.7.5"
@@ -198,11 +189,16 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
 
     // Android Arch
-    implementation "android.arch.lifecycle:extensions:1.0.0"
-    implementation "android.arch.lifecycle:reactivestreams:1.0.0"
+    implementation "android.arch.lifecycle:extensions:1.1.0"
+    implementation "android.arch.lifecycle:reactivestreams:1.1.0"
+    //implementation "android.arch.lifecycle:common-java8:1.1.0"
+
+    implementation "android.arch.persistence.room:rxjava2:1.0.0"
     implementation "android.arch.persistence.room:runtime:1.0.0"
     kapt "android.arch.persistence.room:compiler:1.0.0"
-    implementation "android.arch.persistence.room:rxjava2:1.0.0"
+
+
+
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"

@@ -2,14 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.aykuttasil.sweetloc.fragment.ProfileActivityFragment"
+    tools:context=".ui.activity.profile.ProfileFragment"
     tools:showIn="@layout/activity_profile">
 
     <data>
 
         <variable
-            name="modelUser"
-            type="com.aykuttasil.sweetloc.model.ModelUser" />
+            name="user"
+            type="com.aykuttasil.sweetloc.data.local.entity.UserEntity" />
     </data>
 
     <RelativeLayout
@@ -48,7 +48,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="64dp"
-                    android:text="@{modelUser.email}"
+                    android:text="@{user.userEmail}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textStyle="normal|bold"
                     app:layout_constraintLeft_toLeftOf="parent"

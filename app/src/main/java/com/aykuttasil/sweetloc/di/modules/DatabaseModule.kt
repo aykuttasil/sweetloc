@@ -1,24 +1,33 @@
 package com.aykuttasil.sweetloc.di.modules
 
+import android.arch.persistence.room.Room
+import android.content.Context
+import com.aykuttasil.sweetloc.data.local.AppDatabase
+import com.aykuttasil.sweetloc.di.ApplicationContext
 import dagger.Module
+import dagger.Provides
+import javax.inject.Singleton
 
-/**
- * Created by aykutasil on 20.12.2017.
- */
-@Module
+@Module(includes = [FirebaseModule::class])
 class DatabaseModule {
 
     companion object {
-        val DB_NAME = "aa.db"
+        const val DB_NAME = "sweetLoc_12.db"
     }
 
-    /*@Provides
+    @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).fallbackToDestructiveMigration().build()
 
     @Provides
     @Singleton
     fun provideUserDao(db: AppDatabase) = db.getUserDao()
-    */
 
+    @Provides
+    @Singleton
+    fun provideLocationDao(db: AppDatabase) = db.getLocationDao()
+
+    @Provides
+    @Singleton
+    fun provideUserTrackerDao(db: AppDatabase) = db.getUserTrackerDao()
 }

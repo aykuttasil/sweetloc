@@ -1,14 +1,9 @@
 package com.aykuttasil.sweetloc.model;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by aykutasil on 4.07.2016.
  */
+/*
 @Table(name = "User", id = "_id")
 public class ModelUser extends Model {
 
@@ -146,3 +141,4 @@ public class ModelUser extends Model {
         OneSignalUserId = oneSignalUserId;
     }
 }
+*/

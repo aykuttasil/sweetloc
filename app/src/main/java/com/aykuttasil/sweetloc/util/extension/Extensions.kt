@@ -271,7 +271,7 @@ fun View.displaySnakbar(messageResId: Int, duration: Int = Snackbar.LENGTH_SHORT
 }
 
 /**
- * Extension method to return the view location on screen as a [Point].
+ * Extension method to return the view sendMyLocation on screen as a [Point].
  */
 fun View.locationOnScreen(): Point {
     val location = IntArray(2)
@@ -280,7 +280,7 @@ fun View.locationOnScreen(): Point {
 }
 
 /**
- * Extension method to return the view location in window as a [Point].
+ * Extension method to return the view sendMyLocation in window as a [Point].
  */
 fun View.locationInWindow(): Point {
     val location = IntArray(2)

@@ -1,32 +1,25 @@
 package com.aykuttasil.sweetloc.model;
 
-import android.location.Location;
-
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by aykutasil on 3.07.2016.
  */
+
+/*
+ {
+ "id": 1,
+ "name": "Aykut Asil",
+ "address": "Burhaniye mah. Gürgen Sok. No:24",
+ "locLatitude": 42,
+ "locLongitude": 23,
+ "locAccuracy": 123,
+ "locTime": "2016-07-03T00:00:00.000Z",
+ "createdAt": "2016-07-03T22:51:51.582Z",
+ "updatedAt": "2016-07-03T22:51:51.582Z"
+ }
+ */
+/*
 @Table(name = "Location", id = "_id")
 public class ModelLocation extends Model {
-
-    /*
-    {
-            "id": 1,
-            "name": "Aykut Asil",
-            "address": "Burhaniye mah. Gürgen Sok. No:24",
-            "locLatitude": 42,
-            "locLongitude": 23,
-            "locAccuracy": 123,
-            "locTime": "2016-07-03T00:00:00.000Z",
-            "createdAt": "2016-07-03T22:51:51.582Z",
-            "updatedAt": "2016-07-03T22:51:51.582Z"
-    }
-    */
 
     @Column
     @SerializedName("Name")
@@ -149,3 +142,4 @@ public class ModelLocation extends Model {
     }
 
 }
+*/

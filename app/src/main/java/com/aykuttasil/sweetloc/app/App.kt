@@ -4,13 +4,12 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.support.multidex.MultiDex
-
-import com.activeandroid.ActiveAndroid
 import com.aykuttasil.sweetloc.BuildConfig
 import com.aykuttasil.sweetloc.di.AppInjector
 import com.aykuttasil.sweetloc.service.NotificationOpenedHandler
 import com.aykuttasil.sweetloc.service.NotificationReceivedHandler
 import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.core.CrashlyticsCore
 import com.facebook.FacebookSdk
 import com.facebook.appevents.AppEventsLogger
 import com.onesignal.OneSignal
@@ -19,7 +18,6 @@ import com.orhanobut.logger.Logger
 import com.patloew.rxlocation.RxLocation
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-
 import hugo.weaving.DebugLog
 import io.fabric.sdk.android.Fabric
 import javax.inject.Inject
@@ -52,7 +50,7 @@ open class App : Application(), HasActivityInjector {
                 .logLevel(if (BuildConfig.DEBUG) LogLevel.FULL else LogLevel.NONE)
                 .methodOffset(0)
 
-        Fabric.with(this, Crashlytics())
+        initializeFabric()
 
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.ERROR)
         //OneSignal.init(this, "535821025252", "283c0725-f1ae-434a-8ea5-09f61b1246fc", new NotificationOpenedHandler(), new NotificationReceivedHandler());
@@ -68,6 +66,18 @@ open class App : Application(), HasActivityInjector {
         AppEventsLogger.activateApp(this)
     }
 
+    private fun initializeFabric() {
+        val crashlyticsCore = CrashlyticsCore.Builder()
+                .disabled(BuildConfig.DEBUG)
+                .build()
+
+        val crashlytics = Crashlytics.Builder()
+                .core(crashlyticsCore)
+                .build()
+
+        Fabric.with(this, crashlytics)
+    }
+
     override fun attachBaseContext(base: Context) {
         try {
             super.attachBaseContext(base)
@@ -75,10 +85,5 @@ open class App : Application(), HasActivityInjector {
         } catch (ignored: RuntimeException) {
             // Multidex support doesn't play well with Robolectric yet
         }
-    }
-
-    override fun onTerminate() {
-        super.onTerminate()
-        ActiveAndroid.dispose()
     }
 }

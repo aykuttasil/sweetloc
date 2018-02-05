@@ -1,14 +1,14 @@
 package com.aykuttasil.sweetloc.di
 
-import com.aykuttasil.sweetloc.activity.login.LoginActivity
-import com.aykuttasil.sweetloc.activity.login.LoginActivityModule
-import com.aykuttasil.sweetloc.activity.main.MainActivity
-import com.aykuttasil.sweetloc.activity.main.MainActivityModule
-import com.aykuttasil.sweetloc.activity.map.MapsActivity
-import com.aykuttasil.sweetloc.activity.map.MapsActivityModule
-import com.aykuttasil.sweetloc.activity.profile.ProfileActivity
-import com.aykuttasil.sweetloc.activity.profile.ProfileActivityModule
 import com.aykuttasil.sweetloc.di.scopes.PerActivity
+import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
+import com.aykuttasil.sweetloc.ui.activity.login.LoginActivityModule
+import com.aykuttasil.sweetloc.ui.activity.main.MainActivity
+import com.aykuttasil.sweetloc.ui.activity.main.MainActivityModule
+import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
+import com.aykuttasil.sweetloc.ui.activity.map.MapsActivityModule
+import com.aykuttasil.sweetloc.ui.activity.profile.ProfileActivity
+import com.aykuttasil.sweetloc.ui.activity.profile.ProfileActivityModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -16,7 +16,7 @@ import dagger.android.ContributesAndroidInjector
 /**
  * Created by aykutasil on 13.12.2017.
  */
-@Module
+@Module(includes = [FragmentBuilder::class])
 abstract class ActivityBuilder {
 
     @PerActivity
