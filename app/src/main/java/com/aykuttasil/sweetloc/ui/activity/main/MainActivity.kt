@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.view.Menu
 import android.view.MenuItem
 import com.aykuttasil.sweetloc.R
@@ -76,7 +77,8 @@ open class MainActivity : BaseActivity() {
                 */
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
+
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun checkAndOpenAudioSettings() {
         val notificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 

@@ -17,16 +17,44 @@ class UserRepository @Inject constructor(private val userDao: UserDao, private v
     fun loginUser(username: String, password: String): Single<FirebaseUser> {
         return apiManager.login(username, password)
                 .observeOn(Schedulers.io())
-                .doOnSuccess {
-                    //userDao.insertItem(userEntity)
+                .flatMap {
+                    val userEntity = UserEntity(
+                            userUUID = it.uid,
+                            userEmail = it.email!!,
+                            userPassword = password
+                    )
+
+                    Single.create<FirebaseUser> { emitter ->
+                        addUser(userEntity)
+                                .subscribe({
+                                    emitter.onSuccess(it)
+                                }, {
+                                    emitter.onError(it)
+                                })
+                    }
+
                 }
     }
 
     fun registerUser(username: String, password: String): Single<FirebaseUser> {
         return apiManager.register(username, password)
                 .observeOn(Schedulers.io())
-                .doOnSuccess {
-                    //userDao.insertItem(userEntity)
+                .flatMap {
+                    val userEntity = UserEntity(
+                            userUUID = it.uid,
+                            userEmail = it.email!!,
+                            userPassword = password
+                    )
+
+                    Single.create<FirebaseUser> { emitter ->
+                        addUser(userEntity)
+                                .subscribe({
+                                    emitter.onSuccess(it)
+                                }, {
+                                    emitter.onError(it)
+                                })
+                    }
+
                 }
     }
 

@@ -109,7 +109,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                 }, { error -> Logger.e(error, "HATA") })
     }
 
-    @DebugLog
     private fun initMap() {
         (map as SupportMapFragment).getMapAsync(this)
         mapsViewModel.sendMyLocation().observe(this, android.arch.lifecycle.Observer {
@@ -120,7 +119,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
     override fun onMapReady(googleMap: GoogleMap) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Logger.i("Permissinon is not Granted !")
+            Logger.i("Permission is not Granted !")
             return
         }
 

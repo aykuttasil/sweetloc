@@ -19,12 +19,12 @@ class DataManager @Inject constructor(private val userRepository: UserRepository
                                       private val locationRepository: LocationRepository,
                                       private val userTrackerRepository: UserTrackerRepository) {
 
-    fun loginUser(username: String, password: String): Single<FirebaseUser> {
-        return userRepository.loginUser(username, password)
+    fun loginUser(email: String, password: String): Single<FirebaseUser> {
+        return userRepository.loginUser(email, password)
     }
 
-    fun registerUser(username: String, password: String): Single<FirebaseUser> {
-        return userRepository.registerUser(username, password)
+    fun registerUser(email: String, password: String): Single<FirebaseUser> {
+        return userRepository.registerUser(email, password)
     }
 
     fun addUser(userEntity: UserEntity): Completable {

@@ -50,7 +50,7 @@ class SingleLocationRequestService : JobIntentService() {
                     location.accuracy < 150
                 }
                 .timeout(LOCATION_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS, Observable.error<Location>(Exception("Konum sapması çok yüksek.")))
-                .subscribe({ location ->
+                .subscribe({ _ ->
                     //sendLocationInformation(sendMyLocation)
                     mDisposable!!.dispose()
                     SingleLocationRequestReceiver.completeWakefulIntent(intent)

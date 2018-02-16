@@ -16,7 +16,7 @@
             android:id="@+id/Toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/tw__blue_pressed"
+            android:background="@color/colorAccent"
             app:collapseIcon="@drawable/md_nav_back"
             app:navigationIcon="@drawable/md_nav_back"
             app:popupTheme="@style/AppTheme.PopupOverlay"

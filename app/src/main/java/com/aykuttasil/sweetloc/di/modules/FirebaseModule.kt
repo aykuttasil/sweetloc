@@ -25,6 +25,6 @@ class FirebaseModule {
 
     @Singleton
     @Provides
-    internal fun firebaseDbService(database: DatabaseReference): FirebaseDbService = FirebaseDbService(database)
-    */
+    fun firebaseDbService(database: DatabaseReference): FirebaseDbService = FirebaseDbService(database)
+     */
 }

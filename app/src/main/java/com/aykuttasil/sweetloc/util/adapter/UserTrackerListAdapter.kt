@@ -88,7 +88,7 @@ class UserTrackerListAdapter @Inject constructor(val mContext: Context, val data
                 mImageViewProfilePicture.setImageDrawable(itemView.context.resources.getDrawable(R.drawable.ic_account_circle_light_blue_300_24dp))
             }
             mTextViewEmail.text = modelUserTracker.email
-            mButtonWakeUp.setOnClickListener { v ->
+            mButtonWakeUp.setOnClickListener { _ ->
                 Logger.i("mButtonWakeUp click")
                 SuperHelper.Companion.sendNotif(Const.ACTION_PHONE_UNMUTE, dataManager)
 
