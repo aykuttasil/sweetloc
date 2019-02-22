@@ -2,7 +2,6 @@ package com.aykuttasil.sweetloc.util.adapter
 
 import android.content.Context
 import android.media.AudioManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,25 +12,34 @@ import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.app.Const
 import com.aykuttasil.sweetloc.data.DataManager
 import com.aykuttasil.sweetloc.data.local.entity.UserTrackerEntity
-import com.aykuttasil.sweetloc.helper.SuperHelper
+import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.util.PicassoCircleTransform
 import com.orhanobut.logger.Logger
 import com.squareup.picasso.Picasso
-import hugo.weaving.DebugLog
 import org.jetbrains.anko.audioManager
 import javax.inject.Inject
 
-class UserTrackerListAdapter @Inject constructor(val mContext: Context, val dataManager: DataManager) : RecyclerView.Adapter<UserTrackerListAdapter.UserTrackerViewHolder>() {
+class UserTrackerListAdapter @Inject constructor(
+    val mContext: Context,
+    val dataManager: DataManager
+) : androidx.recyclerview.widget.RecyclerView.Adapter<UserTrackerListAdapter.UserTrackerViewHolder>() {
 
     private val mList = arrayListOf<UserTrackerEntity>()
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): UserTrackerViewHolder {
-        val vi = LayoutInflater.from(mContext).inflate(R.layout.listitem_user_tracker, parent, false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): UserTrackerViewHolder {
+        val vi =
+            LayoutInflater.from(mContext).inflate(R.layout.listitem_user_tracker, parent, false)
         return UserTrackerViewHolder(vi)
     }
 
-    override fun onBindViewHolder(holder: UserTrackerViewHolder?, position: Int) {
-        holder?.bind(mList[position])
+    override fun onBindViewHolder(
+        holder: UserTrackerViewHolder,
+        position: Int
+    ) {
+        holder.bind(mList[position])
     }
 
     override fun getItemCount(): Int {
@@ -64,7 +72,8 @@ class UserTrackerListAdapter @Inject constructor(val mContext: Context, val data
         notifyDataSetChanged()
     }
 
-    inner class UserTrackerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class UserTrackerViewHolder(itemView: View) :
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         var mImageViewProfilePicture: ImageView
         var mTextViewAdSoyad: TextView? = null
@@ -72,7 +81,8 @@ class UserTrackerListAdapter @Inject constructor(val mContext: Context, val data
         var mButtonWakeUp: Button
 
         init {
-            mImageViewProfilePicture = itemView.findViewById<View>(R.id.ImageViewProfilePicture) as ImageView
+            mImageViewProfilePicture =
+                itemView.findViewById<View>(R.id.ImageViewProfilePicture) as ImageView
             mTextViewEmail = itemView.findViewById<View>(R.id.TextViewEmail) as TextView
             mButtonWakeUp = itemView.findViewById<View>(R.id.ButtonWakeUp) as Button
         }
@@ -81,21 +91,23 @@ class UserTrackerListAdapter @Inject constructor(val mContext: Context, val data
             if (!modelUserTracker.profilePictureUrl.isNullOrEmpty()) {
                 Logger.i("Picture Url: " + modelUserTracker.profilePictureUrl)
                 Picasso.with(mContext)
-                        .load(modelUserTracker.profilePictureUrl)
-                        .transform(PicassoCircleTransform())
-                        .into(mImageViewProfilePicture)
+                    .load(modelUserTracker.profilePictureUrl)
+                    .transform(PicassoCircleTransform())
+                    .into(mImageViewProfilePicture)
             } else {
-                mImageViewProfilePicture.setImageDrawable(itemView.context.resources.getDrawable(R.drawable.ic_account_circle_light_blue_300_24dp))
+                mImageViewProfilePicture.setImageDrawable(itemView.context.resources.getDrawable(
+                    R.drawable.ic_account_circle_light_blue_300_24dp))
             }
             mTextViewEmail.text = modelUserTracker.email
             mButtonWakeUp.setOnClickListener { _ ->
                 Logger.i("mButtonWakeUp click")
-                SuperHelper.Companion.sendNotif(Const.ACTION_PHONE_UNMUTE, dataManager)
+                SweetLocHelper.Companion.sendNotif(Const.ACTION_PHONE_UNMUTE, dataManager)
 
                 val audioManager = mContext.audioManager
                 val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)
                 audioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
-                audioManager.setStreamVolume(AudioManager.STREAM_RING, maxVolume, AudioManager.FLAG_SHOW_UI + AudioManager.FLAG_PLAY_SOUND)
+                audioManager.setStreamVolume(AudioManager.STREAM_RING, maxVolume,
+                    AudioManager.FLAG_SHOW_UI + AudioManager.FLAG_PLAY_SOUND)
             }
         }
     }

@@ -4,8 +4,8 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.JobIntentService
+import androidx.core.app.ActivityCompat
+import androidx.core.app.JobIntentService
 import com.aykuttasil.sweetloc.app.App
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver
 import com.google.android.gms.location.LocationRequest

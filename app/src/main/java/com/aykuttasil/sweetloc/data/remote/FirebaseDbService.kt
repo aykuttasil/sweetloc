@@ -3,7 +3,11 @@ package com.aykuttasil.sweetloc.data.remote
 import com.aykuttasil.sweetloc.data.local.entity.LocationEntity
 import com.aykuttasil.sweetloc.data.remote.model.UserData
 import com.google.android.gms.tasks.Task
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseException
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
@@ -16,15 +20,15 @@ class FirebaseDbService @Inject constructor(private val database: DatabaseRefere
         return observeChild(daysNode(), LocationEntity::class.java)
     }
 
-/*
-    fun locations(userId: String): Observable<LocationEntity> {
+    /*
+        fun locations(userId: String): Observable<LocationEntity> {
 
 
-        return userData(userId)
-                .map { (locations) -> locations.orEmpty() }
+            return userData(userId)
+                    .map { (locations) -> locations.orEmpty() }
 
-    }
-    */
+        }
+        */
 
     private fun userData(userId: String): Observable<UserData> {
         return observeOptionalChild(userDataNode(userId), UserData::class.java, lazy { UserData() })
@@ -70,15 +74,26 @@ class FirebaseDbService @Inject constructor(private val database: DatabaseRefere
     }
     */
 
-    private fun <T> observeChild(path: String, clazz: Class<T>): Observable<T> {
+    private fun <T> observeChild(
+        path: String,
+        clazz: Class<T>
+    ): Observable<T> {
         return observeChildAndEmit(path, clazz, { it!! })
     }
 
-    private fun <T> observeOptionalChild(path: String, clazz: Class<T>, default: Lazy<T>): Observable<T> {
+    private fun <T> observeOptionalChild(
+        path: String,
+        clazz: Class<T>,
+        default: Lazy<T>
+    ): Observable<T> {
         return observeChildAndEmit(path, clazz, { it ?: default.value })
     }
 
-    private fun <T, V> observeChildAndEmit(path: String, clazz: Class<V>, map: (V?) -> T): Observable<T> {
+    private fun <T, V> observeChildAndEmit(
+        path: String,
+        clazz: Class<V>,
+        map: (V?) -> T
+    ): Observable<T> {
         return Observable.create { emitter: ObservableEmitter<T> ->
             val listener = object : ValueEventListener {
                 @Suppress("TooGenericExceptionCaught") // We want to add info to *any* problems
@@ -90,7 +105,8 @@ class FirebaseDbService @Inject constructor(private val database: DatabaseRefere
                         val value = dataSnapshot.getValue(clazz)
                         emitter.onNext(map(value))
                     } catch (e: Exception) {
-                        emitter.onError(DatabaseException("Problem in DB at path $path, class $clazz", e))
+                        emitter.onError(
+                            DatabaseException("Problem in DB at path $path, class $clazz", e))
                     }
                 }
 
@@ -108,39 +124,53 @@ class FirebaseDbService @Inject constructor(private val database: DatabaseRefere
         }.observeOn(Schedulers.io())
     }
 
-    fun addFavorite(eventId: String, userId: String): Completable {
+    fun addFavorite(
+        eventId: String,
+        userId: String
+    ): Completable {
         return updateFavorite(eventId, userId, { it.setValue(true) })
     }
 
-    fun removeFavorite(eventId: String, userId: String): Completable {
+    fun removeFavorite(
+        eventId: String,
+        userId: String
+    ): Completable {
         return updateFavorite(eventId, userId) { it.removeValue() }
     }
 
-    private fun updateFavorite(eventId: String, userId: String, action: (DatabaseReference) -> Task<Void>): Completable {
+    private fun updateFavorite(
+        eventId: String,
+        userId: String,
+        action: (DatabaseReference) -> Task<Void>
+    ): Completable {
         return Completable.create { emitter ->
             action(database.child(favoriteByIdNode(userId, eventId)))
-                    .addOnSuccessListener { emitter.onComplete() }
-                    .addOnFailureListener { e ->
-                        if (emitter.isDisposed) {
-                            return@addOnFailureListener
-                        }
-                        emitter.onError(e)
+                .addOnSuccessListener { emitter.onComplete() }
+                .addOnFailureListener { e ->
+                    if (emitter.isDisposed) {
+                        return@addOnFailureListener
                     }
+                    emitter.onError(e)
+                }
 
         }
     }
 
-    fun addAchievement(userId: String, achievementId: String, timestamp: Long?): Completable {
+    fun addAchievement(
+        userId: String,
+        achievementId: String,
+        timestamp: Long?
+    ): Completable {
         return Completable.create { emitter ->
             database.child(achievementByIdNode(userId, achievementId)).setValue(timestamp)
-                    .addOnSuccessListener { emitter.onComplete() }
-                    .addOnFailureListener { e ->
-                        if (emitter.isDisposed) {
-                            return@addOnFailureListener
-                        }
-
-                        emitter.onError(e)
+                .addOnSuccessListener { emitter.onComplete() }
+                .addOnFailureListener { e ->
+                    if (emitter.isDisposed) {
+                        return@addOnFailureListener
                     }
+
+                    emitter.onError(e)
+                }
         }
     }
 
@@ -153,6 +183,13 @@ class FirebaseDbService @Inject constructor(private val database: DatabaseRefere
     private fun trackByIdNode(trackId: String) = "data/tracks/$trackId"
     private fun venueInfoNode() = "data/venue"
     private fun userDataNode(userId: String) = "user/$userId"
-    private fun favoriteByIdNode(userId: String, eventId: String) = "${userDataNode(userId)}/favorites/$eventId"
-    private fun achievementByIdNode(userId: String, achievementId: String) = "${userDataNode(userId)}/achievements/$achievementId"
+    private fun favoriteByIdNode(
+        userId: String,
+        eventId: String
+    ) = "${userDataNode(userId)}/favorites/$eventId"
+
+    private fun achievementByIdNode(
+        userId: String,
+        achievementId: String
+    ) = "${userDataNode(userId)}/achievements/$achievementId"
 }

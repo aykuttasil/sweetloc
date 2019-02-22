@@ -1,8 +1,8 @@
 package com.aykuttasil.sweetloc.ui.fragment.usertrackerlist
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.aykuttasil.sweetloc.data.DataManager
 import com.aykuttasil.sweetloc.data.local.entity.UserTrackerEntity
 import io.reactivex.android.schedulers.AndroidSchedulers

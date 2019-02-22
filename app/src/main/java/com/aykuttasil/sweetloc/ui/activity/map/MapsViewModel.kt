@@ -1,9 +1,9 @@
 package com.aykuttasil.sweetloc.ui.activity.map
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import android.location.Location
 import com.aykuttasil.androidbasichelperlib.SuperHelper
 import com.aykuttasil.sweetloc.data.DataManager

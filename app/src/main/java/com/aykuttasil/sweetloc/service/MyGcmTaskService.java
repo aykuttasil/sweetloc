@@ -63,7 +63,7 @@ public class MyGcmTaskService extends GcmTaskService {
 
             ZiyaretRequest request = new Gson().fromJson(jsonModel, ZiyaretRequest.class);
             request.setRequestType(ReaktifRequest.REAKTIF_REQUEST_TYPE_GCM);
-            request.setProcessDate(SuperHelper.getFormatTime());
+            request.setProcessDate(SweetLocHelper.getFormatTime());
             ZiyaretResponse ziyaretResponse = sendZiyaretProcess(request);
             if (ziyaretResponse != null) {
                 switch (ziyaretResponse.getCode()) {
@@ -87,12 +87,12 @@ public class MyGcmTaskService extends GcmTaskService {
                 }
             }
         } catch (Exception e) {
-            SuperHelper.CrashlyticsLog(e);
+            SweetLocHelper.CrashlyticsLog(e);
             e.printStackTrace();
         }
 
         modelGcmTask.setTaskTryCount(modelGcmTask.getTaskTryCount() + 1);
-        modelGcmTask.setTaskDate(SuperHelper.getFormatTime());
+        modelGcmTask.setTaskDate(SweetLocHelper.getFormatTime());
         modelGcmTask.save();
 
         if (modelGcmTask.getTaskTryCount() == Const.REAKTIF_TASK_TRY_COUNT) {

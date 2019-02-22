@@ -1,6 +1,6 @@
 package com.aykuttasil.sweetloc.util
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 
 open class RxAwareViewModel : ViewModel() {

@@ -43,5 +43,4 @@ class AppModule {
     internal fun provideRxLocation(application: Application): RxLocation {
         return RxLocation(application)
     }
-
 }

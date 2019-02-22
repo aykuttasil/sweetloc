@@ -15,12 +15,14 @@ class UserTrackerListModule {
 
     @Provides
     @PerFragment
-    fun provideAdapter(context: Context, dataManager: DataManager): UserTrackerListAdapter = UserTrackerListAdapter(context, dataManager)
+    fun provideAdapter(
+        context: Context,
+        dataManager: DataManager
+    ): UserTrackerListAdapter = UserTrackerListAdapter(context, dataManager)
 
     @Provides
     @PerFragment
     fun provideContext(userTrackerListFragment: UserTrackerListFragment): Context {
         return userTrackerListFragment.context!!
     }
-
 }

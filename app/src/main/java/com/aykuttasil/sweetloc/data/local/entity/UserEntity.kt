@@ -1,8 +1,8 @@
 package com.aykuttasil.sweetloc.data.local.entity
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
-import android.databinding.BaseObservable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.databinding.BaseObservable
 
 /**
  * Created by aykutasil on 24.12.2017.
@@ -60,17 +60,17 @@ import android.databinding.BaseObservable
  */
 @Entity(tableName = "User")
 data class UserEntity(
-        @PrimaryKey var userUUID: String,
-        var userEmail: String,
-        var userPassword: String,
-        var userName: String? = null,
-        var userSurname: String? = null,
-        var userTel: String? = null,
-        var userRegId: String? = null,
-        var userToken: String? = null,
-        var userImageUrl: String? = null,
-        var userOneSignalId: String? = null,
-        var userCity: String? = null
+    @PrimaryKey var userUUID: String,
+    var userEmail: String,
+    var userPassword: String,
+    var userName: String? = null,
+    var userSurname: String? = null,
+    var userTel: String? = null,
+    var userRegId: String? = null,
+    var userToken: String? = null,
+    var userImageUrl: String? = null,
+    var userOneSignalId: String? = null,
+    var userCity: String? = null
 ) : BaseObservable() {
 
     /*
@@ -95,5 +95,4 @@ data class UserEntity(
             notifyPropertyChanged(BR.userJob)
         }
         */
-
 }

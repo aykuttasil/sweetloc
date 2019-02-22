@@ -1,18 +1,21 @@
 package com.aykuttasil.sweetloc.network;
 
+import android.annotation.SuppressLint;
+
 import com.aykuttasil.sweetloc.network.model.LocationRequest;
 
 import org.greenrobot.eventbus.EventBus;
 
 import hugo.weaving.DebugLog;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by aykutasil on 23.06.2016.
  */
 public class ApiManager {
 
+    @SuppressLint("CheckResult")
     @DebugLog
     public static void Location(LocationRequest request) {
         try {

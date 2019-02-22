@@ -1,13 +1,13 @@
 package com.aykuttasil.sweetloc.ui.activity.main
 
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Transformations
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.aykuttasil.sweetloc.app.App
 import com.aykuttasil.sweetloc.data.DataManager
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
-import com.aykuttasil.sweetloc.helper.SuperHelper
+import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.onesignal.OneSignal
 import com.orhanobut.logger.Logger
 import io.reactivex.Maybe
@@ -25,23 +25,23 @@ class MainActivityViewModel @Inject constructor(val app: App) : AndroidViewModel
     lateinit var dataManager: DataManager
 
     @Inject
-    lateinit var superHelper: SuperHelper
+    lateinit var sweetLocHelper: SweetLocHelper
 
     private val compositeDisposable = CompositeDisposable()
 
     val isUserLogin = MutableLiveData<Boolean>()
 
     fun checkUserLogin(): LiveData<Boolean> {
-        compositeDisposable.add(superHelper.checkUser()
+        compositeDisposable.add(sweetLocHelper.checkUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     if (it) {
-                        superHelper.startPeriodicTask(app)
+                        sweetLocHelper.startPeriodicTask(app)
                         isUserLogin.value = true
                     } else {
                         Logger.i("checkUserLogin: false")
-                        superHelper.logoutUser()
+                        sweetLocHelper.logoutUser()
                         isUserLogin.value = false
                     }
                 }, {

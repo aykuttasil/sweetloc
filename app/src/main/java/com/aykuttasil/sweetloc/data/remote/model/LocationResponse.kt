@@ -1,11 +1,9 @@
-package com.aykuttasil.sweetloc.data.remote.model;
+package com.aykuttasil.sweetloc.data.remote.model
 
 /**
  * Created by aykutasil on 3.07.2016.
  */
-public class LocationResponse extends BaseResponse {
-
-    /*
+class LocationResponse : BaseResponse()/*
     @Expose
     @SerializedName("Data")
     private ModelLocation Data;
@@ -18,4 +16,3 @@ public class LocationResponse extends BaseResponse {
         Data = data;
     }
     */
-}

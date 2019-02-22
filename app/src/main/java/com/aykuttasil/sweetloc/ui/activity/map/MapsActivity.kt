@@ -1,13 +1,13 @@
 package com.aykuttasil.sweetloc.ui.activity.map
 
 import android.Manifest
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProviders
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.NavUtils
+import com.google.android.material.snackbar.Snackbar
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NavUtils
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -71,7 +71,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
         setup()
 
-        isMapReady.observe(this, android.arch.lifecycle.Observer {
+        isMapReady.observe(this, androidx.lifecycle.Observer {
             if (it == true) {
 
             } else {
@@ -111,7 +111,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
     private fun initMap() {
         (map as SupportMapFragment).getMapAsync(this)
-        mapsViewModel.sendMyLocation().observe(this, android.arch.lifecycle.Observer {
+        mapsViewModel.sendMyLocation().observe(this, androidx.lifecycle.Observer {
             Logger.i("aa: " + it)
         })
         // initLocationListener()
@@ -168,10 +168,10 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                 .retry() // Eğer onError çalışırsa tekrar subscribe olunuyor
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    SuperHelper.sendLocationInformation(it)
+                    SweetLocHelper.sendLocationInformation(it)
                 }, { error ->
                     Logger.e(error, "HATA")
-                    //SuperHelper.CrashlyticsError(error)
+                    //SweetLocHelper.CrashlyticsError(error)
                 })
 
         mCompositeDisposible.add(disposable)
@@ -249,7 +249,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                     marker.remove()
                 }
             } catch (e: Exception) {
-                SuperHelper.CrashlyticsError(e)
+                SweetLocHelper.CrashlyticsError(e)
                 mGoogleMap?.clear()
                 break
             }
@@ -323,7 +323,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             userLocTime.text = Html.fromHtml("<b>Zaman: </b>" + modelLocation.formatTime)
             userLocAccuracy.text = Html.fromHtml("<b>Sapma: </b>" + String.format(Locale.getDefault(), "%.2f", modelLocation.accuracy) + " m")
         } catch (e: Exception) {
-            SuperHelper.CrashlyticsError(e)
+            SweetLocHelper.CrashlyticsError(e)
             e.printStackTrace()
         }*/
 
@@ -347,7 +347,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             }
         }, TimeUnit.SECONDS.toMillis(WAIT_LOCATION_SECOND.toLong()))
 
-        //SuperHelper.sendNotif(Const.ACTION_KONUM_YOLLA)
+        //SweetLocHelper.sendNotif(Const.ACTION_KONUM_YOLLA)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

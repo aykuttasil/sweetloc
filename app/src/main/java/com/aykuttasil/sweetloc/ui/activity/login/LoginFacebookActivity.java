@@ -2,7 +2,7 @@ package com.aykuttasil.sweetloc.ui.activity.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aykuttasil.sweetloc.R;
-import com.aykuttasil.sweetloc.helper.SuperHelper;
+import com.aykuttasil.sweetloc.helper.SweetLocHelper;
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -82,7 +82,7 @@ public class LoginFacebookActivity extends BaseActivity {
             @Override
             public void onError(FacebookException error) {
                 Logger.e(error, "facebook:onError");
-                SuperHelper.CrashlyticsError(error);
+                SweetLocHelper.CrashlyticsError(error);
             }
         });
         */
@@ -108,7 +108,7 @@ public class LoginFacebookActivity extends BaseActivity {
                     // the auth state listener will be notified and logic to handle the
                     // signed in user can be handled in the listener.
                     if (!task.isSuccessful()) {
-                        //SuperHelper..CrashlyticsError(task.getException());
+                        //SweetLocHelper..CrashlyticsError(task.getException());
                         Logger.e(task.getException(), "HATA");
                         Toast.makeText(LoginFacebookActivity.this, "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
@@ -129,7 +129,7 @@ public class LoginFacebookActivity extends BaseActivity {
 
         tokenView.findViewById(R.id.DevamEt).setOnClickListener(view -> {
             EditText tokentext = tokenView.findViewById(R.id.EditTextTrackerId);
-            if (!SuperHelper.validateIsEmpty(tokentext)) {
+            if (!SweetLocHelper.validateIsEmpty(tokentext)) {
                 dialog.dismiss();
                 /*
                 ModelUser modelUser = new ModelUser();

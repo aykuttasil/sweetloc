@@ -1,6 +1,6 @@
 package com.aykuttasil.sweetloc.model.process
 
-import android.support.design.widget.Snackbar
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * Created by aykutasil on 1.02.2018.

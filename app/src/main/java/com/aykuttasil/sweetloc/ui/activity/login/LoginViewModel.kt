@@ -1,7 +1,7 @@
 package com.aykuttasil.sweetloc.ui.activity.login
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.aykuttasil.sweetloc.data.DataManager
 import com.aykuttasil.sweetloc.model.process.DataOkDialog
 import com.aykuttasil.sweetloc.util.RxAwareViewModel

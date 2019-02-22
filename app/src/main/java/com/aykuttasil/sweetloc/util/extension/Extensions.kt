@@ -2,37 +2,41 @@ package com.aykuttasil.sweetloc.util.extension
 
 import android.app.Activity
 import android.content.Context
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SnapHelper
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.style.ClickableSpan
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
-
+import java.util.Date
+import java.util.Locale
 
 fun ImageView.loadImageFromUrl(url: String) {
     Glide.with(context)
-            .load(url)
-            .into(this)
+        .load(url)
+        .into(this)
 }
 
 fun Activity.hideKeyboard() {
@@ -61,8 +65,11 @@ inline fun <T : View> T.afterMeasured(crossinline f: T.() -> Unit) {
 /**
  * Extension method to simplify the code needed to apply spans on a specific sub string.
  */
-inline fun SpannableStringBuilder.withSpan(vararg spans: Any, action: SpannableStringBuilder.() -> Unit):
-        SpannableStringBuilder {
+inline fun SpannableStringBuilder.withSpan(
+    vararg spans: Any,
+    action: SpannableStringBuilder.() -> Unit
+):
+    SpannableStringBuilder {
     val from = length
     action()
 
@@ -82,19 +89,20 @@ fun Context.getColorCompat(color: Int) = ContextCompat.getColor(this, color)
  *  Extension method to provide simpler access to {@link ContextCompat#getColor(int)}
  *  from a [Fragment].
  */
-fun Fragment.getColorCompat(color: Int) = context?.getColorCompat(color)
+fun androidx.fragment.app.Fragment.getColorCompat(color: Int) = context?.getColorCompat(color)
 
 /**
  * Extension method to provide simpler access to {@link ContextCompat#getDrawableCompat(int)}.
  */
 fun Context.getDrawableCompat(drawableResId: Int): Drawable? = ContextCompat
-        .getDrawable(this, drawableResId)
+    .getDrawable(this, drawableResId)
 
 /**
  * Extension method to provide simpler access to {@link ContextCompat#getDrawableCompat(int)}
  * from a [Fragment].
  */
-fun Fragment.getDrawableCompat(drawableResId: Int) = context?.getDrawableCompat(drawableResId)
+fun androidx.fragment.app.Fragment.getDrawableCompat(drawableResId: Int) =
+    context?.getDrawableCompat(drawableResId)
 
 /**
  * Extension method to provide simpler access to {@link View#getResources()#getString(int)}.
@@ -116,7 +124,7 @@ fun View.showKeyboard() {
 fun Activity.hideSoftKeyboard() {
     if (currentFocus != null) {
         val inputMethodManager = getSystemService(Context
-                .INPUT_METHOD_SERVICE) as InputMethodManager
+            .INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
     }
 }
@@ -124,7 +132,7 @@ fun Activity.hideSoftKeyboard() {
 /**
  * Extension method to provide hide keyboard for [Fragment].
  */
-fun Fragment.hideSoftKeyboard() {
+fun androidx.fragment.app.Fragment.hideSoftKeyboard() {
     activity?.hideSoftKeyboard()
 }
 
@@ -144,7 +152,8 @@ fun Int.twoDigitTime() = if (this < 10) "0" + toString() else toString()
 /**
  * Extension method to provide quicker access to the [LayoutInflater] from [Context].
  */
-fun Context.getLayoutInflater() = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+fun Context.getLayoutInflater() =
+    getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
 /**
  * Extension method to provide quicker access to the [LayoutInflater] from a [View].
@@ -216,7 +225,10 @@ fun String.dateInFormat(format: String): Date? {
     return parsedDate
 }
 
-fun getClickableSpan(color: Int, action: (view: View) -> Unit): ClickableSpan {
+fun getClickableSpan(
+    color: Int,
+    action: (view: View) -> Unit
+): ClickableSpan {
 
     return object : ClickableSpan() {
         override fun onClick(view: View) {
@@ -234,28 +246,37 @@ fun getClickableSpan(color: Int, action: (view: View) -> Unit): ClickableSpan {
  * Extension method to be used as the body for functions that are not yet implemented, which will
  * display a [Toast] with the specified [message].
  */
-fun Fragment.NOT_IMPL(message: String = "This action is not implemented yet!") {
+fun androidx.fragment.app.Fragment.NOT_IMPL(message: String = "This action is not implemented yet!") {
     TOAST(message)
 }
 
 /**
  * Extension method used to display a [Toast] message to the user.
  */
-fun Fragment.TOAST(message: String, duration: Int = Toast.LENGTH_SHORT) {
+fun androidx.fragment.app.Fragment.TOAST(
+    message: String,
+    duration: Int = Toast.LENGTH_SHORT
+) {
     Toast.makeText(context, message, duration).show()
 }
 
 /**
  * Extension method used to display a [Toast] message to the user.
  */
-fun Fragment.TOAST(messageResId: Int, duration: Int = Toast.LENGTH_SHORT) {
+fun androidx.fragment.app.Fragment.TOAST(
+    messageResId: Int,
+    duration: Int = Toast.LENGTH_SHORT
+) {
     Toast.makeText(context, messageResId, duration).show()
 }
 
 /**
  * Extension method use to display a [Snackbar] message to the user.
  */
-fun View.displaySnakbar(message: String, duration: Int = Snackbar.LENGTH_SHORT): Snackbar {
+fun View.displaySnakbar(
+    message: String,
+    duration: Int = Snackbar.LENGTH_SHORT
+): Snackbar {
     val snakbar = Snackbar.make(this, message, duration)
     snakbar.show()
     return snakbar
@@ -264,7 +285,10 @@ fun View.displaySnakbar(message: String, duration: Int = Snackbar.LENGTH_SHORT):
 /**
  * Extension method use to display a [Snackbar] message to the user.
  */
-fun View.displaySnakbar(messageResId: Int, duration: Int = Snackbar.LENGTH_SHORT): Snackbar {
+fun View.displaySnakbar(
+    messageResId: Int,
+    duration: Int = Snackbar.LENGTH_SHORT
+): Snackbar {
     val snakbar = Snackbar.make(this, messageResId, duration)
     snakbar.show()
     return snakbar
@@ -344,11 +368,14 @@ fun View.getDisplaySize() = context.getDisplaySize()
  * Provide the ability to snap to a specified [position] in the specified [recyclerView]
  * using [SnapHelper].
  */
-fun SnapHelper.snapToPosition(recyclerView: RecyclerView, position: Int) {
+fun SnapHelper.snapToPosition(
+    recyclerView: RecyclerView,
+    position: Int
+) {
     recyclerView.apply {
         val view = findViewHolderForAdapterPosition(position)?.itemView
         val snapPositions = view?.let {
-            calculateDistanceToFinalSnap(layoutManager, it)
+            calculateDistanceToFinalSnap(layoutManager!!, it)
         }
 
         snapPositions?.let { smoothScrollBy(it[0], it[1]) }
@@ -380,7 +407,8 @@ fun Activity.isKeyboardVisible(): Boolean {
  * @return the [ViewTreeObserver] of the [Activity] this fragment currently attached to, or null
  * if the fragment is detached.
  */
-fun Fragment.getViewTreeObserver() = activity?.window?.decorView?.viewTreeObserver
+fun androidx.fragment.app.Fragment.getViewTreeObserver() =
+    activity?.window?.decorView?.viewTreeObserver
 
 /**
  * Extension method to set width for View.

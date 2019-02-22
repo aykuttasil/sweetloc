@@ -8,10 +8,13 @@ import android.preference.PreferenceManager
  * Created by aykutasil on 15.01.2018.
  */
 
+fun defaultPrefs(context: Context): SharedPreferences =
+    PreferenceManager.getDefaultSharedPreferences(context)
 
-fun defaultPrefs(context: Context): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
-fun customPrefs(context: Context, name: String): SharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+fun customPrefs(
+    context: Context,
+    name: String
+): SharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE)
 
 inline fun SharedPreferences.edit(operation: (SharedPreferences.Editor) -> Unit) {
     val editor = this.edit()
@@ -22,7 +25,10 @@ inline fun SharedPreferences.edit(operation: (SharedPreferences.Editor) -> Unit)
 /**
  * puts a key value pair in shared prefs if doesn't exists, otherwise updates value on given [key]
  */
-operator fun SharedPreferences.set(key: String, value: Any?) {
+operator fun SharedPreferences.set(
+    key: String,
+    value: Any?
+) {
     when (value) {
         is String? -> edit({ it.putString(key, value) })
         is Int -> edit({ it.putInt(key, value) })
@@ -38,7 +44,10 @@ operator fun SharedPreferences.set(key: String, value: Any?) {
  * [T] is the type of value
  * @param defaultValue optional default value - will take null for strings, false for bool and -1 for numeric values if [defaultValue] is not specified
  */
-inline operator fun <reified T : Any> SharedPreferences.get(key: String, defaultValue: T? = null): T? {
+inline operator fun <reified T : Any> SharedPreferences.get(
+    key: String,
+    defaultValue: T? = null
+): T? {
     return when (T::class) {
         String::class -> getString(key, defaultValue as? String) as T?
         Int::class -> getInt(key, defaultValue as? Int ?: -1) as T?

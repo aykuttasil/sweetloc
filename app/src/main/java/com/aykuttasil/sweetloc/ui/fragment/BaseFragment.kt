@@ -1,6 +1,6 @@
 package com.aykuttasil.sweetloc.ui.fragment
 
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 
 /**
  * Created by aykutasil on 8.07.2016.

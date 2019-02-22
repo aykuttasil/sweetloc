@@ -1,14 +1,14 @@
 package com.aykuttasil.sweetloc.util.delegates
 
-import android.databinding.DataBindingUtil
-import android.databinding.ViewDataBinding
-import android.support.annotation.LayoutRes
-import android.support.v4.app.Fragment
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.annotation.LayoutRes
+import androidx.fragment.app.Fragment
 import android.view.ViewGroup
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-class Inflate<in R : Fragment, out T : ViewDataBinding>(@LayoutRes private val layoutRes: Int) : ReadOnlyProperty<R, T> {
+class Inflate<in R : androidx.fragment.app.Fragment, out T : ViewDataBinding>(@LayoutRes private val layoutRes: Int) : ReadOnlyProperty<R, T> {
 
     private var binding: T? = null
 
@@ -22,6 +22,6 @@ class Inflate<in R : Fragment, out T : ViewDataBinding>(@LayoutRes private val l
     }
 }
 
-fun <R : Fragment, T : ViewDataBinding> inflate(@LayoutRes layoutRes: Int): Inflate<R, T> {
+fun <R : androidx.fragment.app.Fragment, T : ViewDataBinding> inflate(@LayoutRes layoutRes: Int): Inflate<R, T> {
     return Inflate(layoutRes)
 }

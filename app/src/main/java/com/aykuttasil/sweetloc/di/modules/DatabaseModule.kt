@@ -1,6 +1,6 @@
 package com.aykuttasil.sweetloc.di.modules
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 import com.aykuttasil.sweetloc.data.local.AppDatabase
 import com.aykuttasil.sweetloc.di.ApplicationContext
@@ -17,7 +17,9 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).fallbackToDestructiveMigration().build()
+    fun provideDatabase(@ApplicationContext context: Context) =
+        Room.databaseBuilder(context, AppDatabase::class.java,
+            DB_NAME).fallbackToDestructiveMigration().build()
 
     @Provides
     @Singleton

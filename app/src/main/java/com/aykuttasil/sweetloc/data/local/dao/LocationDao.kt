@@ -1,7 +1,11 @@
 package aykuttasil.com.myviewmodelskeleton.data.local.dao
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.*
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import com.aykuttasil.sweetloc.data.local.entity.LocationEntity
 import io.reactivex.Flowable
 
@@ -25,7 +29,6 @@ abstract class LocationDao {
 
     @Query("SELECT * FROM Location WHERE locationId=:id")
     abstract fun getItem(id: Long): LocationEntity
-
 
     /*@Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertItems(list: List<LocationEntity>)

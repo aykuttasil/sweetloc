@@ -1,7 +1,7 @@
 package com.aykuttasil.sweetloc.ui.activity.base
 
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
@@ -17,11 +17,10 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun supportFragmentInjector(): DispatchingAndroidInjector<Fragment> {
         return dispatchingAndroidInjector
     }
-    
+
     companion object {
         const val LOGIN_REQUEST_CODE = 1001
     }
-
 
     //    @DebugLog
     //    public void setPeriodicTask(Context context) {
@@ -118,6 +117,5 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
     //
     //        alarmManager.cancel(pendingIntent);
     //    }
-
 
 }

@@ -1,7 +1,7 @@
 package com.aykuttasil.sweetloc.data.local.dao
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.room.*
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.aykuttasil.sweetloc.data.local.entity.UserTrackerEntity
 import io.reactivex.Flowable
 

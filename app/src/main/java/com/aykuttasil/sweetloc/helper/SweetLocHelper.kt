@@ -17,9 +17,12 @@ import hugo.weaving.DebugLog
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import org.jetbrains.anko.coroutines.experimental.bg
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.jetbrains.anko.alarmManager
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
@@ -27,30 +30,31 @@ import javax.inject.Inject
 /**
  * Created by aykutasil on 12.07.2016.
  */
-class SuperHelper @Inject constructor(private val dataManager: DataManager) : com.aykuttasil.androidbasichelperlib.SuperHelper() {
+class SweetLocHelper @Inject constructor(private val dataManager: DataManager) :
+    com.aykuttasil.androidbasichelperlib.SuperHelper() {
 
     @DebugLog
     fun resetSweetLoc(context: Context) {
-        async(UI) {
+        GlobalScope.async(context = Dispatchers.Main) {
             dataManager.getUser()
-                    .flatMapCompletable {
-                        dataManager.deleteUser(it)
-                    }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
-                    .subscribe {
-                        stopPeriodicTask(context)
-                        logoutUser()
-                    }
+                .flatMapCompletable {
+                    dataManager.deleteUser(it)
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe {
+                    stopPeriodicTask(context)
+                    logoutUser()
+                }
         }
     }
 
     fun checkUser(): Single<Boolean> {
         return Single.create { emitter: SingleEmitter<Boolean> ->
             try {
-                async(UI)
-                {
-                    val userEntity = bg { dataManager.getUserEntity() }.await()
+                GlobalScope.async(context = Dispatchers.Main) {
+                    val userEntity =
+                        withContext(Dispatchers.Default) { dataManager.getUserEntity() }
                     val firebaseUser = FirebaseAuth.getInstance().currentUser
 
                     if (userEntity != null && firebaseUser != null) {
@@ -114,8 +118,8 @@ class SuperHelper @Inject constructor(private val dataManager: DataManager) : co
         modelLocation.setAccuracy(sendMyLocation.accuracy)
         modelLocation.setAddress(sendMyLocation.provider)
         modelLocation.setTime(sendMyLocation.time)
-        modelLocation.setFormatTime(com.aykuttasil.androidbasichelperlib.SuperHelper.getFormatTime(sendMyLocation.time))
-        modelLocation.setCreateDate(com.aykuttasil.androidbasichelperlib.SuperHelper.getFormatTime())
+        modelLocation.setFormatTime(com.aykuttasil.androidbasichelperlib.SweetLocHelper.getFormatTime(sendMyLocation.time))
+        modelLocation.setCreateDate(com.aykuttasil.androidbasichelperlib.SweetLocHelper.getFormatTime())
 
         FirebaseDatabase.getInstance().reference
                 .child(ModelLocation::class.java!!.getSimpleName())
@@ -124,61 +128,60 @@ class SuperHelper @Inject constructor(private val dataManager: DataManager) : co
                 .setValue(modelLocation)
     }
 */
-    @DebugLog
+
     fun startPeriodicTask(context: Context) {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmManager = context.alarmManager
         val intent = Intent(context.applicationContext, SingleLocationRequestReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context,
-                Const.REQUEST_CODE_BROADCAST_LOCATION,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+            Const.REQUEST_CODE_BROADCAST_LOCATION,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-                SystemClock.elapsedRealtime() + 3000,
-                AlarmManager.INTERVAL_HALF_HOUR,
-                pendingIntent)
+            SystemClock.elapsedRealtime() + 3000,
+            AlarmManager.INTERVAL_HALF_HOUR,
+            pendingIntent)
     }
 
-
-    @DebugLog
     fun stopPeriodicTask(context: Context) {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmManager = context.alarmManager
         val intent = Intent(context.applicationContext, SingleLocationRequestReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context,
-                Const.REQUEST_CODE_BROADCAST_LOCATION,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+            Const.REQUEST_CODE_BROADCAST_LOCATION,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
 
         alarmManager.cancel(pendingIntent)
     }
 
-/*
-    @DebugLog
-    fun CrashlyticsError(error: Throwable) {
-        if (DbManager.getModelUser() != null && DbManager.getModelUser().getEmail() != null) {
-            Crashlytics.setUserEmail(DbManager.getModelUser().getEmail())
-            Crashlytics.logException(error)
-        } else {
-            Crashlytics.logException(error)
+    /*
+        @DebugLog
+        fun CrashlyticsError(error: Throwable) {
+            if (DbManager.getModelUser() != null && DbManager.getModelUser().getEmail() != null) {
+                Crashlytics.setUserEmail(DbManager.getModelUser().getEmail())
+                Crashlytics.logException(error)
+            } else {
+                Crashlytics.logException(error)
+            }
         }
-    }
 
-    @DebugLog
-    fun CrashlyticsLog(log: String) {
-        if (DbManager.getModelUser() != null && DbManager.getModelUser().getEmail() != null) {
-            Crashlytics.setUserEmail(DbManager.getModelUser().getEmail())
-            Crashlytics.log(log)
-        } else {
-            Crashlytics.log(log)
+        @DebugLog
+        fun CrashlyticsLog(log: String) {
+            if (DbManager.getModelUser() != null && DbManager.getModelUser().getEmail() != null) {
+                Crashlytics.setUserEmail(DbManager.getModelUser().getEmail())
+                Crashlytics.log(log)
+            } else {
+                Crashlytics.log(log)
+            }
         }
-    }
-    */
-
+        */
 
     companion object {
-        fun sendNotif(action: String, dataManager: DataManager) {
+        fun sendNotif(
+            action: String,
+            dataManager: DataManager
+        ) {
             try {
-                async(UI)
-                {
+                GlobalScope.launch(Dispatchers.Main) {
                     val mainObject = JSONObject()
 
                     val contents = JSONObject()
@@ -197,12 +200,15 @@ class SuperHelper @Inject constructor(private val dataManager: DataManager) : co
 
                     val playerIds = JSONArray()
 
-                    val userEntity = bg { dataManager.getUserEntity() }.await()
-                    val userTrackerList = bg { dataManager.getUserTrackers(userEntity?.userUUID!!).blockingSingle() }.await()
+                    val userEntity = withContext(Dispatchers.IO) { dataManager.getUserEntity() }
+
+                    val userTrackerList = withContext(Dispatchers.IO) {
+                        dataManager.getUserTrackers(userEntity?.userUUID!!).blockingSingle()
+                    }
 
                     userTrackerList
-                            .filter { it.oneSignalUserId != null }
-                            .forEach { playerIds.put(it.oneSignalUserId) }
+                        .filter { it.oneSignalUserId != null }
+                        .forEach { playerIds.put(it.oneSignalUserId) }
 
                     if (BuildConfig.DEBUG) {
                         //playerIds.put("428ef398-76d3-4ca9-ab4c-60d591879365");
@@ -212,15 +218,16 @@ class SuperHelper @Inject constructor(private val dataManager: DataManager) : co
                     mainObject.put("include_player_ids", playerIds)
                     Logger.json(mainObject.toString())
                     if (playerIds.length() > 0) {
-                        OneSignal.postNotification(mainObject, object : OneSignal.PostNotificationResponseHandler {
-                            override fun onSuccess(response: JSONObject) {
-                                Logger.json(response.toString())
-                            }
+                        OneSignal.postNotification(mainObject,
+                            object : OneSignal.PostNotificationResponseHandler {
+                                override fun onSuccess(response: JSONObject) {
+                                    Logger.json(response.toString())
+                                }
 
-                            override fun onFailure(response: JSONObject) {
-                                Logger.json(response.toString())
-                            }
-                        })
+                                override fun onFailure(response: JSONObject) {
+                                    Logger.json(response.toString())
+                                }
+                            })
                     }
                 }
             } catch (e: Exception) {
@@ -228,6 +235,4 @@ class SuperHelper @Inject constructor(private val dataManager: DataManager) : co
             }
         }
     }
-
-
 }

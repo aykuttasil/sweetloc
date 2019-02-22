@@ -10,15 +10,9 @@ import com.aykuttasil.sweetloc.data.DataManager
 import com.aykuttasil.sweetloc.databinding.FragmentProfileBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.aykuttasil.sweetloc.util.PicassoCircleTransform
 import com.aykuttasil.sweetloc.util.delegates.Inflate
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import org.jetbrains.anko.coroutines.experimental.bg
 import javax.inject.Inject
-
 
 open class ProfileFragment : BaseFragment(), Injectable {
 
@@ -27,17 +21,25 @@ open class ProfileFragment : BaseFragment(), Injectable {
 
     private val binding: FragmentProfileBinding by Inflate(R.layout.fragment_profile)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setInformation()
         TextViewEmail.movementMethod = ScrollingMovementMethod()
     }
 
     private fun setInformation() {
+        /*
         async(UI)
         {
             val user = bg { dataManager.getUserEntity() }.await()
@@ -45,11 +47,10 @@ open class ProfileFragment : BaseFragment(), Injectable {
 
             TextViewEmail.text = user?.userEmail
             Picasso.with(this@ProfileFragment.context)
-                    .load(user?.userImageUrl)
-                    .transform(PicassoCircleTransform())
-                    .into(ImageViewProfilePicture)
+                .load(user?.userImageUrl)
+                .transform(PicassoCircleTransform())
+                .into(ImageViewProfilePicture)
         }
-
+        */
     }
-
 }

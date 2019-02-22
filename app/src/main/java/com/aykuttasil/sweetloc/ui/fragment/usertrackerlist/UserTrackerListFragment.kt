@@ -1,8 +1,8 @@
 package com.aykuttasil.sweetloc.ui.fragment.usertrackerlist
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,17 +36,23 @@ open class UserTrackerListFragment : BaseFragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerViewAdapter()
+        setUI()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         userTrackerListViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserTrackerListViewModel::class.java)
-        userTrackerListViewModel.getTrackerList().observe(this, android.arch.lifecycle.Observer {
+
+        userTrackerListViewModel.getTrackerList().observe(this, androidx.lifecycle.Observer {
             it?.let {
                 mAdapter.clearAndAddItemList(it)
             }
         })
     }
 
-    private fun initRecyclerViewAdapter() {
-        RecyclerView!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    private fun setUI() {
+        RecyclerView!!.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context,
+            androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
         RecyclerView!!.adapter = mAdapter
     }
 

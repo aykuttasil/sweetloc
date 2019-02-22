@@ -1,6 +1,6 @@
 package aykuttasil.com.myviewmodelskeleton.data.local.dao
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 
 @Dao

@@ -1,20 +1,19 @@
 package com.aykuttasil.sweetloc.ui.activity.main
 
-import android.annotation.TargetApi
 import android.app.Activity
 import android.app.NotificationManager
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
+import androidx.annotation.RequiresApi
 import android.view.Menu
 import android.view.MenuItem
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.di.ViewModelFactory
-import com.aykuttasil.sweetloc.helper.SuperHelper
+import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
 import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
@@ -31,7 +30,7 @@ open class MainActivity : BaseActivity() {
     lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
-    lateinit var superHelper: SuperHelper
+    lateinit var sweetLocHelper: SweetLocHelper
 
     lateinit var mainActivityViewModel: MainActivityViewModel
 
@@ -61,28 +60,21 @@ open class MainActivity : BaseActivity() {
     }
 
     private fun initMain() {
-        checkAndOpenAudioSettings()
         goUserTrackerListFragment()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkAndOpenAudioSettings()
+        }
     }
 
     private fun goUserTrackerListFragment() {
         replaceFragmentInActivity(UserTrackerListFragment(), R.id.Container)
-
-        /*
-        superHelper.ReplaceFragmentBeginTransaction(
-                this@MainActivity,
-                UserTrackerListFragment(),
-                R.id.Container,
-                false)
-                */
     }
-
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun checkAndOpenAudioSettings() {
         val notificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !notificationManager.isNotificationPolicyAccessGranted) {
+        if (!notificationManager.isNotificationPolicyAccessGranted) {
             val intent = Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
             startActivity(intent)
         }
@@ -106,10 +98,13 @@ open class MainActivity : BaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (resultCode) {
-            Activity.RESULT_OK -> {
-                mainActivityViewModel.isUserLogin.value = true
+        when (requestCode) {
+            LOGIN_REQUEST_CODE -> when (resultCode) {
+                Activity.RESULT_OK -> {
+                    mainActivityViewModel.isUserLogin.value = true
+                }
             }
         }
     }
+    
 }
