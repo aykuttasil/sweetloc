@@ -14,15 +14,8 @@ import org.json.JSONObject;
 
 import java.math.BigInteger;
 
-import hugo.weaving.DebugLog;
-
-/**
- * Created by aykutasil on 14.12.2016.
- */
-
 public class NotificationExtenderService extends com.onesignal.NotificationExtenderService {
 
-    @DebugLog
     @Override
     protected boolean onNotificationProcessing(OSNotificationReceivedResult notification) {
 

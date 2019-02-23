@@ -13,7 +13,6 @@ import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import com.onesignal.OneSignal
 import com.orhanobut.logger.Logger
-import hugo.weaving.DebugLog
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import io.reactivex.schedulers.Schedulers
@@ -33,20 +32,17 @@ import javax.inject.Inject
 class SweetLocHelper @Inject constructor(private val dataManager: DataManager) :
     com.aykuttasil.androidbasichelperlib.SuperHelper() {
 
-    @DebugLog
     fun resetSweetLoc(context: Context) {
-        GlobalScope.async(context = Dispatchers.Main) {
-            dataManager.getUser()
-                .flatMapCompletable {
-                    dataManager.deleteUser(it)
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe {
-                    stopPeriodicTask(context)
-                    logoutUser()
-                }
-        }
+        dataManager.getUser()
+            .flatMapCompletable {
+                dataManager.deleteUser(it)
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe {
+                stopPeriodicTask(context)
+                logoutUser()
+            }
     }
 
     fun checkUser(): Single<Boolean> {
@@ -90,7 +86,6 @@ class SweetLocHelper @Inject constructor(private val dataManager: DataManager) :
         //return FirebaseAuth.getInstance().currentUser != null && dataManager.getUser().blockingGet() != null
     }
 
-    @DebugLog
     fun logoutUser() {
         FirebaseAuth.getInstance().signOut()
         LoginManager.getInstance().logOut()

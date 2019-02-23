@@ -1,10 +1,10 @@
 package com.aykuttasil.sweetloc.ui.activity.map
 
 import android.annotation.SuppressLint
+import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.location.Location
 import com.aykuttasil.androidbasichelperlib.SuperHelper
 import com.aykuttasil.sweetloc.data.DataManager
 import com.aykuttasil.sweetloc.data.local.entity.LocationEntity
@@ -22,7 +22,10 @@ import javax.inject.Inject
 /**
  * Created by aykutasil on 25.01.2018.
  */
-class MapsViewModel @Inject constructor(private val dataManager: DataManager, private val rxLocation: RxLocation) : ViewModel() {
+class MapsViewModel @Inject constructor(
+    private val dataManager: DataManager,
+    private val rxLocation: RxLocation
+) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -31,59 +34,59 @@ class MapsViewModel @Inject constructor(private val dataManager: DataManager, pr
     @SuppressLint("MissingPermission")
     fun sendMyLocation(): LiveData<LocationEntity> {
         val locationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
-                .setInterval(30000)
-                .setFastestInterval(5000)
+            .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+            .setInterval(30000)
+            .setFastestInterval(5000)
 
         val locationSettingsRequest = LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest)
-                .setAlwaysShow(true)
-                .build()
+            .addLocationRequest(locationRequest)
+            .setAlwaysShow(true)
+            .build()
 
         compositeDisposable.add(Observable.combineLatest(
-                rxLocation.settings()
-                        .checkAndHandleResolution(locationSettingsRequest)
-                        .flatMapObservable { granted ->
-                            return@flatMapObservable if (granted) {
-                                rxLocation.settings()
-                                        .checkAndHandleResolution(locationSettingsRequest)
-                                        .flatMapObservable({ rxLocation.location().updates(locationRequest) })
-                            } else {
-                                return@flatMapObservable Observable.error<Throwable>(Exception("Konum izni gerekli."))
-                            }
-                        },
-                dataManager.getUser().toObservable(),
-                BiFunction<Location, UserEntity?, LocModel> { loc, user ->
-                    val locationEntity = LocationEntity(
-                            latitude = loc.latitude,
-                            longitude = loc.longitude,
-                            accuracy = loc.accuracy.toDouble(),
-                            adress = loc.provider,
-                            time = loc.time,
-                            formatTime = SuperHelper.getFormatTime(loc.time),
-                            createDate = SuperHelper.getFormatTime())
+            rxLocation.settings()
+                .checkAndHandleResolution(locationSettingsRequest)
+                .flatMapObservable { granted ->
+                    return@flatMapObservable if (granted) {
+                        rxLocation.settings()
+                            .checkAndHandleResolution(locationSettingsRequest)
+                            .flatMapObservable { rxLocation.location().updates(locationRequest) }
+                    } else {
+                        return@flatMapObservable Observable.error<Throwable>(
+                            Exception("Konum izni gerekli."))
+                    }
+                },
+            dataManager.getUser().toObservable(),
+            BiFunction<Location, UserEntity?, LocModel> { loc, user ->
+                val locationEntity = LocationEntity(
+                    latitude = loc.latitude,
+                    longitude = loc.longitude,
+                    accuracy = loc.accuracy.toDouble(),
+                    adress = loc.provider,
+                    time = loc.time,
+                    formatTime = SuperHelper.getFormatTime(loc.time),
+                    createDate = SuperHelper.getFormatTime())
 
-                    sentMyLocation.value = locationEntity
+                sentMyLocation.value = locationEntity
 
-                    return@BiFunction LocModel(user.userUUID, locationEntity)
-                })
-                .retry()
-                .flatMapCompletable {
-                    dataManager.addLocation(it.userId, it.locationEntity)
-                }
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    Logger.i("Location gönderildi.")
-                }, {
-                    it.printStackTrace()
-                    Logger.e(it, "HATA")
-                }))
+                return@BiFunction LocModel(user.userUUID, locationEntity)
+            })
+            .retry()
+            .flatMapCompletable {
+                dataManager.addLocation(it.userId, it.locationEntity)
+            }
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+                Logger.i("Location gönderildi.")
+            }, {
+                it.printStackTrace()
+                Logger.e(it, "HATA")
+            }))
         return sentMyLocation
     }
 
-    fun getMyTrackerLocation(){
-
+    fun getMyTrackerLocation() {
     }
 
     override fun onCleared() {
@@ -93,6 +96,8 @@ class MapsViewModel @Inject constructor(private val dataManager: DataManager, pr
         }
     }
 
-    data class LocModel(var userId: String, var locationEntity: LocationEntity)
-
+    data class LocModel(
+        var userId: String,
+        var locationEntity: LocationEntity
+    )
 }

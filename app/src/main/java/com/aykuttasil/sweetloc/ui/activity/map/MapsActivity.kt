@@ -26,7 +26,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.orhanobut.logger.Logger
 import com.patloew.rxlocation.RxLocation
 import com.tbruyelle.rxpermissions.RxPermissions
-import hugo.weaving.DebugLog
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_maps.*
 import java.util.HashMap
@@ -86,7 +85,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     }
 
     private fun initToolbar() {
-        setSupportActionBar(Toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.apply {
             title = "Harita"
             setDisplayHomeAsUpEnabled(true)
@@ -148,7 +147,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
     /*
     @SuppressLint("MissingPermission")
-    @DebugLog
     private fun initLocationListener() {
         val locationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
@@ -303,7 +301,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
      * @param marker
      * @return
      */
-    @DebugLog
     override fun getInfoWindow(marker: Marker): View? {
         return null
     }
@@ -314,7 +311,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
      * @param marker
      * @return
      */
-    @DebugLog
     override fun getInfoContents(marker: Marker): View {
         val vi = LayoutInflater.from(this).inflate(R.layout.custom_infowindow_layout, null, false)
 
@@ -336,21 +332,20 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         return vi
     }
 
-    @DebugLog
     override fun onInfoWindowClick(marker: Marker) {
         val markerLatLng = marker.position
         mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 15.0f))
     }
 
     fun FabMapClick() {
-        mSnackBarKonum = UiHelper.UiSnackBar.newInstance(Toolbar,
+        mSnackBarKonum = UiHelper.UiSnackBar.newInstance(toolbar,
             "Son konumlar getiriliyor.\n" + "Lütfen bekleyiniz... ", Snackbar.LENGTH_INDEFINITE)
         mSnackBarKonum!!.show()
         isReceiveLocation = false
         mSnackBarKonum!!.view.postDelayed({
             // Eğer sendMyLocation bilgisi alınmış ise isReceiveLocation = true olur
             if (!isReceiveLocation) {
-                UiHelper.UiSnackBar.showSimpleSnackBar(Toolbar, "Konum alınamadı!",
+                UiHelper.UiSnackBar.showSimpleSnackBar(toolbar, "Konum alınamadı!",
                     Snackbar.LENGTH_LONG)
             }
         }, TimeUnit.SECONDS.toMillis(WAIT_LOCATION_SECOND.toLong()))
@@ -368,7 +363,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         return super.onOptionsItemSelected(item)
     }
 
-    @DebugLog
     override fun onDestroy() {
         mCompositeDisposible.dispose()
         super.onDestroy()

@@ -18,7 +18,6 @@ import com.orhanobut.logger.Logger
 import com.patloew.rxlocation.RxLocation
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import hugo.weaving.DebugLog
 import io.fabric.sdk.android.Fabric
 import javax.inject.Inject
 
@@ -43,7 +42,6 @@ open class App : Application(), HasActivityInjector {
         return activityDispatchingAndroidInjector
     }
 
-    @DebugLog
     private fun initSweetLoc() {
         Logger.init("SweetLocLogger")
             .methodCount(3)

@@ -19,13 +19,11 @@ import javax.inject.Inject
 /**
  * Created by aykutasil on 15.01.2018.
  */
-class MainActivityViewModel @Inject constructor(val app: App) : AndroidViewModel(app) {
-
-    @Inject
-    lateinit var dataManager: DataManager
-
-    @Inject
-    lateinit var sweetLocHelper: SweetLocHelper
+class MainActivityViewModel @Inject constructor(
+    val app: App,
+    val dataManager: DataManager,
+    private val sweetLocHelper: SweetLocHelper
+) : AndroidViewModel(app) {
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -33,20 +31,20 @@ class MainActivityViewModel @Inject constructor(val app: App) : AndroidViewModel
 
     fun checkUserLogin(): LiveData<Boolean> {
         compositeDisposable.add(sweetLocHelper.checkUser()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    if (it) {
-                        sweetLocHelper.startPeriodicTask(app)
-                        isUserLogin.value = true
-                    } else {
-                        Logger.i("checkUserLogin: false")
-                        sweetLocHelper.logoutUser()
-                        isUserLogin.value = false
-                    }
-                }, {
-                    it.printStackTrace()
-                })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if (it) {
+                    sweetLocHelper.startPeriodicTask(app)
+                    isUserLogin.value = true
+                } else {
+                    Logger.i("checkUserLogin: false")
+                    sweetLocHelper.logoutUser()
+                    isUserLogin.value = false
+                }
+            }, {
+                it.printStackTrace()
+            })
         )
 
         return Transformations.map(isUserLogin) {
@@ -61,32 +59,32 @@ class MainActivityViewModel @Inject constructor(val app: App) : AndroidViewModel
 
     private fun saveOneSignalId() {
         compositeDisposable.add(dataManager.getUser()
-                .filter { it.userOneSignalId == null }
-                .flatMap {
-                    Maybe.create<UserEntity> { emitter ->
-                        OneSignal.idsAvailable { userId, registrationId ->
-                            Logger.i("OneSignal userId: " + userId)
-                            Logger.i("OneSignal regId: " + registrationId)
+            .filter { it.userOneSignalId == null }
+            .flatMap {
+                Maybe.create<UserEntity> { emitter ->
+                    OneSignal.idsAvailable { userId, registrationId ->
+                        Logger.i("OneSignal userId: " + userId)
+                        Logger.i("OneSignal regId: " + registrationId)
 
-                            it.userOneSignalId = userId
-                            dataManager.updateUser(it)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe({
-                                        emitter.onSuccess(it)
-                                    }, { e ->
-                                        emitter.onError(e)
-                                    })
-                        }
+                        it.userOneSignalId = userId
+                        dataManager.updateUser(it)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                emitter.onSuccess(it)
+                            }, { e ->
+                                emitter.onError(e)
+                            })
                     }
                 }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    Logger.i("saveOneSignalId is success")
-                }, {
-                    it.printStackTrace()
-                }))
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Logger.i("saveOneSignalId is success")
+            }, {
+                it.printStackTrace()
+            }))
     }
 
     override fun onCleared() {

@@ -1,68 +1,14 @@
 package com.aykuttasil.sweetloc.data.local.entity
 
+import androidx.databinding.BaseObservable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.databinding.BaseObservable
 
-/**
- * Created by aykutasil on 24.12.2017.
- */
-/*
-    @Column
-    @Expose
-    @SerializedName("Ad")
-    private String Ad;
-
-    @Column
-    @Expose
-    @SerializedName("SoyAd")
-    private String SoyAd;
-
-    @Column
-    @Expose
-    @SerializedName("Telefon")
-    private String Telefon;
-
-    @Column
-    @Expose
-    @SerializedName("Email")
-    private String Email;
-
-    @Column
-    @Expose
-    @SerializedName("Parola")
-    private String Parola;
-
-    @Column
-    @Expose
-    @SerializedName("RegId")
-    private String RegID;
-
-    @Column
-    @Expose
-    @SerializedName("Token")
-    private String Token;
-
-    @Column
-    @Expose
-    @SerializedName("UUID")
-    private String UUID;
-
-    @Column
-    @Expose
-    @SerializedName("ImageUrl")
-    private String ImageUrl;
-
-    @Column
-    @Expose
-    @SerializedName("OneSignalUserId")
-    private String OneSignalUserId;
- */
 @Entity(tableName = "User")
 data class UserEntity(
     @PrimaryKey var userUUID: String,
-    var userEmail: String,
-    var userPassword: String,
+    var userEmail: String? = null,
+    var userPassword: String? = null,
     var userName: String? = null,
     var userSurname: String? = null,
     var userTel: String? = null,

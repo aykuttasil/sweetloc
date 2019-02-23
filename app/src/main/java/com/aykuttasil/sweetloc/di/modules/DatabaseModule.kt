@@ -1,7 +1,7 @@
 package com.aykuttasil.sweetloc.di.modules
 
-import androidx.room.Room
 import android.content.Context
+import androidx.room.Room
 import com.aykuttasil.sweetloc.data.local.AppDatabase
 import com.aykuttasil.sweetloc.di.ApplicationContext
 import dagger.Module
@@ -12,7 +12,7 @@ import javax.inject.Singleton
 class DatabaseModule {
 
     companion object {
-        const val DB_NAME = "sweetLoc_12.db"
+        const val DB_NAME = "sweetloc1_1.db"
     }
 
     @Provides

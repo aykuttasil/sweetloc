@@ -2,11 +2,12 @@ package com.aykuttasil.sweetloc.ui.activity.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aykuttasil.sweetloc.R;
@@ -19,12 +20,6 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.orhanobut.logger.Logger;
-
-import hugo.weaving.DebugLog;
-
-/**
- * Created by aykutasil on 7.12.2016.
- */
 
 public class LoginFacebookActivity extends BaseActivity {
 
@@ -41,7 +36,6 @@ public class LoginFacebookActivity extends BaseActivity {
         initAuthListener();
     }
 
-    @DebugLog
     private void initAuthListener() {
         mAuthListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -53,13 +47,11 @@ public class LoginFacebookActivity extends BaseActivity {
         };
     }
 
-    @DebugLog
     public void initializeAfterViews() {
         //initToolbar();
         initFacebookLoginButton();
     }
 
-    @DebugLog
     private void initFacebookLoginButton() {
 
         /*
@@ -89,14 +81,12 @@ public class LoginFacebookActivity extends BaseActivity {
 
     }
 
-    @DebugLog
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
-    @DebugLog
     public void handleFacebookAccessToken(AccessToken token) {
         Logger.d("handleFacebookAccessToken:" + token);
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
@@ -155,20 +145,17 @@ public class LoginFacebookActivity extends BaseActivity {
 
     }
 
-    @DebugLog
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
 
-    @DebugLog
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    @DebugLog
     @Override
     public void onStop() {
         super.onStop();

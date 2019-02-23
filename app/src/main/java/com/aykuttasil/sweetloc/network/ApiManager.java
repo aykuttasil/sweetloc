@@ -6,7 +6,6 @@ import com.aykuttasil.sweetloc.network.model.LocationRequest;
 
 import org.greenrobot.eventbus.EventBus;
 
-import hugo.weaving.DebugLog;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -16,7 +15,6 @@ import io.reactivex.schedulers.Schedulers;
 public class ApiManager {
 
     @SuppressLint("CheckResult")
-    @DebugLog
     public static void Location(LocationRequest request) {
         try {
             RestClient restClient = RestClient.getInstance();

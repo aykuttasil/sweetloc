@@ -10,23 +10,15 @@ import com.google.android.gms.gcm.TaskParams;
 
 import org.greenrobot.eventbus.EventBus;
 
-import hugo.weaving.DebugLog;
-
-
-/**
- * Created by aykutasil on 21.11.2015.
- */
 public class MyGcmTaskService extends GcmTaskService {
 
     private static String TAG = MyGcmTaskService.class.getSimpleName();
 
-    @DebugLog
     @Override
     public void onInitializeTasks() {
 
     }
 
-    @DebugLog
     @Override
     public int onRunTask(TaskParams taskParams) {
         try {
@@ -49,8 +41,6 @@ public class MyGcmTaskService extends GcmTaskService {
         }
     }
 
-
-    @DebugLog
     private int SchedulerLocationTask(Bundle bundle) {
         /*
         String jsonModel = null;
@@ -111,7 +101,6 @@ public class MyGcmTaskService extends GcmTaskService {
 
 
     /*
-    @DebugLog
     private ZiyaretResponse sendZiyaretProcess(ZiyaretRequest ziyaretRequest) {
         return ReaktifApiManager.getInstance(getApplicationContext()).ZiyaretSync(ziyaretRequest);
     }

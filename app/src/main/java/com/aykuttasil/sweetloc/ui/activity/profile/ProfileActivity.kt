@@ -40,7 +40,7 @@ open class ProfileActivity : BaseActivity() {
     }
 
     private fun initToolbar() {
-        setSupportActionBar(Toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.apply {
             title = "Profil"
             setDisplayHomeAsUpEnabled(true)

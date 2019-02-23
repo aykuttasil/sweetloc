@@ -16,5 +16,4 @@ class MainActivityModule {
     fun provideContext(activity: MainActivity): Context {
         return activity
     }
-
 }

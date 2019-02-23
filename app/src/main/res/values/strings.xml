@@ -27,4 +27,8 @@
     <string name="geofence_transition_entered">Entered</string>
     <string name="geofence_transition_exited">Exited</string>
     <string name="unknown_geofence_transition">Unknown Transition</string>
+    <string name="txt_register">Kayıt Ol</string>
+    <string name="txt_login">Giriş Yap</string>
+    <string name="txt_pass">Parola</string>
+    <string name="txt_email">Email</string>
 </resources>

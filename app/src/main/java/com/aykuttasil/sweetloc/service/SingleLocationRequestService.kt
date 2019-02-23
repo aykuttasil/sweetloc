@@ -10,19 +10,13 @@ import com.aykuttasil.sweetloc.app.App
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver
 import com.google.android.gms.location.LocationRequest
 import com.orhanobut.logger.Logger
-import hugo.weaving.DebugLog
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
-/**
- * Created by aykutasil on 8.12.2016.
- */
-
 class SingleLocationRequestService : JobIntentService() {
     var mDisposable: Disposable? = null
 
-    @DebugLog
     override fun onHandleWork(intent: Intent) {
         if (mDisposable != null && !mDisposable!!.isDisposed) {
             Logger.i("RxLocation disposed")
@@ -61,7 +55,6 @@ class SingleLocationRequestService : JobIntentService() {
 
     }
 
-    @DebugLog
     override fun onDestroy() {
         super.onDestroy()
     }

@@ -4,15 +4,8 @@ import com.onesignal.OSNotification;
 import com.onesignal.OneSignal;
 import com.orhanobut.logger.Logger;
 
-import hugo.weaving.DebugLog;
-
-/**
- * Created by aykutasil on 7.12.2016.
- */
-
 public class NotificationReceivedHandler implements OneSignal.NotificationReceivedHandler {
 
-    @DebugLog
     @Override
     public void notificationReceived(OSNotification notification) {
         Logger.json(notification.toJSONObject().toString());

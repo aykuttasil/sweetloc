@@ -2,25 +2,23 @@ package com.aykuttasil.sweetloc.ui.activity.main
 
 import android.app.Activity
 import android.app.NotificationManager
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.RequiresApi
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.di.ViewModelFactory
-import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
 import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
 import com.aykuttasil.sweetloc.ui.activity.profile.ProfileActivity
 import com.aykuttasil.sweetloc.ui.fragment.usertrackerlist.UserTrackerListFragment
 import com.aykuttasil.sweetloc.util.extension.replaceFragmentInActivity
-import hugo.weaving.DebugLog
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -29,23 +27,22 @@ open class MainActivity : BaseActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    @Inject
-    lateinit var sweetLocHelper: SweetLocHelper
+    private lateinit var mainActivityViewModel: MainActivityViewModel
 
-    lateinit var mainActivityViewModel: MainActivityViewModel
-
-    @DebugLog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setup()
-        mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
+
+        mainActivityViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
 
         mainActivityViewModel.checkUserLogin().observe(this@MainActivity, Observer {
             if (it!!) {
                 initMain()
             } else {
-                startActivityForResult(Intent(this@MainActivity, LoginActivity::class.java), BaseActivity.LOGIN_REQUEST_CODE)
+                startActivityForResult(Intent(this@MainActivity, LoginActivity::class.java),
+                    BaseActivity.LOGIN_REQUEST_CODE)
             }
         })
     }
@@ -55,7 +52,7 @@ open class MainActivity : BaseActivity() {
     }
 
     private fun setToolbar() {
-        setSupportActionBar(Toolbar)
+        setSupportActionBar(toolbar)
         supportActionBar?.title = "SweetLoc"
     }
 
@@ -97,7 +94,11 @@ open class MainActivity : BaseActivity() {
         return true
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
         when (requestCode) {
             LOGIN_REQUEST_CODE -> when (resultCode) {
                 Activity.RESULT_OK -> {
@@ -106,5 +107,4 @@ open class MainActivity : BaseActivity() {
             }
         }
     }
-    
 }

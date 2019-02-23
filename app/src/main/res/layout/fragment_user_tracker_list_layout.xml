@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyclerView"
+        android:id="@+id/listUserTracker"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/listitem_user_tracker" />

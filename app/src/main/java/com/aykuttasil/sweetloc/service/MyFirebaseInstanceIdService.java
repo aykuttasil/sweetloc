@@ -7,14 +7,12 @@ import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
-import hugo.weaving.DebugLog;
 
 /**
  * Created by aykutasil on 20.11.2015.
  */
 public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
-    @DebugLog
     @Override
     public void onTokenRefresh() {
 

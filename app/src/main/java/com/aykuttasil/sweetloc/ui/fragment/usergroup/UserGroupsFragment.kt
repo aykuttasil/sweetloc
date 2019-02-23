@@ -1,10 +1,10 @@
 package com.aykuttasil.sweetloc.ui.fragment.usergroup
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProviders
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.databinding.FragmentUserGroupsBinding
 import com.aykuttasil.sweetloc.di.Injectable
@@ -26,15 +26,17 @@ class UserGroupsFragment : BaseFragment(), Injectable {
     @Inject
     lateinit var userGroupsViewModel: UserGroupsViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        userGroupsViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserGroupsViewModel::class.java)
-
-
+        userGroupsViewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(UserGroupsViewModel::class.java)
     }
-
 }

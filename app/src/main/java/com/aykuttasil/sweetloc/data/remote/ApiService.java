@@ -3,7 +3,6 @@ package com.aykuttasil.sweetloc.data.remote;
 import com.aykuttasil.sweetloc.data.remote.model.LocationRequest;
 import com.aykuttasil.sweetloc.data.remote.model.LocationResponse;
 
-import hugo.weaving.DebugLog;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -12,7 +11,6 @@ import rx.Observable;
  */
 public interface ApiService {
 
-    @DebugLog
     @POST("Location")
     Observable<LocationResponse> Location(LocationRequest request);
 }

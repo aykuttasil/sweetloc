@@ -3,6 +3,7 @@ package com.aykuttasil.sweetloc.data.repository
 import aykuttasil.com.myviewmodelskeleton.data.local.dao.UserDao
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.data.remote.ApiManager
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -12,68 +13,76 @@ import javax.inject.Inject
 /**
  * Created by aykutasil on 22.01.2018.
  */
-class UserRepository @Inject constructor(private val userDao: UserDao, private val apiManager: ApiManager) {
+class UserRepository @Inject constructor(
+    private val userDao: UserDao,
+    private val apiManager: ApiManager,
+    private val firebaseAuth: FirebaseAuth
+) {
 
-    fun loginUser(username: String, password: String): Single<FirebaseUser> {
+    fun loginUser(
+        username: String,
+        password: String
+    ): Single<FirebaseUser> {
         return apiManager.login(username, password)
-                .observeOn(Schedulers.io())
-                .flatMap {
-                    val userEntity = UserEntity(
-                            userUUID = it.uid,
-                            userEmail = it.email!!,
-                            userPassword = password
-                    )
+            .observeOn(Schedulers.io())
+            .flatMap {
+                val userEntity = UserEntity(
+                    userUUID = it.uid,
+                    userEmail = it.email!!,
+                    userPassword = password
+                )
 
-                    Single.create<FirebaseUser> { emitter ->
-                        addUser(userEntity)
-                                .subscribe({
-                                    emitter.onSuccess(it)
-                                }, {
-                                    emitter.onError(it)
-                                })
-                    }
-
+                Single.create<FirebaseUser> { emitter ->
+                    addUser(userEntity)
+                        .subscribe({
+                            emitter.onSuccess(it)
+                        }, {
+                            emitter.onError(it)
+                        })
                 }
+
+            }
     }
 
-    fun registerUser(username: String, password: String): Single<FirebaseUser> {
+    fun registerUser(
+        username: String,
+        password: String
+    ): Single<FirebaseUser> {
         return apiManager.register(username, password)
-                .observeOn(Schedulers.io())
-                .flatMap {
-                    val userEntity = UserEntity(
-                            userUUID = it.uid,
-                            userEmail = it.email!!,
-                            userPassword = password
-                    )
+            .observeOn(Schedulers.io())
+            .flatMap {
+                val userEntity = UserEntity(
+                    userUUID = it.uid,
+                    userEmail = it.email!!,
+                    userPassword = password
+                )
 
-                    Single.create<FirebaseUser> { emitter ->
-                        addUser(userEntity)
-                                .subscribe({
-                                    emitter.onSuccess(it)
-                                }, {
-                                    emitter.onError(it)
-                                })
-                    }
-
+                Single.create<FirebaseUser> { emitter ->
+                    addUser(userEntity)
+                        .subscribe({
+                            emitter.onSuccess(it)
+                        }, {
+                            emitter.onError(it)
+                        })
                 }
-    }
 
+            }
+    }
 
     fun addUser(userEntity: UserEntity): Completable {
         return apiManager.upsertUser(userEntity)
-                .observeOn(Schedulers.io())
-                .doOnComplete {
-                    userDao.insertItem(userEntity)
-                }
+            .observeOn(Schedulers.io())
+            .doOnComplete {
+                userDao.insertItem(userEntity)
+            }
     }
-
 
     fun updateUser(userEntity: UserEntity): Completable {
         return apiManager.upsertUser(userEntity)
-                .observeOn(Schedulers.io())
-                .doOnComplete {
-                    userDao.updateItem(userEntity)
-                }
+            .observeOn(Schedulers.io())
+            .doOnComplete {
+                userDao.updateItem(userEntity)
+            }
     }
 
     fun deleteUser(userEntity: UserEntity): Completable {
@@ -100,6 +109,4 @@ class UserRepository @Inject constructor(private val userDao: UserDao, private v
     fun getUserEntity(): UserEntity? {
         return userDao.getItem()
     }
-
-
 }

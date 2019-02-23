@@ -13,7 +13,8 @@ import javax.inject.Inject
 /**
  * Created by aykutasil on 25.01.2018.
  */
-class UserTrackerListViewModel @Inject constructor(private val dataManager: DataManager) : ViewModel() {
+class UserTrackerListViewModel @Inject constructor(private val dataManager: DataManager) :
+    ViewModel() {
 
     private val liveUserTrackerEntity: MutableLiveData<List<UserTrackerEntity>> = MutableLiveData()
 
@@ -21,17 +22,17 @@ class UserTrackerListViewModel @Inject constructor(private val dataManager: Data
 
     fun getTrackerList(): LiveData<List<UserTrackerEntity>> {
         compositeDisposable.add(dataManager.getUser()
-                .flatMapObservable {
-                    dataManager.getUserTrackers(it.userUUID)
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    liveUserTrackerEntity.value = it
-                }, {
-                    liveUserTrackerEntity.value = emptyList()
-                    it.printStackTrace()
-                }))
+            .flatMapObservable {
+                dataManager.getUserTrackers(it.userUUID)
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                liveUserTrackerEntity.value = it
+            }, {
+                liveUserTrackerEntity.value = emptyList()
+                it.printStackTrace()
+            }))
 
         /*
         //DbManager.deleteModelUserTrackerList()
@@ -86,5 +87,4 @@ class UserTrackerListViewModel @Inject constructor(private val dataManager: Data
             compositeDisposable.dispose()
         }
     }
-
 }
