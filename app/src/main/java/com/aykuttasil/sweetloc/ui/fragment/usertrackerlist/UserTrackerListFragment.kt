@@ -58,8 +58,7 @@ open class UserTrackerListFragment : BaseFragment(), Injectable {
     }
 
     private fun setUI() {
-        listUserTracker!!.layoutManager = LinearLayoutManager(context,
-            RecyclerView.VERTICAL, false)
-        listUserTracker!!.adapter = mAdapter
+        listUserTracker?.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        listUserTracker?.adapter = mAdapter
     }
 }

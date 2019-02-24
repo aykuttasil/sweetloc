@@ -1,10 +1,9 @@
 package com.aykuttasil.sweetloc.util.delegates
 
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.annotation.LayoutRes
-import androidx.fragment.app.Fragment
-import android.view.ViewGroup
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -12,7 +11,10 @@ class Inflate<in R : androidx.fragment.app.Fragment, out T : ViewDataBinding>(@L
 
     private var binding: T? = null
 
-    override fun getValue(thisRef: R, property: KProperty<*>): T {
+    override fun getValue(
+        thisRef: R,
+        property: KProperty<*>
+    ): T {
         if (binding == null) {
             val inflater = thisRef.layoutInflater
             val container = thisRef.view as ViewGroup?

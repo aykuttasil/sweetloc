@@ -8,7 +8,8 @@ import android.util.Log
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-import java.util.*
+import java.util.ArrayList
+import java.util.Arrays
 
 /**
  * Created by aykutasil on 7.12.2017.
@@ -31,7 +32,7 @@ class AppSignatureHelper(context: Context) : ContextWrapper(context) {
                 val packageName = packageName
                 val packageManager = packageManager
                 val signatures = packageManager.getPackageInfo(packageName,
-                        PackageManager.GET_SIGNATURES).signatures
+                    PackageManager.GET_SIGNATURES).signatures
                 for (signature in signatures) {
                     val hash = hash(packageName, signature.toCharsString())
                     if (hash != null) {
@@ -52,7 +53,10 @@ class AppSignatureHelper(context: Context) : ContextWrapper(context) {
         val NUM_HASHED_BYTES = 9
         val NUM_BASE64_CHAR = 11
 
-        private fun hash(packageName: String, signature: String): String? {
+        private fun hash(
+            packageName: String,
+            signature: String
+        ): String? {
             val appInfo = packageName + " " + signature
             try {
                 val messageDigest = MessageDigest.getInstance(HASH_TYPE)

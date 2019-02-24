@@ -19,7 +19,7 @@ import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
 import com.aykuttasil.sweetloc.ui.activity.profile.ProfileActivity
 import com.aykuttasil.sweetloc.ui.fragment.usertrackerlist.UserTrackerListFragment
 import com.aykuttasil.sweetloc.util.extension.replaceFragmentInActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import com.aykuttasil.sweetloc.util.extension.setupToolbar
 import javax.inject.Inject
 
 open class MainActivity : BaseActivity() {
@@ -52,8 +52,9 @@ open class MainActivity : BaseActivity() {
     }
 
     private fun setToolbar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.title = "SweetLoc"
+        setupToolbar(R.id.toolbar) {
+            title = "SweetLoc"
+        }
     }
 
     private fun initMain() {

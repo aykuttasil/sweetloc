@@ -9,12 +9,14 @@ import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NavUtils
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.afollestad.materialdialogs.DialogAction
 import com.aykuttasil.androidbasichelperlib.UiHelper
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
+import com.aykuttasil.sweetloc.util.extension.setupToolbar
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -68,7 +70,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
         setup()
 
-        isMapReady.observe(this, androidx.lifecycle.Observer {
+        isMapReady.observe(this, Observer {
             if (it == true) {
 
             } else {
@@ -85,8 +87,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     }
 
     private fun initToolbar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.apply {
+        setupToolbar(R.id.toolbar) {
             title = "Harita"
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_arrow_back_indigo_300_24dp)
@@ -113,7 +114,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
     private fun initMap() {
         (map as SupportMapFragment).getMapAsync(this)
-        mapsViewModel.sendMyLocation().observe(this, androidx.lifecycle.Observer {
+        mapsViewModel.sendMyLocation().observe(this, Observer {
             Logger.i("aa: " + it)
         })
         // initLocationListener()

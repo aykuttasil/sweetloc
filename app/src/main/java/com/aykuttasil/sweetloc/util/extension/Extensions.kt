@@ -89,7 +89,7 @@ fun Context.getColorCompat(color: Int) = ContextCompat.getColor(this, color)
  *  Extension method to provide simpler access to {@link ContextCompat#getColor(int)}
  *  from a [Fragment].
  */
-fun androidx.fragment.app.Fragment.getColorCompat(color: Int) = context?.getColorCompat(color)
+fun Fragment.getColorCompat(color: Int) = context?.getColorCompat(color)
 
 /**
  * Extension method to provide simpler access to {@link ContextCompat#getDrawableCompat(int)}.
@@ -101,7 +101,7 @@ fun Context.getDrawableCompat(drawableResId: Int): Drawable? = ContextCompat
  * Extension method to provide simpler access to {@link ContextCompat#getDrawableCompat(int)}
  * from a [Fragment].
  */
-fun androidx.fragment.app.Fragment.getDrawableCompat(drawableResId: Int) =
+fun Fragment.getDrawableCompat(drawableResId: Int) =
     context?.getDrawableCompat(drawableResId)
 
 /**
@@ -132,7 +132,7 @@ fun Activity.hideSoftKeyboard() {
 /**
  * Extension method to provide hide keyboard for [Fragment].
  */
-fun androidx.fragment.app.Fragment.hideSoftKeyboard() {
+fun Fragment.hideSoftKeyboard() {
     activity?.hideSoftKeyboard()
 }
 
@@ -246,14 +246,14 @@ fun getClickableSpan(
  * Extension method to be used as the body for functions that are not yet implemented, which will
  * display a [Toast] with the specified [message].
  */
-fun androidx.fragment.app.Fragment.NOT_IMPL(message: String = "This action is not implemented yet!") {
+fun Fragment.NOT_IMPL(message: String = "This action is not implemented yet!") {
     TOAST(message)
 }
 
 /**
  * Extension method used to display a [Toast] message to the user.
  */
-fun androidx.fragment.app.Fragment.TOAST(
+fun Fragment.TOAST(
     message: String,
     duration: Int = Toast.LENGTH_SHORT
 ) {
@@ -263,7 +263,7 @@ fun androidx.fragment.app.Fragment.TOAST(
 /**
  * Extension method used to display a [Toast] message to the user.
  */
-fun androidx.fragment.app.Fragment.TOAST(
+fun Fragment.TOAST(
     messageResId: Int,
     duration: Int = Toast.LENGTH_SHORT
 ) {
@@ -277,9 +277,9 @@ fun View.displaySnakbar(
     message: String,
     duration: Int = Snackbar.LENGTH_SHORT
 ): Snackbar {
-    val snakbar = Snackbar.make(this, message, duration)
-    snakbar.show()
-    return snakbar
+    val snackbar = Snackbar.make(this, message, duration)
+    snackbar.show()
+    return snackbar
 }
 
 /**
@@ -289,9 +289,9 @@ fun View.displaySnakbar(
     messageResId: Int,
     duration: Int = Snackbar.LENGTH_SHORT
 ): Snackbar {
-    val snakbar = Snackbar.make(this, messageResId, duration)
-    snakbar.show()
-    return snakbar
+    val snackbar = Snackbar.make(this, messageResId, duration)
+    snackbar.show()
+    return snackbar
 }
 
 /**
@@ -407,7 +407,7 @@ fun Activity.isKeyboardVisible(): Boolean {
  * @return the [ViewTreeObserver] of the [Activity] this fragment currently attached to, or null
  * if the fragment is detached.
  */
-fun androidx.fragment.app.Fragment.getViewTreeObserver() =
+fun Fragment.getViewTreeObserver() =
     activity?.window?.decorView?.viewTreeObserver
 
 /**

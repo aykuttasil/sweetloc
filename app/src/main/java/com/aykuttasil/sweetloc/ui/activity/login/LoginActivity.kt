@@ -2,15 +2,15 @@ package com.aykuttasil.sweetloc.ui.activity.login
 
 import android.app.Activity
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import butterknife.ButterKnife
 import com.aykuttasil.androidbasichelperlib.UiHelper
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.databinding.ActivityLoginLayoutBinding
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
+import com.aykuttasil.sweetloc.util.extension.bind
+import com.aykuttasil.sweetloc.util.extension.setupToolbar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login_layout.*
 import javax.inject.Inject
@@ -28,8 +28,7 @@ open class LoginActivity : BaseActivity() {
         loginViewModel = ViewModelProviders.of(this@LoginActivity, viewModelFactory)
             .get(LoginViewModel::class.java)
 
-        val binding = DataBindingUtil.setContentView<ActivityLoginLayoutBinding>(this,
-            R.layout.activity_login_layout)
+        val binding = bind<ActivityLoginLayoutBinding>(R.layout.activity_login_layout)
         binding.lifecycleOwner = this
         binding.viewmodel = loginViewModel
 
@@ -62,8 +61,9 @@ open class LoginActivity : BaseActivity() {
     }
 
     private fun initToolbar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.title = "SweetLoc"
+        setupToolbar(R.id.toolbar) {
+            title = "SweetLoc"
+        }
     }
 
     override fun onBackPressed() {
