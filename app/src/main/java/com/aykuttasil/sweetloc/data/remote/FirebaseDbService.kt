@@ -38,40 +38,6 @@ class FirebaseDbService @Inject constructor(private val database: DatabaseRefere
     fun speakers(): Observable<FirebaseSpeakers> {
         return observeChild(speakersNode(), FirebaseSpeakers::class.java)
     }
-
-    fun events(): Observable<FirebaseEvents> {
-        return observeChild(eventsNode(), FirebaseEvents::class.java)
-    }
-
-    fun event(eventId: String): Observable<FirebaseEvent> {
-        return observeChild(eventByIdNode(eventId), FirebaseEvent::class.java)
-    }
-
-    fun places(): Observable<FirebasePlaces> {
-        return observeChild(placesNode(), FirebasePlaces::class.java)
-    }
-
-    fun tracks(): Observable<FirebaseTracks> {
-        return observeChild(tracksNode(), FirebaseTracks::class.java)
-    }
-
-    fun track(trackId: String): Observable<FirebaseTrack> {
-        return observeChild(trackByIdNode(trackId), FirebaseTrack::class.java)
-    }
-
-    fun favorites(userId: String): Observable<FirebaseFavorites> {
-        return userData(userId)
-                .map { (favorites) -> favorites ?: emptyMap() }
-                .map(::FirebaseFavorites)
-    }
-
-    private fun userData(userId: String): Observable<FirebaseUserData> {
-        return observeOptionalChild(userDataNode(userId), FirebaseUserData::class.java, lazy { FirebaseUserData() })
-    }
-
-    fun venueInfo(): Observable<FirebaseVenue> {
-        return observeChild(venueInfoNode(), FirebaseVenue::class.java)
-    }
     */
 
     private fun <T> observeChild(

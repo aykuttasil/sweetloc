@@ -23,31 +23,56 @@ class UserRepository @Inject constructor(
         username: String,
         password: String
     ): Single<FirebaseUser> {
-        return apiManager.login(username, password)
-            .observeOn(Schedulers.io())
-            .flatMap {
-                val userEntity = UserEntity(
-                    userUUID = it.uid,
-                    userEmail = it.email!!,
-                    userPassword = password
-                )
-
-                Single.create<FirebaseUser> { emitter ->
+        return Single.create<FirebaseUser> { emitter ->
+            firebaseAuth.signInWithEmailAndPassword(username, password)
+                .addOnSuccessListener { success ->
+                    val firebaseUser = success.user
+                    
+                    val userEntity = UserEntity(
+                        userUUID = firebaseUser.uid,
+                        userEmail = firebaseUser.email!!,
+                        userPassword = password
+                    )
                     addUser(userEntity)
                         .subscribe({
-                            emitter.onSuccess(it)
+                            emitter.onSuccess(firebaseUser)
                         }, {
                             emitter.onError(it)
                         })
                 }
-
-            }
+                .addOnFailureListener { e ->
+                    emitter.onError(e)
+                }
+        }
     }
 
     fun registerUser(
         username: String,
         password: String
     ): Single<FirebaseUser> {
+        return Single.create<FirebaseUser> { emitter ->
+            firebaseAuth.createUserWithEmailAndPassword(username, password)
+                .addOnSuccessListener { success ->
+                    val firebaseUser = success.user
+                    val userEntity = UserEntity(
+                        userUUID = firebaseUser.uid,
+                        userEmail = firebaseUser.email!!,
+                        userPassword = password
+                    )
+
+                    addUser(userEntity)
+                        .subscribe({
+                            emitter.onSuccess(firebaseUser)
+                        }, {
+                            emitter.onError(it)
+                        })
+                }
+                .addOnFailureListener { e ->
+                    emitter.onError(e)
+                }
+        }
+
+        /*
         return apiManager.register(username, password)
             .observeOn(Schedulers.io())
             .flatMap {
@@ -67,6 +92,7 @@ class UserRepository @Inject constructor(
                 }
 
             }
+        */
     }
 
     fun addUser(userEntity: UserEntity): Completable {

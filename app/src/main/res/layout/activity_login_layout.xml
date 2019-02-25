@@ -115,7 +115,6 @@
                 android:text="@string/txt_register"
                 android:textColor="@color/white" />
 
-
         </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
