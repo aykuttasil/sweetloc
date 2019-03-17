@@ -5,7 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.aykuttasil.sweetloc.app.App
+import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.di.components.DaggerAppComponent
 import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection

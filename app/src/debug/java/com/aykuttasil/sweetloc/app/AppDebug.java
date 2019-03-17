@@ -1,5 +1,6 @@
 package com.aykuttasil.sweetloc.app;
 
+import com.aykuttasil.sweetloc.App;
 import com.facebook.stetho.Stetho;
 
 /**

@@ -90,7 +90,8 @@ class UserTrackerListAdapter @Inject constructor(
         fun bind(modelUserTracker: UserTrackerEntity) {
             if (!modelUserTracker.profilePictureUrl.isNullOrEmpty()) {
                 Logger.i("Picture Url: " + modelUserTracker.profilePictureUrl)
-                Picasso.with(mContext)
+                // Picasso.Builder(mContext).build()
+                Picasso.get()
                     .load(modelUserTracker.profilePictureUrl)
                     .transform(PicassoCircleTransform())
                     .into(mImageViewProfilePicture)

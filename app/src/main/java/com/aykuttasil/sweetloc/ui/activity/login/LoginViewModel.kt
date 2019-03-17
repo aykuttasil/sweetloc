@@ -6,6 +6,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.aykuttasil.sweetloc.data.DataManager
+import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.model.process.DataOkDialog
 import com.aykuttasil.sweetloc.util.RxAwareViewModel
 import com.aykuttasil.sweetloc.util.SingleLiveEvent
@@ -16,8 +17,8 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 inline fun <T> dependantLiveData(
-    vararg dependencies: LiveData<*>,
-    crossinline mapper: () -> T?
+        vararg dependencies: LiveData<*>,
+        crossinline mapper: () -> T?
 ) = MediatorLiveData<T>().also { mediatorLiveData ->
     val observer = Observer<Any> { mediatorLiveData.value = mapper() }
     dependencies.forEach { dependencyLiveData ->
@@ -30,8 +31,9 @@ data class LoginUiStateSuccessfulLogin(val user: FirebaseUser) : LoginUiStates()
 data class LoginUiStateSuccessfulRegister(val dataOkDialog: DataOkDialog) : LoginUiStates()
 data class LoginUiStateError(val dataOkDialog: DataOkDialog) : LoginUiStates()
 
-open class LoginViewModel @Inject constructor(private val dataManager: DataManager) :
-    RxAwareViewModel() {
+open class LoginViewModel @Inject constructor(
+        private val userRepository: UserRepository
+) : RxAwareViewModel() {
 
     val liveUiStates = MutableLiveData<LoginUiStates>()
 
@@ -74,40 +76,40 @@ open class LoginViewModel @Inject constructor(private val dataManager: DataManag
     }
 
     open fun login(
-        email: String,
-        password: String
+            email: String,
+            password: String
     ) {
-        disposables.add(dataManager.loginUser(email, password)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Logger.i("Kullanıcı girişi başarılı.")
-                liveSnackbar.value = "${it?.email} ile oturum açıldı."
-                liveUiStates.value = LoginUiStateSuccessfulLogin(it)
-            }, {
-                it.printStackTrace()
-                val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
-                liveUiStates.value = LoginUiStateError(dialog)
-            })
+        disposables.add(userRepository.loginUser(email, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Logger.i("Kullanıcı girişi başarılı.")
+                    liveSnackbar.value = "${it?.email} ile oturum açıldı."
+                    liveUiStates.value = LoginUiStateSuccessfulLogin(it)
+                }, {
+                    it.printStackTrace()
+                    val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
+                    liveUiStates.value = LoginUiStateError(dialog)
+                })
         )
     }
 
     fun register(
-        email: String,
-        password: String
+            email: String,
+            password: String
     ) {
-        disposables.add(dataManager.registerUser(email, password)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Logger.i("Kullanıcı kaydı başarılı.")
-                liveSnackbar.value = "${it?.email} ile kayıt olundu."
-                liveUiStates.value = LoginUiStateSuccessfulLogin(it)
-            }, {
-                it.printStackTrace()
-                val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
-                liveUiStates.value = LoginUiStateError(dialog)
-            })
+        disposables.add(userRepository.registerUser(email, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Logger.i("Kullanıcı kaydı başarılı.")
+                    liveSnackbar.value = "${it?.email} ile kayıt olundu."
+                    liveUiStates.value = LoginUiStateSuccessfulLogin(it)
+                }, {
+                    it.printStackTrace()
+                    val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
+                    liveUiStates.value = LoginUiStateError(dialog)
+                })
         )
     }
 }

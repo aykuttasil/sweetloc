@@ -6,7 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import androidx.core.app.ActivityCompat
 import androidx.core.app.JobIntentService
-import com.aykuttasil.sweetloc.app.App
+import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver
 import com.google.android.gms.location.LocationRequest
 import com.orhanobut.logger.Logger

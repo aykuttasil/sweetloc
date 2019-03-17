@@ -10,66 +10,63 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-/**
- * Created by aykutasil on 22.01.2018.
- */
 class UserRepository @Inject constructor(
-    private val userDao: UserDao,
-    private val apiManager: ApiManager,
-    private val firebaseAuth: FirebaseAuth
+        private val userDao: UserDao,
+        private val apiManager: ApiManager,
+        private val firebaseAuth: FirebaseAuth
 ) {
 
     fun loginUser(
-        username: String,
-        password: String
+            username: String,
+            password: String
     ): Single<FirebaseUser> {
         return Single.create<FirebaseUser> { emitter ->
             firebaseAuth.signInWithEmailAndPassword(username, password)
-                .addOnSuccessListener { success ->
-                    val firebaseUser = success.user
-                    
-                    val userEntity = UserEntity(
-                        userUUID = firebaseUser.uid,
-                        userEmail = firebaseUser.email!!,
-                        userPassword = password
-                    )
-                    addUser(userEntity)
-                        .subscribe({
-                            emitter.onSuccess(firebaseUser)
-                        }, {
-                            emitter.onError(it)
-                        })
-                }
-                .addOnFailureListener { e ->
-                    emitter.onError(e)
-                }
+                    .addOnSuccessListener { success ->
+                        val firebaseUser = success.user
+
+                        val userEntity = UserEntity(
+                                userUUID = firebaseUser.uid,
+                                userEmail = firebaseUser.email,
+                                userPassword = password
+                        )
+                        addUser(userEntity)
+                                .subscribe({
+                                    emitter.onSuccess(firebaseUser)
+                                }, {
+                                    emitter.onError(it)
+                                })
+                    }
+                    .addOnFailureListener { e ->
+                        emitter.onError(e)
+                    }
         }
     }
 
     fun registerUser(
-        username: String,
-        password: String
+            username: String,
+            password: String
     ): Single<FirebaseUser> {
         return Single.create<FirebaseUser> { emitter ->
             firebaseAuth.createUserWithEmailAndPassword(username, password)
-                .addOnSuccessListener { success ->
-                    val firebaseUser = success.user
-                    val userEntity = UserEntity(
-                        userUUID = firebaseUser.uid,
-                        userEmail = firebaseUser.email!!,
-                        userPassword = password
-                    )
+                    .addOnSuccessListener { success ->
+                        val firebaseUser = success.user
+                        val userEntity = UserEntity(
+                                userUUID = firebaseUser.uid,
+                                userEmail = firebaseUser.email!!,
+                                userPassword = password
+                        )
 
-                    addUser(userEntity)
-                        .subscribe({
-                            emitter.onSuccess(firebaseUser)
-                        }, {
-                            emitter.onError(it)
-                        })
-                }
-                .addOnFailureListener { e ->
-                    emitter.onError(e)
-                }
+                        addUser(userEntity)
+                                .subscribe({
+                                    emitter.onSuccess(firebaseUser)
+                                }, {
+                                    emitter.onError(it)
+                                })
+                    }
+                    .addOnFailureListener { e ->
+                        emitter.onError(e)
+                    }
         }
 
         /*
@@ -97,18 +94,18 @@ class UserRepository @Inject constructor(
 
     fun addUser(userEntity: UserEntity): Completable {
         return apiManager.upsertUser(userEntity)
-            .observeOn(Schedulers.io())
-            .doOnComplete {
-                userDao.insertItem(userEntity)
-            }
+                .observeOn(Schedulers.io())
+                .doOnComplete {
+                    userDao.insertItem(userEntity)
+                }
     }
 
     fun updateUser(userEntity: UserEntity): Completable {
         return apiManager.upsertUser(userEntity)
-            .observeOn(Schedulers.io())
-            .doOnComplete {
-                userDao.updateItem(userEntity)
-            }
+                .observeOn(Schedulers.io())
+                .doOnComplete {
+                    userDao.updateItem(userEntity)
+                }
     }
 
     fun deleteUser(userEntity: UserEntity): Completable {

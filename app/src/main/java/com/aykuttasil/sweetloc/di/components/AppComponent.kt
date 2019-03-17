@@ -1,7 +1,7 @@
 package com.aykuttasil.sweetloc.di.components
 
 import android.app.Application
-import com.aykuttasil.sweetloc.app.App
+import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.di.ActivityBuilder
 import com.aykuttasil.sweetloc.di.modules.AppModule
 import com.aykuttasil.sweetloc.di.modules.DatabaseModule
