@@ -31,8 +31,7 @@ class UserTrackerListAdapter @Inject constructor(
         parent: ViewGroup,
         viewType: Int
     ): UserTrackerViewHolder {
-        val vi =
-            LayoutInflater.from(mContext).inflate(R.layout.listitem_user_tracker, parent, false)
+        val vi = LayoutInflater.from(mContext).inflate(R.layout.listitem_user_tracker, parent, false)
         return UserTrackerViewHolder(vi)
     }
 

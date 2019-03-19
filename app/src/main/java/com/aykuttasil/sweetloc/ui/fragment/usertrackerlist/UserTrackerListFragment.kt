@@ -25,10 +25,6 @@ open class UserTrackerListFragment : BaseFragment(), Injectable {
 
     private lateinit var userTrackerListViewModel: UserTrackerListViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
