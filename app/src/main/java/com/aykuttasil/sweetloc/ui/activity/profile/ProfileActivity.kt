@@ -59,11 +59,9 @@ open class ProfileActivity : BaseActivity() {
             R.id.actionCikisYap -> {
                 val dialog = UiHelper.UiDialog.newInstance(this)
                     .getOKCancelDialog("Çıkış Yap", "Devam edilsin mi?", null)
-                dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener { _ ->
+                dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener {
                     dialog.dismiss()
-
                     helper.resetSweetLoc(this)
-
                     val intent = Intent(this@ProfileActivity, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)

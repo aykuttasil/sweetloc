@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.aykuttasil.sweetloc">
 
-
     <uses-permission
         android:name="android.permission.READ_PHONE_STATE"
         tools:node="remove" />
@@ -58,7 +57,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.main.MainActivity" />
         </activity>
-
 
         <activity
             android:name="com.facebook.FacebookActivity"

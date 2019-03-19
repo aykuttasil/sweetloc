@@ -1,8 +1,5 @@
 package com.aykuttasil.sweetloc.util.extension
 
-/**
- * Created by aykutasil on 27.12.2017.
- */
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams

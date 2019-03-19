@@ -34,9 +34,7 @@ open class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         setup()
 
-        mainActivityViewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
-
+        mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
         mainActivityViewModel.checkUserLogin().observe(this@MainActivity, Observer {
             if (it!!) {
                 initMain()

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.app.Const
 import com.aykuttasil.sweetloc.data.DataManager
@@ -22,7 +23,7 @@ import javax.inject.Inject
 class UserTrackerListAdapter @Inject constructor(
     val mContext: Context,
     val dataManager: DataManager
-) : androidx.recyclerview.widget.RecyclerView.Adapter<UserTrackerListAdapter.UserTrackerViewHolder>() {
+) : RecyclerView.Adapter<UserTrackerListAdapter.UserTrackerViewHolder>() {
 
     private val mList = arrayListOf<UserTrackerEntity>()
 
@@ -81,8 +82,7 @@ class UserTrackerListAdapter @Inject constructor(
         var mButtonWakeUp: Button
 
         init {
-            mImageViewProfilePicture =
-                itemView.findViewById<View>(R.id.ImageViewProfilePicture) as ImageView
+            mImageViewProfilePicture = itemView.findViewById<View>(R.id.ImageViewProfilePicture) as ImageView
             mTextViewEmail = itemView.findViewById<View>(R.id.TextViewEmail) as TextView
             mButtonWakeUp = itemView.findViewById<View>(R.id.ButtonWakeUp) as Button
         }
@@ -100,9 +100,9 @@ class UserTrackerListAdapter @Inject constructor(
                     R.drawable.ic_account_circle_light_blue_300_24dp))
             }
             mTextViewEmail.text = modelUserTracker.email
-            mButtonWakeUp.setOnClickListener { _ ->
+            mButtonWakeUp.setOnClickListener {
                 Logger.i("mButtonWakeUp click")
-                SweetLocHelper.Companion.sendNotif(Const.ACTION_PHONE_UNMUTE, dataManager)
+                SweetLocHelper.sendNotif(Const.ACTION_PHONE_UNMUTE, dataManager)
 
                 val audioManager = mContext.audioManager
                 val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)

@@ -17,12 +17,8 @@ import com.onesignal.OneSignal
 import com.orhanobut.logger.Logger
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -35,7 +31,7 @@ import javax.inject.Inject
  * Created by aykutasil on 12.07.2016.
  */
 class SweetLocHelper @Inject constructor(
-        private val userRepository: UserRepository
+    private val userRepository: UserRepository
 ) : SuperHelper() {
 
     fun resetSweetLoc(context: Context) = runBlocking(context = Dispatchers.IO) {
@@ -62,6 +58,17 @@ class SweetLocHelper @Inject constructor(
 
     fun checkUser(): Single<Boolean> {
         return Single.create { emitter: SingleEmitter<Boolean> ->
+            runBlocking {
+                val userEntity = withContext(Dispatchers.Default) { userRepository.getUserEntity() }
+                val firebaseUser = FirebaseAuth.getInstance().currentUser
+
+                if (userEntity != null && firebaseUser != null) {
+                    emitter.onSuccess(true)
+                } else {
+                    emitter.onSuccess(false)
+                }
+            }
+            /*
             try {
                 val q = GlobalScope.async(context = Dispatchers.Main) {
                     val userEntity = withContext(Dispatchers.Default) { userRepository.getUserEntity() }
@@ -76,6 +83,7 @@ class SweetLocHelper @Inject constructor(
             } catch (e: Exception) {
                 emitter.onError(e)
             }
+            */
         }
 
         /*
@@ -142,22 +150,22 @@ class SweetLocHelper @Inject constructor(
         val alarmManager = context.alarmManager
         val intent = Intent(context.applicationContext, SingleLocationRequestReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context,
-                Const.REQUEST_CODE_BROADCAST_LOCATION,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+            Const.REQUEST_CODE_BROADCAST_LOCATION,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-                SystemClock.elapsedRealtime() + 3000,
-                AlarmManager.INTERVAL_HALF_HOUR,
-                pendingIntent)
+            SystemClock.elapsedRealtime() + 3000,
+            AlarmManager.INTERVAL_HALF_HOUR,
+            pendingIntent)
     }
 
     fun stopPeriodicTask(context: Context) {
         val alarmManager = context.alarmManager
         val intent = Intent(context.applicationContext, SingleLocationRequestReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context,
-                Const.REQUEST_CODE_BROADCAST_LOCATION,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+            Const.REQUEST_CODE_BROADCAST_LOCATION,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
 
         alarmManager.cancel(pendingIntent)
     }
@@ -186,8 +194,8 @@ class SweetLocHelper @Inject constructor(
 
     companion object {
         fun sendNotif(
-                action: String,
-                dataManager: DataManager
+            action: String,
+            dataManager: DataManager
         ) {
             try {
                 GlobalScope.launch(Dispatchers.Main) {
@@ -216,8 +224,8 @@ class SweetLocHelper @Inject constructor(
                     }
 
                     userTrackerList
-                            .filter { it.oneSignalUserId != null }
-                            .forEach { playerIds.put(it.oneSignalUserId) }
+                        .filter { it.oneSignalUserId != null }
+                        .forEach { playerIds.put(it.oneSignalUserId) }
 
                     if (BuildConfig.DEBUG) {
                         //playerIds.put("428ef398-76d3-4ca9-ab4c-60d591879365");
@@ -228,15 +236,15 @@ class SweetLocHelper @Inject constructor(
                     Logger.json(mainObject.toString())
                     if (playerIds.length() > 0) {
                         OneSignal.postNotification(mainObject,
-                                object : OneSignal.PostNotificationResponseHandler {
-                                    override fun onSuccess(response: JSONObject) {
-                                        Logger.json(response.toString())
-                                    }
+                            object : OneSignal.PostNotificationResponseHandler {
+                                override fun onSuccess(response: JSONObject) {
+                                    Logger.json(response.toString())
+                                }
 
-                                    override fun onFailure(response: JSONObject) {
-                                        Logger.json(response.toString())
-                                    }
-                                })
+                                override fun onFailure(response: JSONObject) {
+                                    Logger.json(response.toString())
+                                }
+                            })
                     }
                 }
             } catch (e: Exception) {

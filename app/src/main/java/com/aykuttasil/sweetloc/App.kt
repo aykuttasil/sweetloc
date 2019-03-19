@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
-import com.aykuttasil.sweetloc.BuildConfig
 import com.aykuttasil.sweetloc.di.AppInjector
 import com.aykuttasil.sweetloc.service.NotificationOpenedHandler
 import com.aykuttasil.sweetloc.service.NotificationReceivedHandler
@@ -21,9 +20,6 @@ import dagger.android.HasActivityInjector
 import io.fabric.sdk.android.Fabric
 import javax.inject.Inject
 
-/**
- * Created by aykutasil on 23.06.2016.
- */
 open class App : Application(), HasActivityInjector {
 
     @Inject
@@ -44,9 +40,9 @@ open class App : Application(), HasActivityInjector {
 
     private fun initSweetLoc() {
         Logger.init("SweetLocLogger")
-                .methodCount(3)
-                .logLevel(if (BuildConfig.DEBUG) LogLevel.FULL else LogLevel.NONE)
-                .methodOffset(0)
+            .methodCount(3)
+            .logLevel(if (BuildConfig.DEBUG) LogLevel.FULL else LogLevel.NONE)
+            .methodOffset(0)
 
 
         initializeFabric()
@@ -55,10 +51,10 @@ open class App : Application(), HasActivityInjector {
         //OneSignal.init(this, "535821025252", "283c0725-f1ae-434a-8ea5-09f61b1246fc", new NotificationOpenedHandler(), new NotificationReceivedHandler());
 
         OneSignal.startInit(this)
-                .setNotificationReceivedHandler(NotificationReceivedHandler())
-                .setNotificationOpenedHandler(NotificationOpenedHandler())
-                //.autoPromptLocation(true)
-                .init()
+            .setNotificationReceivedHandler(NotificationReceivedHandler())
+            .setNotificationOpenedHandler(NotificationOpenedHandler())
+            //.autoPromptLocation(true)
+            .init()
 
         FacebookSdk.sdkInitialize(applicationContext)
 
@@ -67,12 +63,12 @@ open class App : Application(), HasActivityInjector {
 
     private fun initializeFabric() {
         val crashlyticsCore = CrashlyticsCore.Builder()
-                .disabled(BuildConfig.DEBUG)
-                .build()
+            .disabled(BuildConfig.DEBUG)
+            .build()
 
         val crashlytics = Crashlytics.Builder()
-                .core(crashlyticsCore)
-                .build()
+            .core(crashlyticsCore)
+            .build()
 
         Fabric.with(this, crashlytics)
     }
@@ -82,7 +78,6 @@ open class App : Application(), HasActivityInjector {
             super.attachBaseContext(base)
             MultiDex.install(this)
         } catch (ignored: RuntimeException) {
-            // Multidex support doesn't play well with Robolectric yet
         }
     }
 }
