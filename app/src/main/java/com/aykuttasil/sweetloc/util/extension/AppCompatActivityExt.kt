@@ -47,11 +47,6 @@ fun AppCompatActivity.setupToolbar(@IdRes toolbarId: Int, action: ActionBar.() -
     }
 }
 
-//        ViewModelProviders.of(this, ViewModelFactory.getInstance(application)).get(viewModelClass)
-
-/**
- * Runs a FragmentTransaction, then calls commit().
- */
 private inline fun FragmentManager.transact(action: FragmentTransaction.() -> Unit) {
     beginTransaction().apply {
         action()
