@@ -7,7 +7,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.Single.create
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -20,7 +24,7 @@ class UserRepository @Inject constructor(
         username: String,
         password: String
     ): Single<FirebaseUser> {
-        return Single.create<FirebaseUser> { emitter ->
+        return create<FirebaseUser> { emitter ->
             firebaseAuth.signInWithEmailAndPassword(username, password)
                 .addOnSuccessListener { success ->
                     val firebaseUser = success.user
@@ -46,7 +50,7 @@ class UserRepository @Inject constructor(
         username: String,
         password: String
     ): Single<FirebaseUser> {
-        return Single.create<FirebaseUser> { emitter ->
+        return create<FirebaseUser> { emitter ->
             firebaseAuth.createUserWithEmailAndPassword(username, password)
                 .addOnSuccessListener { success ->
                     val firebaseUser = success.user
@@ -118,6 +122,10 @@ class UserRepository @Inject constructor(
         }
     }
 
+    fun getUser1() = runBlocking {
+        return@runBlocking withContext(Dispatchers.IO) { userDao.getItem() }
+    }
+
     fun getUser(): Single<UserEntity?> {
         return Single.create<UserEntity> {
             if (userDao.getItem() != null) {
@@ -130,5 +138,13 @@ class UserRepository @Inject constructor(
 
     fun getUserEntity(): UserEntity? {
         return userDao.getItem()
+    }
+
+    fun checkUser(): Boolean {
+        return runBlocking {
+            val userEntity = withContext(Dispatchers.Default) { getUserEntity() }
+            val firebaseUser = FirebaseAuth.getInstance().currentUser
+            return@runBlocking userEntity != null && firebaseUser != null
+        }
     }
 }
