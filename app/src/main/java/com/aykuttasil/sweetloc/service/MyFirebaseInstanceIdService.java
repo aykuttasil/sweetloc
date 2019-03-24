@@ -7,10 +7,6 @@ import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
-
-/**
- * Created by aykutasil on 20.11.2015.
- */
 public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
     @Override

@@ -26,5 +26,6 @@ class UserTrackerRepository @Inject constructor(private val userTrackerDao: User
     fun getTrackerList(userId: String): Observable<List<UserTrackerEntity>> {
         return apiManager.getUserTrackerList(userId)
     }
+    
 
 }
