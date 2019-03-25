@@ -7,16 +7,13 @@ import com.aykuttasil.sweetloc.util.adapter.UserTrackerListAdapter
 import dagger.Module
 import dagger.Provides
 
-/**
- * Created by aykutasil on 26.01.2018.
- */
 @Module
 class UserTrackerListModule {
 
     @Provides
     fun provideAdapter(
-        context: Context,
-        dataManager: DataManager
+            context: Context,
+            dataManager: DataManager
     ): UserTrackerListAdapter = UserTrackerListAdapter(context, dataManager)
 
     @Provides

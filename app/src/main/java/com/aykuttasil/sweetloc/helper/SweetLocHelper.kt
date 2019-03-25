@@ -10,6 +10,7 @@ import com.aykuttasil.sweetloc.BuildConfig
 import com.aykuttasil.sweetloc.app.Const
 import com.aykuttasil.sweetloc.data.DataManager
 import com.aykuttasil.sweetloc.data.repository.UserRepository
+import com.aykuttasil.sweetloc.data.repository.UserTrackerRepository
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
@@ -18,8 +19,6 @@ import com.orhanobut.logger.Logger
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.jetbrains.anko.alarmManager
@@ -31,7 +30,8 @@ import javax.inject.Inject
  * Created by aykutasil on 12.07.2016.
  */
 class SweetLocHelper @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val userTrackerRepository: UserTrackerRepository
 ) : SuperHelper() {
 
     fun resetSweetLoc(context: Context) = runBlocking(context = Dispatchers.IO) {
@@ -198,7 +198,7 @@ class SweetLocHelper @Inject constructor(
             dataManager: DataManager
         ) {
             try {
-                GlobalScope.launch(Dispatchers.Main) {
+                runBlocking {
                     val mainObject = JSONObject()
 
                     val contents = JSONObject()
@@ -218,11 +218,9 @@ class SweetLocHelper @Inject constructor(
                     val playerIds = JSONArray()
 
                     val userEntity = withContext(Dispatchers.IO) { dataManager.getUserEntity() }
-
                     val userTrackerList = withContext(Dispatchers.IO) {
                         dataManager.getUserTrackers(userEntity?.userUUID!!).blockingSingle()
                     }
-
                     userTrackerList
                         .filter { it.oneSignalUserId != null }
                         .forEach { playerIds.put(it.oneSignalUserId) }

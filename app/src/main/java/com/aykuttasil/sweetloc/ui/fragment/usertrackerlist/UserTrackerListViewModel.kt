@@ -1,38 +1,43 @@
 package com.aykuttasil.sweetloc.ui.fragment.usertrackerlist
 
+import android.os.Handler
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
 import com.aykuttasil.sweetloc.data.DataManager
 import com.aykuttasil.sweetloc.data.local.entity.UserTrackerEntity
+import com.aykuttasil.sweetloc.util.RxAwareViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-/**
- * Created by aykutasil on 25.01.2018.
- */
-class UserTrackerListViewModel @Inject constructor(private val dataManager: DataManager) :
-    ViewModel() {
+class UserTrackerListViewModel @Inject constructor(private val dataManager: DataManager) : RxAwareViewModel(), LifecycleObserver {
 
-    private val liveUserTrackerEntity: MutableLiveData<List<UserTrackerEntity>> = MutableLiveData()
+    val liveUserTrackerEntity: MutableLiveData<List<UserTrackerEntity>> = MutableLiveData()
 
-    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun getTrackerList(): LiveData<List<UserTrackerEntity>> {
-        compositeDisposable.add(dataManager.getUser()
-            .flatMapObservable {
-                dataManager.getUserTrackers(it.userUUID)
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                liveUserTrackerEntity.value = it
-            }, {
-                liveUserTrackerEntity.value = emptyList()
-                it.printStackTrace()
-            }))
+        handler.postDelayed(runnable, 2000)
+
+        /*
+        disposables.add(dataManager.getUser()
+                .flatMapObservable {
+                    dataManager.getUserTrackers(it.userUUID)
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    liveUserTrackerEntity.value = it
+                }, {
+                    liveUserTrackerEntity.value = emptyList()
+                    it.printStackTrace()
+                }))
+        */
 
         /*
         //DbManager.deleteModelUserTrackerList()
@@ -81,10 +86,25 @@ class UserTrackerListViewModel @Inject constructor(private val dataManager: Data
         return liveUserTrackerEntity
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        if (!compositeDisposable.isDisposed) {
-            compositeDisposable.dispose()
+
+    val handler = Handler()
+    private val runnable = object : Runnable {
+        override fun run() {
+            liveUserTrackerEntity.value = mockUserTrackerList(2)
+            handler.postDelayed(this, 2000)
         }
+    }
+
+    fun mockUserTrackerList(size: Int): List<UserTrackerEntity> {
+        val userTrackerEntityList = mutableListOf<UserTrackerEntity>()
+        for (i in 1..size) {
+            val userTrackerEntity = UserTrackerEntity().apply {
+                userTrackerId = i.toLong()
+                email = "aykuttasil$i@hotmail.com"
+                this.name = "Aykut$i"
+            }
+            userTrackerEntityList.add(userTrackerEntity)
+        }
+        return userTrackerEntityList
     }
 }

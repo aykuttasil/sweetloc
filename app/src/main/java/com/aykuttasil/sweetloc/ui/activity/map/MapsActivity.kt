@@ -15,7 +15,7 @@ import com.afollestad.materialdialogs.DialogAction
 import com.aykuttasil.androidbasichelperlib.UiHelper
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.di.ViewModelFactory
-import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
+import com.aykuttasil.sweetloc.ui.activity.base.LoginBaseActivity
 import com.aykuttasil.sweetloc.util.extension.setupToolbar
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -34,7 +34,7 @@ import java.util.HashMap
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter,
+open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter,
     GoogleMap.OnInfoWindowClickListener {
 
     @Inject

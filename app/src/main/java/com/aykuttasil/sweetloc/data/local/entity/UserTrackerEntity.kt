@@ -46,13 +46,13 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "UserTracker")
 data class UserTrackerEntity(
         @PrimaryKey(autoGenerate = true) var userTrackerId: Long? = null,
-        val name: String? = null,
-        val surName: String? = null,
-        val email: String?,
-        val profilePictureUrl: String? = null,
-        val oneSignalUserId: String? = null,
-        val token: String? = null,
-        val UUID: String? = null
+        var name: String? = null,
+        var surName: String? = null,
+        var email: String?,
+        var profilePictureUrl: String? = null,
+        var oneSignalUserId: String? = null,
+        var token: String? = null,
+        var UUID: String? = null
 ) {
 
     @Ignore

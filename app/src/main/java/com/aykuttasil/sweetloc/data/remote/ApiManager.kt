@@ -18,32 +18,29 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-/**
- * Created by aykutasil on 23.06.2016.
- */
 class ApiManager @Inject constructor(private val databaseReference: DatabaseReference, private val firebaseAuth: FirebaseAuth) {
 
     fun login(username: String, password: String): Single<FirebaseUser> {
         return Single.create {
             firebaseAuth.signInWithEmailAndPassword(username, password)
-                .addOnSuccessListener { success ->
-                    it.onSuccess(success.user)
-                }
-                .addOnFailureListener { e ->
-                    it.onError(e)
-                }
+                    .addOnSuccessListener { success ->
+                        it.onSuccess(success.user)
+                    }
+                    .addOnFailureListener { e ->
+                        it.onError(e)
+                    }
         }
     }
 
     fun register(username: String, password: String): Single<FirebaseUser> {
         return Single.create {
             firebaseAuth.createUserWithEmailAndPassword(username, password)
-                .addOnSuccessListener { success ->
-                    it.onSuccess(success.user)
-                }
-                .addOnFailureListener { e ->
-                    it.onError(e)
-                }
+                    .addOnSuccessListener { success ->
+                        it.onSuccess(success.user)
+                    }
+                    .addOnFailureListener { e ->
+                        it.onError(e)
+                    }
         }
     }
 
@@ -54,14 +51,14 @@ class ApiManager @Inject constructor(private val databaseReference: DatabaseRefe
     fun addLocation(userId: String, locationEntity: LocationEntity): Completable {
         return Completable.create { emitter ->
             databaseReference.child(userLocationNode(userId))
-                .push()
-                .setValue(locationEntity)
-                .addOnSuccessListener {
-                    emitter.onComplete()
-                }
-                .addOnFailureListener {
-                    emitter.onError(it)
-                }
+                    .push()
+                    .setValue(locationEntity)
+                    .addOnSuccessListener {
+                        emitter.onComplete()
+                    }
+                    .addOnFailureListener {
+                        emitter.onError(it)
+                    }
         }
     }
 
@@ -95,7 +92,8 @@ class ApiManager @Inject constructor(private val databaseReference: DatabaseRefe
             val childReference = databaseReference.child(userTrackerNode(userId))
             childReference.addListenerForSingleValueEvent(listener)
             emitter.setCancellable { childReference.removeEventListener(listener) }
-        }.observeOn(Schedulers.io())
+        }
+                .observeOn(Schedulers.io())
 
         //return observeChild(userTrackerNode(userId), UserTrackerEntity::class.java)
     }
@@ -171,15 +169,15 @@ class ApiManager @Inject constructor(private val databaseReference: DatabaseRefe
     private fun upsertUser(userId: String, action: (DatabaseReference) -> Task<Void>): Completable {
         return Completable.create { emitter ->
             action(databaseReference.child(userDataNode(userId)))
-                .addOnSuccessListener {
-                    emitter.onComplete()
-                }
-                .addOnFailureListener { e ->
-                    if (emitter.isDisposed) {
-                        return@addOnFailureListener
+                    .addOnSuccessListener {
+                        emitter.onComplete()
                     }
-                    emitter.onError(e)
-                }
+                    .addOnFailureListener { e ->
+                        if (emitter.isDisposed) {
+                            return@addOnFailureListener
+                        }
+                        emitter.onError(e)
+                    }
         }
     }
 
