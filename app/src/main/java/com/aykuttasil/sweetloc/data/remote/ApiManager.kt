@@ -92,8 +92,7 @@ class ApiManager @Inject constructor(private val databaseReference: DatabaseRefe
             val childReference = databaseReference.child(userTrackerNode(userId))
             childReference.addListenerForSingleValueEvent(listener)
             emitter.setCancellable { childReference.removeEventListener(listener) }
-        }
-                .observeOn(Schedulers.io())
+        }.observeOn(Schedulers.io())
 
         //return observeChild(userTrackerNode(userId), UserTrackerEntity::class.java)
     }

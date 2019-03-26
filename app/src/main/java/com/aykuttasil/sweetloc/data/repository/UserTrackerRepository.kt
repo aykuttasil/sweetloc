@@ -7,9 +7,6 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import javax.inject.Inject
 
-/**
- * Created by aykutasil on 25.01.2018.
- */
 class UserTrackerRepository @Inject constructor(private val userTrackerDao: UserTrackerDao, private val apiManager: ApiManager) {
 
     fun addUserTracker(userTrackerEntity: UserTrackerEntity): Completable {
@@ -26,6 +23,6 @@ class UserTrackerRepository @Inject constructor(private val userTrackerDao: User
     fun getTrackerList(userId: String): Observable<List<UserTrackerEntity>> {
         return apiManager.getUserTrackerList(userId)
     }
-    
+
 
 }

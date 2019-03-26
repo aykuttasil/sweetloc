@@ -56,6 +56,5 @@ open class UserTrackerListFragment : BaseFragment(), Injectable {
         userTrackerListViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserTrackerListViewModel::class.java)
         lifecycle.addObserver(userTrackerListViewModel)
         binding.viewModel = userTrackerListViewModel
-
     }
 }
