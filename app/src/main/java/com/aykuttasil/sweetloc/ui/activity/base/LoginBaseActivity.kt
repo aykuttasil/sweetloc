@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 abstract class LoginBaseActivity : BaseActivity() {
@@ -16,13 +16,10 @@ abstract class LoginBaseActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        runBlocking {
+        launch {
             isLogin = userRepository.checkUser()
             if (!isLogin) {
-                startActivityForResult(
-                    Intent(this@LoginBaseActivity, LoginActivity::class.java),
-                    BaseActivity.LOGIN_REQUEST_CODE
-                )
+                startActivity(Intent(this@LoginBaseActivity.applicationContext, LoginActivity::class.java))
             }
         }
     }

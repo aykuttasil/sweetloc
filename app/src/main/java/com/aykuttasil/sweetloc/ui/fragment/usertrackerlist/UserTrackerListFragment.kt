@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.aykuttasil.sweetloc.R
-import com.aykuttasil.sweetloc.data.local.entity.UserTrackerEntity
 import com.aykuttasil.sweetloc.databinding.FragmentUserTrackerListLayoutBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
@@ -48,7 +46,11 @@ open class UserTrackerListFragment : BaseFragment(), Injectable {
     }
 
     private fun setUI() {
+
         listUserTracker?.adapter = listAdapter
+        fab.setOnClickListener {
+            findNavController(this).navigate(R.id.action_userTrackerListFragment_to_roomCreateFragment)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

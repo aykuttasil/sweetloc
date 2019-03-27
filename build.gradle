@@ -7,8 +7,6 @@ ext {
 }
 
 buildscript {
-    ext.kotlin_version = '1.3.21'
-
     repositories {
         jcenter()
         mavenCentral()
@@ -16,11 +14,11 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0-alpha08'
+        classpath Libs.androidGradlePlugin
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$Versions.kotlin_version"
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'io.fabric.tools:gradle:1.+'
         classpath "com.fernandocejas.frodo:frodo-plugin:0.8.3"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 

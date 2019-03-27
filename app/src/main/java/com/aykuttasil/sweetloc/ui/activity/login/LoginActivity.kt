@@ -20,13 +20,11 @@ open class LoginActivity : BaseActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    @Inject
     lateinit var loginViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loginViewModel = ViewModelProviders.of(this@LoginActivity, viewModelFactory)
-            .get(LoginViewModel::class.java)
+        loginViewModel = ViewModelProviders.of(this@LoginActivity, viewModelFactory).get(LoginViewModel::class.java)
 
         val binding = bind<ActivityLoginLayoutBinding>(R.layout.activity_login_layout)
         binding.lifecycleOwner = this
@@ -40,7 +38,7 @@ open class LoginActivity : BaseActivity() {
 
         loginViewModel.liveOkDialog.observe(this, Observer {
             UiHelper.UiDialog.newInstance(this)
-                .getOKDialog(it.title, it.content, it.icon).show()
+                    .getOKDialog(it.title, it.content, it.icon).show()
         })
 
         loginViewModel.liveUiStates.observe(this, Observer { states ->

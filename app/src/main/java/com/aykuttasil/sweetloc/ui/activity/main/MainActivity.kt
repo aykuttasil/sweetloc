@@ -10,16 +10,14 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProviders
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.di.ViewModelFactory
-import com.aykuttasil.sweetloc.ui.activity.base.LoginBaseActivity
+import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
 import com.aykuttasil.sweetloc.ui.activity.profile.ProfileActivity
-import com.aykuttasil.sweetloc.ui.fragment.usertrackerlist.UserTrackerListFragment
-import com.aykuttasil.sweetloc.util.extension.replaceFragmentInActivity
 import com.aykuttasil.sweetloc.util.extension.setupToolbar
 import org.jetbrains.anko.notificationManager
 import javax.inject.Inject
 
-open class MainActivity : LoginBaseActivity() {
+open class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -29,28 +27,15 @@ open class MainActivity : LoginBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setup()
-        initMain()
+        initUiComponents()
 
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
         lifecycle.run {
             addObserver(mainActivityViewModel)
         }
-
-        /*
-        mainActivityViewModel.checkUserLogin().observe(this@MainActivity, Observer {
-            if (it!!) {
-                initMain()
-            } else {
-                startActivityForResult(
-                    Intent(this@MainActivity, LoginActivity::class.java),
-                    BaseActivity.LOGIN_REQUEST_CODE)
-            }
-        })
-        */
     }
 
-    private fun setup() {
+    private fun initUiComponents() {
         setToolbar()
     }
 
@@ -61,14 +46,9 @@ open class MainActivity : LoginBaseActivity() {
     }
 
     private fun initMain() {
-        goUserTrackerListFragment()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkAndOpenAudioSettings()
         }
-    }
-
-    private fun goUserTrackerListFragment() {
-        replaceFragmentInActivity(UserTrackerListFragment(), R.id.Container)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -80,7 +60,7 @@ open class MainActivity : LoginBaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_mainactivity, menu)
+        // menuInflater.inflate(R.menu.menu_mainactivity, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -97,9 +77,9 @@ open class MainActivity : LoginBaseActivity() {
     }
 
     override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
+            requestCode: Int,
+            resultCode: Int,
+            data: Intent?
     ) {
         when (requestCode) {
             LOGIN_REQUEST_CODE -> when (resultCode) {

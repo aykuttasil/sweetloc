@@ -4,9 +4,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
-abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
+abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, CoroutineScope {
+
+    private val job = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -114,5 +123,10 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector {
     //
     //        alarmManager.cancel(pendingIntent);
     //    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
 
 }

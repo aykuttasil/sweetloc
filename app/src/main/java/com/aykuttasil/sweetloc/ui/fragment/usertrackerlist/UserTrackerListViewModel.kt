@@ -1,6 +1,7 @@
 package com.aykuttasil.sweetloc.ui.fragment.usertrackerlist
 
 import android.os.Handler
+import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
@@ -13,31 +14,36 @@ import com.aykuttasil.sweetloc.util.RxAwareViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
-class UserTrackerListViewModel @Inject constructor(private val dataManager: DataManager) : RxAwareViewModel(), LifecycleObserver {
+class UserTrackerListViewModel @Inject constructor(
+        private val dataManager: DataManager
+) : RxAwareViewModel(), LifecycleObserver, CoroutineScope {
+
+    private val jobs = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = jobs + Dispatchers.Default
+
 
     val liveUserTrackerEntity: MutableLiveData<List<UserTrackerEntity>> = MutableLiveData()
 
-
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun getTrackerList(): LiveData<List<UserTrackerEntity>> {
-        handler.postDelayed(runnable, 2000)
-
-        /*
-        disposables.add(dataManager.getUser()
-                .flatMapObservable {
-                    dataManager.getUserTrackers(it.userUUID)
+    private fun getTrackerList(): LiveData<List<UserTrackerEntity>> {
+        launch {
+            val user = dataManager.getUser().blockingGet()
+            user?.let {
+                // handler.postDelayed(runnable, 2000)
+                val userTrackers = dataManager.getUserTrackers(it.userUUID).blockingForEach { list ->
+                    liveUserTrackerEntity.postValue(list)
                 }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    liveUserTrackerEntity.value = it
-                }, {
-                    liveUserTrackerEntity.value = emptyList()
-                    it.printStackTrace()
-                }))
-        */
+            }
+        }
 
         /*
         //DbManager.deleteModelUserTrackerList()
@@ -86,6 +92,15 @@ class UserTrackerListViewModel @Inject constructor(private val dataManager: Data
         return liveUserTrackerEntity
     }
 
+    fun createRoom() {
+
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        jobs.cancel()
+        println("onCleared")
+    }
 
     val handler = Handler()
     private val runnable = object : Runnable {

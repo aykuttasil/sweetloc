@@ -16,7 +16,6 @@ class UserGroupsFragment : BaseFragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    @Inject
     lateinit var userGroupsViewModel: UserGroupsViewModel
 
     override fun onCreateView(
