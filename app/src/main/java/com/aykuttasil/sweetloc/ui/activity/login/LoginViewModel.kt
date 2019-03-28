@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.model.process.DataOkDialog
-import com.aykuttasil.sweetloc.util.RxAwareViewModel
+import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
 import com.aykuttasil.sweetloc.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -28,10 +29,12 @@ sealed class LoginUiStates
 data class LoginUiStateSuccessfulLogin(val user: UserEntity) : LoginUiStates()
 data class LoginUiStateSuccessfulRegister(val dataOkDialog: DataOkDialog) : LoginUiStates()
 data class LoginUiStateError(val dataOkDialog: DataOkDialog) : LoginUiStates()
+data class LoginUiStateProgress(val progressMsg: String? = "Lütfen Bekleyiniz.") : LoginUiStates()
 
 open class LoginViewModel @Inject constructor(
+        private val app: App,
         private val userRepository: UserRepository
-) : RxAwareViewModel() {
+) : BaseAndroidViewModel(app) {
 
     val liveUiStates = MutableLiveData<LoginUiStates>()
     val liveSnackbar = SingleLiveEvent<String>()
@@ -46,6 +49,8 @@ open class LoginViewModel @Inject constructor(
             email: String,
             password: String
     ) {
+        liveUiStates.value = LoginUiStateProgress()
+
         userRepository.loginUser(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

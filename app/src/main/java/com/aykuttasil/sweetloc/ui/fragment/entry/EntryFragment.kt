@@ -10,8 +10,10 @@ import androidx.navigation.fragment.findNavController
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.di.Injectable
+import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
+import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.fragment_entry.*
 import javax.inject.Inject
 
@@ -19,6 +21,13 @@ class EntryFragment : BaseFragment(), Injectable {
 
     @Inject
     lateinit var userRepository: UserRepository
+
+
+    @Inject
+    lateinit var databaseReference: DatabaseReference
+
+    @Inject
+    lateinit var sweetLocHelper: SweetLocHelper
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_entry, container, false)
@@ -33,6 +42,18 @@ class EntryFragment : BaseFragment(), Injectable {
 
         btnGoUserTrackerList.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_userTrackerListFragment3)
+        }
+
+        btnCleanAllData.setOnClickListener {
+            showProgress()
+            databaseReference.removeValue().addOnCompleteListener {
+                dismissProgress()
+            }
+        }
+
+        btnLogout.setOnClickListener {
+            sweetLocHelper.resetSweetLoc(context!!)
+
         }
     }
 }

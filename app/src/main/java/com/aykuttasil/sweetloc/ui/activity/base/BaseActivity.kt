@@ -1,21 +1,31 @@
 package com.aykuttasil.sweetloc.ui.activity.base
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import com.aykuttasil.sweetloc.ui.dialog.ProgressDialogFragment
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, CoroutineScope {
 
-    private val job = Job()
+    companion object {
+        const val LOGIN_REQUEST_CODE = 1001
+    }
+
+    var jobs = Job()
 
     override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+        get() = Dispatchers.Main + jobs
+
+
+    private val progressDialog: DialogFragment by lazy { ProgressDialogFragment() }
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -24,8 +34,26 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, C
         return dispatchingAndroidInjector
     }
 
-    companion object {
-        const val LOGIN_REQUEST_CODE = 1001
+    fun showProgressDialog() {
+        launch(Dispatchers.Main) {
+            if (!progressDialog.isVisible) {
+                progressDialog.show(supportFragmentManager, "ProgressDialog")
+            }
+        }
+    }
+
+    fun dismissProgressDialog() {
+        launch(Dispatchers.Main) {
+            if (progressDialog.isVisible) {
+                progressDialog.dismiss()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        dismissProgressDialog()
+        jobs.cancel()
     }
 
     //    @DebugLog
@@ -124,9 +152,5 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, C
     //        alarmManager.cancel(pendingIntent);
     //    }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        job.cancel()
-    }
 
 }

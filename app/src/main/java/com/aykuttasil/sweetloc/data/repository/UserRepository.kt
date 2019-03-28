@@ -6,6 +6,8 @@ import com.aykuttasil.sweetloc.data.userNode
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
+import com.onesignal.OneSignal
+import com.orhanobut.logger.Logger
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -144,6 +146,21 @@ class UserRepository @Inject constructor(
             val userEntity = withContext(Dispatchers.Default) { getUserEntity() }
             val firebaseUser = FirebaseAuth.getInstance().currentUser
             return@runBlocking userEntity != null && firebaseUser != null
+        }
+    }
+
+    fun updateOneSignalId() {
+        OneSignal.idsAvailable { userId, registrationId ->
+            Logger.i("OneSignal userId: $userId")
+            Logger.i("OneSignal regId: $registrationId")
+
+            val user = getUserEntity()?.apply {
+                userOneSignalId = userId
+            }
+
+            user?.apply {
+                updateUser(this).blockingAwait()
+            }
         }
     }
 }

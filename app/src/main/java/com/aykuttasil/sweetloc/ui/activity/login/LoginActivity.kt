@@ -12,6 +12,8 @@ import com.aykuttasil.sweetloc.util.extension.bind
 import com.aykuttasil.sweetloc.util.extension.setupToolbar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login_layout.*
+import org.jetbrains.anko.appcompat.v7.alertDialogLayout
+import org.jetbrains.anko.progressDialog
 import javax.inject.Inject
 
 open class LoginActivity : BaseActivity() {
@@ -36,11 +38,12 @@ open class LoginActivity : BaseActivity() {
         })
 
         loginViewModel.liveOkDialog.observe(this, Observer {
-            UiHelper.UiDialog.newInstance(this)
-                    .getOKDialog(it.title, it.content, it.icon).show()
+            UiHelper.UiDialog.newInstance(this).getOKDialog(it.title, it.content, it.icon).show()
         })
 
         loginViewModel.liveUiStates.observe(this, Observer { states ->
+
+
             when (states) {
                 is LoginUiStateSuccessfulLogin -> {
                     finish()
@@ -50,6 +53,9 @@ open class LoginActivity : BaseActivity() {
                 }
                 is LoginUiStateError -> {
                     loginViewModel.liveOkDialog.value = states.dataOkDialog
+                }
+                is LoginUiStateProgress -> {
+                    progressDialog(message = states.progressMsg)
                 }
             }
         })
