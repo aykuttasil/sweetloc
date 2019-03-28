@@ -8,7 +8,6 @@ import android.os.SystemClock
 import com.aykuttasil.androidbasichelperlib.SuperHelper
 import com.aykuttasil.sweetloc.BuildConfig
 import com.aykuttasil.sweetloc.app.Const
-import com.aykuttasil.sweetloc.data.DataManager
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.data.repository.UserTrackerRepository
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver
@@ -30,8 +29,8 @@ import javax.inject.Inject
  * Created by aykutasil on 12.07.2016.
  */
 class SweetLocHelper @Inject constructor(
-    private val userRepository: UserRepository,
-    private val userTrackerRepository: UserTrackerRepository
+        private val userRepository: UserRepository,
+        private val userTrackerRepository: UserTrackerRepository
 ) : SuperHelper() {
 
     fun resetSweetLoc(context: Context) = runBlocking(context = Dispatchers.IO) {
@@ -150,22 +149,22 @@ class SweetLocHelper @Inject constructor(
         val alarmManager = context.alarmManager
         val intent = Intent(context.applicationContext, SingleLocationRequestReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context,
-            Const.REQUEST_CODE_BROADCAST_LOCATION,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
+                Const.REQUEST_CODE_BROADCAST_LOCATION,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
-            SystemClock.elapsedRealtime() + 3000,
-            AlarmManager.INTERVAL_HALF_HOUR,
-            pendingIntent)
+                SystemClock.elapsedRealtime() + 3000,
+                AlarmManager.INTERVAL_HALF_HOUR,
+                pendingIntent)
     }
 
     fun stopPeriodicTask(context: Context) {
         val alarmManager = context.alarmManager
         val intent = Intent(context.applicationContext, SingleLocationRequestReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context,
-            Const.REQUEST_CODE_BROADCAST_LOCATION,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
+                Const.REQUEST_CODE_BROADCAST_LOCATION,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT)
 
         alarmManager.cancel(pendingIntent)
     }
@@ -194,8 +193,9 @@ class SweetLocHelper @Inject constructor(
 
     companion object {
         fun sendNotif(
-            action: String,
-            dataManager: DataManager
+                action: String,
+                userRepository: UserRepository,
+                userTrackerRepository: UserTrackerRepository
         ) {
             try {
                 runBlocking {
@@ -217,13 +217,13 @@ class SweetLocHelper @Inject constructor(
 
                     val playerIds = JSONArray()
 
-                    val userEntity = withContext(Dispatchers.IO) { dataManager.getUserEntity() }
+                    val userEntity = withContext(Dispatchers.IO) { userRepository.getUserEntity() }
                     val userTrackerList = withContext(Dispatchers.IO) {
-                        dataManager.getUserTrackers(userEntity?.userUUID!!).blockingSingle()
+                        userTrackerRepository.getTrackerList(userEntity?.userUUID!!).blockingSingle()
                     }
                     userTrackerList
-                        .filter { it.oneSignalUserId != null }
-                        .forEach { playerIds.put(it.oneSignalUserId) }
+                            .filter { it.oneSignalUserId != null }
+                            .forEach { playerIds.put(it.oneSignalUserId) }
 
                     if (BuildConfig.DEBUG) {
                         //playerIds.put("428ef398-76d3-4ca9-ab4c-60d591879365");
@@ -234,15 +234,15 @@ class SweetLocHelper @Inject constructor(
                     Logger.json(mainObject.toString())
                     if (playerIds.length() > 0) {
                         OneSignal.postNotification(mainObject,
-                            object : OneSignal.PostNotificationResponseHandler {
-                                override fun onSuccess(response: JSONObject) {
-                                    Logger.json(response.toString())
-                                }
+                                object : OneSignal.PostNotificationResponseHandler {
+                                    override fun onSuccess(response: JSONObject) {
+                                        Logger.json(response.toString())
+                                    }
 
-                                override fun onFailure(response: JSONObject) {
-                                    Logger.json(response.toString())
-                                }
-                            })
+                                    override fun onFailure(response: JSONObject) {
+                                        Logger.json(response.toString())
+                                    }
+                                })
                     }
                 }
             } catch (e: Exception) {

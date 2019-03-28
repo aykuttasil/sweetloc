@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.aykuttasil.sweetloc.ui.fragment.main.EntryFragment"
+        android:name="com.aykuttasil.sweetloc.ui.fragment.entry.EntryFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_entry" >
         <action

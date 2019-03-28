@@ -1,18 +1,16 @@
 package com.aykuttasil.sweetloc.ui.activity.login
 
-import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.aykuttasil.sweetloc.data.DataManager
+import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.model.process.DataOkDialog
 import com.aykuttasil.sweetloc.util.RxAwareViewModel
 import com.aykuttasil.sweetloc.util.SingleLiveEvent
-import com.google.firebase.auth.FirebaseUser
-import com.orhanobut.logger.Logger
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -27,7 +25,7 @@ inline fun <T> dependantLiveData(
 }
 
 sealed class LoginUiStates
-data class LoginUiStateSuccessfulLogin(val user: FirebaseUser) : LoginUiStates()
+data class LoginUiStateSuccessfulLogin(val user: UserEntity) : LoginUiStates()
 data class LoginUiStateSuccessfulRegister(val dataOkDialog: DataOkDialog) : LoginUiStates()
 data class LoginUiStateError(val dataOkDialog: DataOkDialog) : LoginUiStates()
 
@@ -36,37 +34,6 @@ open class LoginViewModel @Inject constructor(
 ) : RxAwareViewModel() {
 
     val liveUiStates = MutableLiveData<LoginUiStates>()
-
-    private val callbacks: PropertyChangeRegistry = PropertyChangeRegistry()
-
-    /*
-    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-        callbacks.remove(callback)
-    }
-
-    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
-        callbacks.add(callback)
-    }
-    */
-
-    /**
-     * Notifies observers that all properties of this instance have changed.
-     */
-    fun notifyChange() {
-        //callbacks.notifyCallbacks(this, 0, null)
-    }
-
-    /**
-     * Notifies observers that a specific property has changed. The getter for the
-     * property that changes should be marked with the @Bindable annotation to
-     * generate a field in the BR class to be used as the fieldId parameter.
-     *
-     * @param fieldId The generated BR id for the Bindable field.
-     */
-    fun notifyPropertyChanged(fieldId: Int) {
-        //callbacks.notifyCallbacks(this, fieldId, null)
-    }
-
     val liveSnackbar = SingleLiveEvent<String>()
     val liveOkDialog = SingleLiveEvent<DataOkDialog>()
     val liveEmail = MutableLiveData<String>()
@@ -79,37 +46,34 @@ open class LoginViewModel @Inject constructor(
             email: String,
             password: String
     ) {
-        disposables.add(userRepository.loginUser(email, password)
+        userRepository.loginUser(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Logger.i("Kullanıcı girişi başarılı.")
-                    liveSnackbar.value = "${it?.email} ile oturum açıldı."
+                    liveSnackbar.value = "${it?.userEmail} ile oturum açıldı."
                     liveUiStates.value = LoginUiStateSuccessfulLogin(it)
                 }, {
                     it.printStackTrace()
                     val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
                     liveUiStates.value = LoginUiStateError(dialog)
-                })
-        )
+                }).addTo(disposables)
+
     }
 
     fun register(
             email: String,
             password: String
     ) {
-        disposables.add(userRepository.registerUser(email, password)
+        userRepository.registerUser(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Logger.i("Kullanıcı kaydı başarılı.")
-                    liveSnackbar.value = "${it?.email} ile kayıt olundu."
+                    liveSnackbar.value = "${it?.userEmail} ile kayıt olundu."
                     liveUiStates.value = LoginUiStateSuccessfulLogin(it)
                 }, {
                     it.printStackTrace()
                     val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
                     liveUiStates.value = LoginUiStateError(dialog)
-                })
-        )
+                }).addTo(disposables)
     }
 }

@@ -1,19 +1,15 @@
 package com.aykuttasil.sweetloc.ui.fragment.usertrackerlist
 
 import android.os.Handler
-import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.ViewModel
-import com.aykuttasil.sweetloc.data.DataManager
 import com.aykuttasil.sweetloc.data.local.entity.UserTrackerEntity
+import com.aykuttasil.sweetloc.data.repository.UserRepository
+import com.aykuttasil.sweetloc.data.repository.UserTrackerRepository
 import com.aykuttasil.sweetloc.util.RxAwareViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -22,7 +18,8 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class UserTrackerListViewModel @Inject constructor(
-        private val dataManager: DataManager
+        private val userRepository: UserRepository,
+        private val userTrackerRepository: UserTrackerRepository
 ) : RxAwareViewModel(), LifecycleObserver, CoroutineScope {
 
     private val jobs = Job()
@@ -36,10 +33,10 @@ class UserTrackerListViewModel @Inject constructor(
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun getTrackerList(): LiveData<List<UserTrackerEntity>> {
         launch {
-            val user = dataManager.getUser().blockingGet()
+            val user = userRepository.getUser().blockingGet()
             user?.let {
                 // handler.postDelayed(runnable, 2000)
-                val userTrackers = dataManager.getUserTrackers(it.userUUID).blockingForEach { list ->
+                val userTrackers = userTrackerRepository.getTrackerList(it.userUUID).blockingForEach { list ->
                     liveUserTrackerEntity.postValue(list)
                 }
             }
@@ -78,7 +75,7 @@ class UserTrackerListViewModel @Inject constructor(
                             modelUserTracker.token = modelUser?.token
                             modelUserTracker.save()
 
-                            mAdapter.addItem(modelUserTracker)
+                            mAdapter.addLocation(modelUserTracker)
                         }
                     }
                     */
@@ -90,10 +87,6 @@ class UserTrackerListViewModel @Inject constructor(
         */
 
         return liveUserTrackerEntity
-    }
-
-    fun createRoom() {
-
     }
 
     override fun onCleared() {

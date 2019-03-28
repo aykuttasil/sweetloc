@@ -1,13 +1,14 @@
 package com.aykuttasil.sweetloc.data.local.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import com.aykuttasil.sweetloc.data.local.entity.UserTrackerEntity
 import io.reactivex.Flowable
 
-/**
- * Created by aykutasil on 22.01.2018.
- */
 @Dao
 abstract class UserTrackerDao {
 

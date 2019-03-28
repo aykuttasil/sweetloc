@@ -1,6 +1,5 @@
 package com.aykuttasil.sweetloc.ui.activity.login
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -44,11 +43,9 @@ open class LoginActivity : BaseActivity() {
         loginViewModel.liveUiStates.observe(this, Observer { states ->
             when (states) {
                 is LoginUiStateSuccessfulLogin -> {
-                    setResult(Activity.RESULT_OK)
                     finish()
                 }
                 is LoginUiStateSuccessfulRegister -> {
-                    setResult(Activity.RESULT_OK)
                     finish()
                 }
                 is LoginUiStateError -> {

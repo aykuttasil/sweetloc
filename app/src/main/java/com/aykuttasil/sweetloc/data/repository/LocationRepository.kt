@@ -2,21 +2,27 @@ package com.aykuttasil.sweetloc.data.repository
 
 import aykuttasil.com.myviewmodelskeleton.data.local.dao.LocationDao
 import com.aykuttasil.sweetloc.data.local.entity.LocationEntity
-import com.aykuttasil.sweetloc.data.remote.ApiManager
+import com.aykuttasil.sweetloc.data.userLocationsNode
+import com.google.firebase.database.DatabaseReference
 import io.reactivex.Completable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-/**
- * Created by aykutasil on 24.01.2018.
- */
-class LocationRepository @Inject constructor(private val locationDao: LocationDao, private val apiManager: ApiManager) {
 
-    fun addItem(userId: String, locationEntity: LocationEntity): Completable {
-        return apiManager.addLocation(userId, locationEntity)
-                .observeOn(Schedulers.io())
-                .doOnComplete({
-                    locationDao.insertItem(locationEntity)
-                })
+class LocationRepository @Inject constructor(private val locationDao: LocationDao,
+                                             private val databaseReference: DatabaseReference
+) {
+
+    fun addLocation(userId: String, locationEntity: LocationEntity): Completable {
+        return Completable.create { emitter ->
+            databaseReference.child(userLocationsNode(userId))
+                    .push()
+                    .setValue(locationEntity)
+                    .addOnSuccessListener {
+                        emitter.onComplete()
+                    }
+                    .addOnFailureListener {
+                        emitter.onError(it)
+                    }
+        }
     }
 }

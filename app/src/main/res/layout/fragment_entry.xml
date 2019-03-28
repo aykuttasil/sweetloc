@@ -4,7 +4,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.aykuttasil.sweetloc.ui.fragment.main.EntryFragment">
+    tools:context="com.aykuttasil.sweetloc.ui.fragment.entry.EntryFragment">
 
     <ImageView
         android:id="@+id/imageView3"

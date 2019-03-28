@@ -2,12 +2,12 @@ package com.aykuttasil.sweetloc.data.repository
 
 import aykuttasil.com.myviewmodelskeleton.data.local.dao.UserDao
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
-import com.aykuttasil.sweetloc.data.remote.ApiManager
+import com.aykuttasil.sweetloc.data.userNode
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DatabaseReference
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.Single.create
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -15,100 +15,78 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    private val userDao: UserDao,
-    private val apiManager: ApiManager,
-    private val firebaseAuth: FirebaseAuth
+        private val userDao: UserDao,
+        private val firebaseAuth: FirebaseAuth,
+        private val databaseReference: DatabaseReference
 ) {
 
     fun loginUser(
-        username: String,
-        password: String
-    ): Single<FirebaseUser> {
-        return create<FirebaseUser> { emitter ->
+            username: String,
+            password: String
+    ): Single<UserEntity> {
+        return Single.create<UserEntity> { emitter ->
             firebaseAuth.signInWithEmailAndPassword(username, password)
-                .addOnSuccessListener { success ->
-                    val firebaseUser = success.user
-                    val userEntity = UserEntity(
-                        userUUID = firebaseUser.uid,
-                        userEmail = firebaseUser.email,
-                        userPassword = password
-                    )
-                    addUser(userEntity)
-                        .subscribe({
-                            emitter.onSuccess(firebaseUser)
-                        }, {
-                            emitter.onError(it)
-                        })
-                }
-                .addOnFailureListener { e ->
-                    emitter.onError(e)
-                }
+                    .addOnSuccessListener { success ->
+                        val firebaseUser = success.user
+                        val userEntity = UserEntity(
+                                userUUID = firebaseUser.uid,
+                                userEmail = firebaseUser.email,
+                                userPassword = password
+                        )
+                        addUser(userEntity)
+                                .subscribe({
+                                    emitter.onSuccess(userEntity)
+                                }, {
+                                    emitter.onError(it)
+                                })
+                    }
+                    .addOnFailureListener { e ->
+                        emitter.onError(e)
+                    }
         }
     }
 
     fun registerUser(
-        username: String,
-        password: String
-    ): Single<FirebaseUser> {
-        return create<FirebaseUser> { emitter ->
+            username: String,
+            password: String
+    ): Single<UserEntity> {
+        return Single.create<UserEntity> { emitter ->
             firebaseAuth.createUserWithEmailAndPassword(username, password)
-                .addOnSuccessListener { success ->
-                    val firebaseUser = success.user
-                    val userEntity = UserEntity(
-                        userUUID = firebaseUser.uid,
-                        userEmail = firebaseUser.email!!,
-                        userPassword = password
-                    )
+                    .addOnSuccessListener { success ->
+                        val firebaseUser = success.user
+                        val userEntity = UserEntity(
+                                userUUID = firebaseUser.uid,
+                                userEmail = firebaseUser.email,
+                                userPassword = password
+                        )
 
-                    addUser(userEntity)
-                        .subscribe({
-                            emitter.onSuccess(firebaseUser)
-                        }, {
-                            emitter.onError(it)
-                        })
-                }
-                .addOnFailureListener { e ->
-                    emitter.onError(e)
-                }
+                        addUser(userEntity)
+                                .subscribe({
+                                    emitter.onSuccess(userEntity)
+                                }, {
+                                    emitter.onError(it)
+                                })
+                    }
+                    .addOnFailureListener { e ->
+                        emitter.onError(e)
+                    }
         }
-
-        /*
-        return apiManager.register(username, password)
-            .observeOn(Schedulers.io())
-            .flatMap {
-                val userEntity = UserEntity(
-                    userUUID = it.uid,
-                    userEmail = it.email!!,
-                    userPassword = password
-                )
-
-                Single.create<FirebaseUser> { emitter ->
-                    addUser(userEntity)
-                        .subscribe({
-                            emitter.onSuccess(it)
-                        }, {
-                            emitter.onError(it)
-                        })
-                }
-
-            }
-        */
     }
 
     fun addUser(userEntity: UserEntity): Completable {
-        return apiManager.upsertUser(userEntity)
-            .observeOn(Schedulers.io())
-            .doOnComplete {
-                userDao.insertItem(userEntity)
-            }
+        return upsertUser(userEntity)
+                .observeOn(Schedulers.io())
+                .doOnComplete {
+                    userDao.insertItem(userEntity)
+                }
     }
 
     fun updateUser(userEntity: UserEntity): Completable {
-        return apiManager.upsertUser(userEntity)
-            .observeOn(Schedulers.io())
-            .doOnComplete {
-                userDao.updateItem(userEntity)
-            }
+        return upsertUser(userEntity)
+                .observeOn(Schedulers.io())
+                .doOnComplete {
+                    userDao.updateItem(userEntity)
+                }
     }
 
     fun deleteUser(userEntity: UserEntity): Completable {
@@ -122,7 +100,28 @@ class UserRepository @Inject constructor(
         }
     }
 
-    fun getUser1() = runBlocking {
+    private fun upsertUser(userId: String, action: (DatabaseReference) -> Task<Void>): Completable {
+        return Completable.create { emitter ->
+            action(databaseReference.child(userNode(userId)))
+                    .addOnSuccessListener {
+                        emitter.onComplete()
+                    }
+                    .addOnFailureListener { e ->
+                        if (emitter.isDisposed) {
+                            return@addOnFailureListener
+                        }
+                        emitter.onError(e)
+                    }
+        }
+    }
+
+    fun upsertUser(userEntity: UserEntity): Completable {
+        return upsertUser(userEntity.userUUID) {
+            it.setValue(userEntity)
+        }
+    }
+
+    fun getUser1(): UserEntity? = runBlocking {
         return@runBlocking withContext(Dispatchers.IO) { userDao.getItem() }
     }
 

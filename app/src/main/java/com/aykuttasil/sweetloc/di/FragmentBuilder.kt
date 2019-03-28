@@ -2,7 +2,7 @@ package com.aykuttasil.sweetloc.di
 
 import com.aykuttasil.sweetloc.di.scopes.PerFragment
 import com.aykuttasil.sweetloc.ui.activity.profile.ProfileFragment
-import com.aykuttasil.sweetloc.ui.fragment.main.EntryFragment
+import com.aykuttasil.sweetloc.ui.fragment.entry.EntryFragment
 import com.aykuttasil.sweetloc.ui.fragment.roomcreate.RoomCreateFragment
 import com.aykuttasil.sweetloc.ui.fragment.usergroup.UserGroupsFragment
 import com.aykuttasil.sweetloc.ui.fragment.usergroup.UserGroupsModule

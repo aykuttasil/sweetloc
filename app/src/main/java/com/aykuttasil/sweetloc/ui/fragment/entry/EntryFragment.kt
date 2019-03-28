@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.ui.fragment.main
+package com.aykuttasil.sweetloc.ui.fragment.entry
 
 
 import android.content.Intent

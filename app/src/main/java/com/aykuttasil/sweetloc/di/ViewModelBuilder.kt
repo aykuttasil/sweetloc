@@ -7,7 +7,7 @@ import com.aykuttasil.sweetloc.ui.activity.login.LoginViewModel
 import com.aykuttasil.sweetloc.ui.activity.main.MainActivityViewModel
 import com.aykuttasil.sweetloc.ui.activity.map.MapsViewModel
 import com.aykuttasil.sweetloc.ui.activity.profile.ProfileViewModel
-import com.aykuttasil.sweetloc.ui.fragment.main.EntryViewModel
+import com.aykuttasil.sweetloc.ui.fragment.entry.EntryViewModel
 import com.aykuttasil.sweetloc.ui.fragment.roomcreate.RoomCreateViewModel
 import com.aykuttasil.sweetloc.ui.fragment.usergroup.UserGroupsViewModel
 import com.aykuttasil.sweetloc.ui.fragment.usertrackerlist.UserTrackerListViewModel

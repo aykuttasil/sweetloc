@@ -11,8 +11,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.app.Const
-import com.aykuttasil.sweetloc.data.DataManager
 import com.aykuttasil.sweetloc.data.local.entity.UserTrackerEntity
+import com.aykuttasil.sweetloc.data.repository.UserRepository
+import com.aykuttasil.sweetloc.data.repository.UserTrackerRepository
 import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.util.BindableAdapter
 import com.aykuttasil.sweetloc.util.PicassoCircleTransform
@@ -23,7 +24,8 @@ import javax.inject.Inject
 
 class UserTrackerListAdapter @Inject constructor(
         val mContext: Context,
-        val dataManager: DataManager
+        private val userRepository: UserRepository,
+        private val userTrackerRepository: UserTrackerRepository
 ) : RecyclerView.Adapter<UserTrackerListAdapter.UserTrackerViewHolder>(), BindableAdapter<UserTrackerEntity> {
 
     private val mList = arrayListOf<UserTrackerEntity>()
@@ -107,7 +109,7 @@ class UserTrackerListAdapter @Inject constructor(
 
             mButtonWakeUp.setOnClickListener {
                 Logger.i("mButtonWakeUp click")
-                SweetLocHelper.sendNotif(Const.ACTION_PHONE_UNMUTE, dataManager)
+                SweetLocHelper.sendNotif(Const.ACTION_PHONE_UNMUTE, userRepository, userTrackerRepository)
 
                 val audioManager = mContext.audioManager
                 val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)
