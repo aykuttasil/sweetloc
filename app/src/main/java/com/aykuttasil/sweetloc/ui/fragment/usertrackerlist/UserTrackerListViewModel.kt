@@ -32,11 +32,13 @@ class UserTrackerListViewModel @Inject constructor(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun getTrackerList(): LiveData<List<UserTrackerEntity>> {
+        if (liveUserTrackerEntity.value != null) return liveUserTrackerEntity
+
         launch {
             val user = userRepository.getUser().blockingGet()
             user?.let {
                 // handler.postDelayed(runnable, 2000)
-                val userTrackers = userTrackerRepository.getTrackerList(it.userUUID).blockingForEach { list ->
+                userTrackerRepository.getTrackerList(it.userUUID).blockingForEach { list ->
                     liveUserTrackerEntity.postValue(list)
                 }
             }

@@ -59,7 +59,7 @@ class UserTrackerListAdapter @Inject constructor(
     }
 
     fun addItemList(list: List<UserTrackerEntity>?) {
-        list?.apply {
+        list?.filter { !mList.contains(it) }?.apply {
             mList.addAll(this)
             notifyDataSetChanged()
         }
