@@ -1,5 +1,6 @@
 package com.aykuttasil.sweetloc.util
 
+import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 
@@ -14,4 +15,10 @@ fun <T> recyclerViewDataListBinding(recyclerView: RecyclerView, list: List<T>?) 
             (recyclerView.adapter as BindableAdapter<T>).setData(this)
         }
     }
+}
+
+@BindingAdapter("visibleGone")
+fun viewVisibleBinding(view: View, isVisible: Boolean) {
+    if (isVisible) view.visibility = View.VISIBLE
+    else view.visibility = View.GONE
 }

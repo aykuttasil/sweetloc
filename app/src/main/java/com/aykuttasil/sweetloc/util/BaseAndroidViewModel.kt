@@ -15,7 +15,7 @@ abstract class BaseAndroidViewModel(app: App) : AndroidViewModel(app), Coroutine
     var disposables = CompositeDisposable()
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + jobs
+        get() = jobs + Dispatchers.Main
 
 
     override fun onCleared() {

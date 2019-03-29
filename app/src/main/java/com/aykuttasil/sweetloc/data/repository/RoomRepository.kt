@@ -4,9 +4,12 @@ import com.aykuttasil.sweetloc.data.Room
 import com.aykuttasil.sweetloc.data.local.entity.LocationEntity
 import com.aykuttasil.sweetloc.data.roomsNode
 import com.aykuttasil.sweetloc.data.userLocationsNode
-import com.aykuttasil.sweetloc.data.userRoomsNode
+import com.aykuttasil.sweetloc.data.userRoomNode
 import com.google.firebase.database.DatabaseReference
 import io.reactivex.Completable
+import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 
@@ -16,33 +19,61 @@ class RoomRepository @Inject constructor(
 ) {
 
     fun createRoom(roomName: String): Completable {
-        val room = Room(roomName)
-        return addRoom(room)
+        return Completable.create {
+            try {
+                var a = runBlocking(Dispatchers.IO){
+                    val room = Room(roomName)
+                    room
+                }
+
+                val room = Room(roomName)
+                val user = userRepository.getUser1()
+                val roomId = addRoom(room).blockingGet()
+                addUserRoom(user!!.userUUID, roomId, room)
+                it.onComplete()
+            } catch (e: Exception) {
+                it.onError(e)
+            }
+        }
     }
 
 
+    /*
     fun addRoom(room: Room): Completable {
         return Completable.create { emitter ->
             val record = databaseReference.child(roomsNode()).push()
             record.setValue(room)
                     .addOnSuccessListener {
                         emitter.onComplete()
-                    }
-                    .addOnFailureListener { e ->
+                    }.addOnFailureListener { e ->
                         if (emitter.isDisposed) {
                             return@addOnFailureListener
                         }
                         emitter.onError(e)
                     }
-
-            //val user = userRepository.getUser1()
-            //addUserRoom(user.userUUID)
         }
     }
 
-    fun addUserRoom(userId: String, room: Room): Completable {
+     */
+
+    fun addRoom(room: Room): Single<String> {
+        return Single.create { emitter ->
+            val record = databaseReference.child(roomsNode()).push()
+            record.setValue(room)
+                    .addOnSuccessListener {
+                        emitter.onSuccess(record.key ?: "")
+                    }.addOnFailureListener { e ->
+                        if (emitter.isDisposed) {
+                            return@addOnFailureListener
+                        }
+                        emitter.onError(e)
+                    }
+        }
+    }
+
+    fun addUserRoom(userId: String, roomId: String, room: Room): Completable {
         return Completable.create { emitter ->
-            val record = databaseReference.child(userRoomsNode(userId)).push()
+            val record = databaseReference.child(userRoomNode(userId, roomId)).push()
 
             record.setValue(room)
                     .addOnSuccessListener {
