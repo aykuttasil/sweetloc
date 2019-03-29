@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.databinding.RoomCreateFragmentBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
+import com.aykuttasil.sweetloc.util.extension.TOAST
 import javax.inject.Inject
 
 class RoomCreateFragment : BaseFragment(), Injectable {
@@ -31,6 +33,10 @@ class RoomCreateFragment : BaseFragment(), Injectable {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RoomCreateViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        viewModel.liveSnackbar.observe(viewLifecycleOwner, Observer {
+            TOAST(it)
+        })
     }
 
 }

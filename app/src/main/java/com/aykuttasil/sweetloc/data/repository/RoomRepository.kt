@@ -1,15 +1,20 @@
 package com.aykuttasil.sweetloc.data.repository
 
 import com.aykuttasil.sweetloc.data.Room
-import com.aykuttasil.sweetloc.data.local.entity.LocationEntity
 import com.aykuttasil.sweetloc.data.roomsNode
-import com.aykuttasil.sweetloc.data.userLocationsNode
 import com.aykuttasil.sweetloc.data.userRoomNode
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -20,41 +25,22 @@ class RoomRepository @Inject constructor(
 
     fun createRoom(roomName: String): Completable {
         return Completable.create {
+            val scope = CoroutineScope(Dispatchers.IO)
             try {
-                var a = runBlocking(Dispatchers.IO){
+                scope.launch {
                     val room = Room(roomName)
-                    room
+                    val user = userRepository.getUser1()
+                    val roomId = addRoom(room).blockingGet()
+                    addUserRoom(user!!.userUUID, roomId, room).blockingGet()
+                    it.onComplete()
+                    coroutineContext.cancel()
                 }
-
-                val room = Room(roomName)
-                val user = userRepository.getUser1()
-                val roomId = addRoom(room).blockingGet()
-                addUserRoom(user!!.userUUID, roomId, room)
-                it.onComplete()
             } catch (e: Exception) {
+                scope.coroutineContext.cancel()
                 it.onError(e)
             }
         }
     }
-
-
-    /*
-    fun addRoom(room: Room): Completable {
-        return Completable.create { emitter ->
-            val record = databaseReference.child(roomsNode()).push()
-            record.setValue(room)
-                    .addOnSuccessListener {
-                        emitter.onComplete()
-                    }.addOnFailureListener { e ->
-                        if (emitter.isDisposed) {
-                            return@addOnFailureListener
-                        }
-                        emitter.onError(e)
-                    }
-        }
-    }
-
-     */
 
     fun addRoom(room: Room): Single<String> {
         return Single.create { emitter ->
@@ -73,8 +59,7 @@ class RoomRepository @Inject constructor(
 
     fun addUserRoom(userId: String, roomId: String, room: Room): Completable {
         return Completable.create { emitter ->
-            val record = databaseReference.child(userRoomNode(userId, roomId)).push()
-
+            val record = databaseReference.child(userRoomNode(userId, roomId))
             record.setValue(room)
                     .addOnSuccessListener {
                         emitter.onComplete()
@@ -88,17 +73,89 @@ class RoomRepository @Inject constructor(
         }
     }
 
-    fun addLocation(userId: String, location: LocationEntity): Completable {
-        return Completable.create { emitter ->
-            databaseReference.child(userLocationsNode(userId))
-                    .push()
-                    .setValue(location)
-                    .addOnSuccessListener {
-                        emitter.onComplete()
-                    }
-                    .addOnFailureListener {
-                        emitter.onError(it)
-                    }
+    fun getAllRooms(): Single<List<Room>> {
+        return Single.create<List<Room>> {
+            databaseReference.child(roomsNode())
+                    .addValueEventListener(object : ValueEventListener {
+                        override fun onCancelled(error: DatabaseError) {
+                            error.toException().printStackTrace()
+                            it.onError(error.toException())
+                        }
+
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            val a = dataSnapshot.getValue(Room::class.java)
+                        }
+                    })
         }
+
     }
+
+    fun getRoomList(): Single<List<Room>> {
+        return Single.create<List<Room>> { emitter ->
+            val listener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (emitter.isDisposed) {
+                        return
+                    }
+                    try {
+                        val rooms = arrayListOf<Room>()
+                        dataSnapshot.children.forEach {
+                            rooms.add(it.getValue(Room::class.java)!!)
+                        }
+
+                        emitter.onSuccess(rooms.toList())
+                    } catch (e: Exception) {
+                        emitter.onError(DatabaseException("Problem in DB", e))
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    if (emitter.isDisposed) {
+                        return
+                    }
+                    emitter.onError(databaseError.toException())
+                }
+            }
+
+            val childReference = databaseReference.child(roomsNode())
+            childReference.addListenerForSingleValueEvent(listener)
+            emitter.setCancellable { childReference.removeEventListener(listener) }
+        }.observeOn(Schedulers.io())
+    }
+
+    fun isExistRoomName(name: String): Single<Boolean> {
+        return Single.create<Boolean> { emitter ->
+            val listener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (emitter.isDisposed) {
+                        return
+                    }
+                    try {
+                        dataSnapshot.children.forEach {
+                            val room = it.getValue(Room::class.java)
+                            if (room?.roomName == name) {
+                                emitter.onSuccess(true)
+                            }
+                        }
+
+                        emitter.onSuccess(false)
+                    } catch (e: Exception) {
+                        emitter.onError(DatabaseException("Problem in DB", e))
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    if (emitter.isDisposed) {
+                        return
+                    }
+                    emitter.onError(databaseError.toException())
+                }
+            }
+
+            val childReference = databaseReference.child(roomsNode())
+            childReference.addListenerForSingleValueEvent(listener)
+            emitter.setCancellable { childReference.removeEventListener(listener) }
+        }.observeOn(Schedulers.io())
+    }
+
 }

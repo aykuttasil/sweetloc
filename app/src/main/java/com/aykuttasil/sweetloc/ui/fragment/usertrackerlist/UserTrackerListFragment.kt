@@ -46,7 +46,6 @@ open class UserTrackerListFragment : BaseFragment(), Injectable {
     }
 
     private fun setUI() {
-
         listUserTracker?.adapter = listAdapter
         fab.setOnClickListener {
             findNavController(this).navigate(R.id.action_userTrackerListFragment_to_roomCreateFragment)

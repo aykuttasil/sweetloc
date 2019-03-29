@@ -5,9 +5,9 @@ import java.text.DateFormat
 import java.util.Date
 
 data class Room(
-        val roomName: String,
-        val createDate: Long = Date().time,
-        val createDateString: String = DateFormat.getInstance().format(Date())
+        var roomName: String? = null,
+        var createDate: Long? = Date().time,
+        var createDateString: String? = DateFormat.getInstance().format(Date())
 )
 
 
