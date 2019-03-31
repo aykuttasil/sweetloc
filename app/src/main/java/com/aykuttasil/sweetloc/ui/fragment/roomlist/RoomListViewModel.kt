@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.ui.fragment.usertrackerlist
+package com.aykuttasil.sweetloc.ui.fragment.roomlist
 
 import android.os.Handler
 import androidx.lifecycle.Lifecycle
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-class UserTrackerListViewModel @Inject constructor(
+class RoomListViewModel @Inject constructor(
         private val userRepository: UserRepository,
         private val userTrackerRepository: UserTrackerRepository
 ) : RxAwareViewModel(), LifecycleObserver, CoroutineScope {

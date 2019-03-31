@@ -6,6 +6,7 @@ import java.util.Date
 
 data class Room(
         var roomName: String? = null,
+        var roomOwner: String? = null,
         var createDate: Long? = Date().time,
         var createDateString: String? = DateFormat.getInstance().format(Date())
 )

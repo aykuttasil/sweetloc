@@ -9,8 +9,8 @@ import com.aykuttasil.sweetloc.ui.activity.map.MapsViewModel
 import com.aykuttasil.sweetloc.ui.activity.profile.ProfileViewModel
 import com.aykuttasil.sweetloc.ui.fragment.entry.EntryViewModel
 import com.aykuttasil.sweetloc.ui.fragment.roomcreate.RoomCreateViewModel
+import com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListViewModel
 import com.aykuttasil.sweetloc.ui.fragment.usergroup.UserGroupsViewModel
-import com.aykuttasil.sweetloc.ui.fragment.usertrackerlist.UserTrackerListViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -45,8 +45,8 @@ abstract class ViewModelBuilder {
 
     @IntoMap
     @Binds
-    @ViewModelKey(UserTrackerListViewModel::class)
-    abstract fun provideUserTrackerListViewModel(viewModel: UserTrackerListViewModel): ViewModel
+    @ViewModelKey(RoomListViewModel::class)
+    abstract fun provideRoomListViewModel(viewModel: RoomListViewModel): ViewModel
 
     @IntoMap
     @Binds

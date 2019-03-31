@@ -10,8 +10,8 @@
         android:label="room_create_fragment"
         tools:layout="@layout/room_create_fragment" />
     <fragment
-        android:id="@+id/userTrackerListFragment"
-        android:name="com.aykuttasil.sweetloc.ui.fragment.usertrackerlist.UserTrackerListFragment"
+        android:id="@+id/roomListFragment"
+        android:name="com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListFragment"
         android:label="UserTrackerListFragment">
         <action
             android:id="@+id/action_userTrackerListFragment_to_roomCreateFragment"
@@ -28,7 +28,7 @@
         tools:layout="@layout/fragment_entry" >
         <action
             android:id="@+id/action_mainFragment_to_userTrackerListFragment3"
-            app:destination="@id/userTrackerListFragment"
+            app:destination="@id/roomListFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"

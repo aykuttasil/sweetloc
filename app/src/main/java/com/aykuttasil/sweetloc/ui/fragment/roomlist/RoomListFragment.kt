@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.ui.fragment.usertrackerlist
+package com.aykuttasil.sweetloc.ui.fragment.roomlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ import com.aykuttasil.sweetloc.util.adapter.UserTrackerListAdapter
 import kotlinx.android.synthetic.main.fragment_user_tracker_list_layout.*
 import javax.inject.Inject
 
-open class UserTrackerListFragment : BaseFragment(), Injectable {
+open class RoomListFragment : BaseFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -24,7 +24,7 @@ open class UserTrackerListFragment : BaseFragment(), Injectable {
     @Inject
     lateinit var listAdapter: UserTrackerListAdapter
 
-    private lateinit var userTrackerListViewModel: UserTrackerListViewModel
+    private lateinit var roomListViewModel: RoomListViewModel
     lateinit var binding: FragmentUserTrackerListLayoutBinding
 
     override fun onCreateView(
@@ -54,8 +54,8 @@ open class UserTrackerListFragment : BaseFragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        userTrackerListViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserTrackerListViewModel::class.java)
-        lifecycle.addObserver(userTrackerListViewModel)
-        binding.viewModel = userTrackerListViewModel
+        roomListViewModel = ViewModelProviders.of(this, viewModelFactory).get(RoomListViewModel::class.java)
+        lifecycle.addObserver(roomListViewModel)
+        binding.viewModel = roomListViewModel
     }
 }

@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.ui.fragment.usertrackerlist
+package com.aykuttasil.sweetloc.ui.fragment.roomlist
 
 import android.content.Context
 import com.aykuttasil.sweetloc.data.repository.UserRepository
@@ -9,7 +9,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class UserTrackerListModule {
+class RoomListModule {
 
     @Provides
     fun provideAdapter(context: Context,
@@ -19,7 +19,7 @@ class UserTrackerListModule {
 
     @Provides
     @PerFragment
-    fun provideContext(userTrackerListFragment: UserTrackerListFragment): Context {
-        return userTrackerListFragment.context!!
+    fun provideContext(roomListFragment: RoomListFragment): Context {
+        return roomListFragment.context!!
     }
 }

@@ -6,8 +6,8 @@ import com.aykuttasil.sweetloc.ui.fragment.entry.EntryFragment
 import com.aykuttasil.sweetloc.ui.fragment.roomcreate.RoomCreateFragment
 import com.aykuttasil.sweetloc.ui.fragment.usergroup.UserGroupsFragment
 import com.aykuttasil.sweetloc.ui.fragment.usergroup.UserGroupsModule
-import com.aykuttasil.sweetloc.ui.fragment.usertrackerlist.UserTrackerListFragment
-import com.aykuttasil.sweetloc.ui.fragment.usertrackerlist.UserTrackerListModule
+import com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListFragment
+import com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -23,8 +23,8 @@ abstract class FragmentBuilder {
     abstract fun bindProfileActivityFragment(): ProfileFragment
 
     @PerFragment
-    @ContributesAndroidInjector(modules = [UserTrackerListModule::class])
-    abstract fun bindUserTrackerListFragment(): UserTrackerListFragment
+    @ContributesAndroidInjector(modules = [RoomListModule::class])
+    abstract fun bindRoomListFragment(): RoomListFragment
 
     @PerFragment
     @ContributesAndroidInjector(modules = [UserGroupsModule::class])
