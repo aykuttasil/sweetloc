@@ -30,9 +30,7 @@ open class MainActivity : BaseActivity() {
         initUiComponents()
 
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
-        lifecycle.run {
-            addObserver(mainActivityViewModel)
-        }
+        lifecycle.addObserver(mainActivityViewModel)
     }
 
     private fun initUiComponents() {

@@ -1,7 +1,6 @@
 package com.aykuttasil.sweetloc.ui.activity.base
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.aykuttasil.sweetloc.ui.dialog.ProgressDialogFragment
 import dagger.android.DispatchingAndroidInjector
@@ -9,7 +8,6 @@ import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -25,7 +23,11 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, C
         get() = Dispatchers.Main + jobs
 
 
-    private val progressDialog: DialogFragment by lazy { ProgressDialogFragment() }
+    private val progressDialog: ProgressDialogFragment by lazy {
+        ProgressDialogFragment().apply {
+            isCancelable = false
+        }
+    }
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -35,18 +37,14 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, C
     }
 
     fun showProgressDialog() {
-        launch(Dispatchers.Main) {
-            if (!progressDialog.isVisible) {
-                progressDialog.show(supportFragmentManager, "ProgressDialog")
-            }
+        if (!progressDialog.isVisible) {
+            progressDialog.show(supportFragmentManager, "ProgressDialog")
         }
     }
 
     fun dismissProgressDialog() {
-        launch(Dispatchers.Main) {
-            if (progressDialog.isVisible) {
-                progressDialog.dismiss()
-            }
+        if (progressDialog.isVisible) {
+            progressDialog.dismiss()
         }
     }
 
@@ -125,9 +123,9 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, C
     //        //alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP);
     //
     //
-    //        // AlarmManager.ELAPSED_REALTIME -> ELAPSED_REALTIME system başlangıcını baz alır. Eğer gerçek saat ile ilgili bir işlem yapılmıcak
+    //        // AlarmManager.ELAPSED_REALTIME -> ELAPSED_REALTIME system başlangıcını baz alır. Eğer gerçek saat ile ilgili bir işlem yapılmayacak
     //        // ise bu parametre kullanılmalıdır.
-    //        // RTC -> Cihazın local saatini baz alır. Örneğin perşembe saat 4 de yapılcak bi iş belirlemek istersen RTC kullanmalıyız.
+    //        // RTC -> Cihazın local saatini baz alır. Örneğin perşembe saat 4 de yapılacak bir iş belirlemek istersek RTC kullanmalıyız.
     //        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME,
     //                SystemClock.elapsedRealtime() + 3000,
     //                periodicTime,

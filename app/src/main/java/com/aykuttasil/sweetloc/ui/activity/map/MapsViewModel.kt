@@ -64,7 +64,7 @@ class MapsViewModel @Inject constructor(
                             address = loc.provider,
                             time = loc.time,
                             formatTime = SuperHelper.getFormatTime(loc.time),
-                            createDate = SuperHelper.getFormatTime())
+                            createDate = SuperHelper.formatTime)
 
                     sentMyLocation.value = locationEntity
 

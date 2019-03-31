@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProviders
-import com.afollestad.materialdialogs.DialogAction
 import com.aykuttasil.androidbasichelperlib.UiHelper
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.di.ViewModelFactory
@@ -57,8 +56,9 @@ open class ProfileActivity : LoginBaseActivity() {
         when (item.itemId) {
             R.id.actionCikisYap -> {
                 val dialog = UiHelper.UiDialog.newInstance(this)
-                    .getOKCancelDialog("Çıkış Yap", "Devam edilsin mi?", null)
-                dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener {
+                        .getOKCancelDialog("Çıkış Yap", "Devam edilsin mi?", null)
+
+                dialog.positiveButton {
                     dialog.dismiss()
                     helper.resetSweetLoc(this)
                     val intent = Intent(this@ProfileActivity, MainActivity::class.java)

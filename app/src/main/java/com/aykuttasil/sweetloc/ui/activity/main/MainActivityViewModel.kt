@@ -1,28 +1,20 @@
 package com.aykuttasil.sweetloc.ui.activity.main
 
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.Transformations
 import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.helper.SweetLocHelper
-import com.orhanobut.logger.Logger
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
 import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
         private val app: App,
         private val userRepository: UserRepository,
         private val sweetLocHelper: SweetLocHelper
-) : AndroidViewModel(app), LifecycleObserver {
-
-    private val compositeDisposable = CompositeDisposable()
+) : BaseAndroidViewModel(app), LifecycleObserver {
 
     val isUserLogin = MutableLiveData<Boolean>()
 
@@ -36,8 +28,9 @@ class MainActivityViewModel @Inject constructor(
         println("onPause running")
     }
 
+    /*
     fun checkUserLogin(): LiveData<Boolean> {
-        compositeDisposable.add(sweetLocHelper.checkUser()
+        sweetLocHelper.checkUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -51,8 +44,7 @@ class MainActivityViewModel @Inject constructor(
                     }
                 }, {
                     it.printStackTrace()
-                })
-        )
+                }).addTo(disposables)
 
         return Transformations.map(isUserLogin) {
             if (it) {
@@ -64,11 +56,5 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-
-    override fun onCleared() {
-        super.onCleared()
-        if (!compositeDisposable.isDisposed) {
-            compositeDisposable.dispose()
-        }
-    }
+     */
 }

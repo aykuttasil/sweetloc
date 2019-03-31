@@ -12,8 +12,6 @@ import com.aykuttasil.sweetloc.util.extension.bind
 import com.aykuttasil.sweetloc.util.extension.setupToolbar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_login_layout.*
-import org.jetbrains.anko.appcompat.v7.alertDialogLayout
-import org.jetbrains.anko.progressDialog
 import javax.inject.Inject
 
 open class LoginActivity : BaseActivity() {
@@ -27,9 +25,10 @@ open class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         loginViewModel = ViewModelProviders.of(this@LoginActivity, viewModelFactory).get(LoginViewModel::class.java)
 
-        val binding = bind<ActivityLoginLayoutBinding>(R.layout.activity_login_layout)
-        binding.lifecycleOwner = this
-        binding.viewmodel = loginViewModel
+        val binding = bind<ActivityLoginLayoutBinding>(R.layout.activity_login_layout).apply {
+            lifecycleOwner = this@LoginActivity
+            viewmodel = loginViewModel
+        }
 
         initToolbar()
 
@@ -42,8 +41,7 @@ open class LoginActivity : BaseActivity() {
         })
 
         loginViewModel.liveUiStates.observe(this, Observer { states ->
-
-
+            dismissProgressDialog()
             when (states) {
                 is LoginUiStateSuccessfulLogin -> {
                     finish()
@@ -55,7 +53,7 @@ open class LoginActivity : BaseActivity() {
                     loginViewModel.liveOkDialog.value = states.dataOkDialog
                 }
                 is LoginUiStateProgress -> {
-                    progressDialog(message = states.progressMsg)
+                    showProgressDialog()
                 }
             }
         })

@@ -2,40 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <import type="android.text.TextUtils" />
-
-        <variable
-            name="viewmodel"
-            type="com.aykuttasil.sweetloc.ui.activity.login.LoginViewModel" />
-
-    </data>
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/side_nav_bar">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/bpTransparent"
-            android:elevation="0dp"
-            app:elevation="0dp">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="0dp"
-                android:minHeight="110dp"
-                app:logo="@mipmap/ic_launcher"
-                app:title="SweetLoc"
-                app:titleMarginStart="50dp"
-                app:titleTextColor="@color/white" />
-
-        </com.google.android.material.appbar.AppBarLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,23 +14,41 @@
             android:padding="25dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/view2"
+            <Button
+                android:id="@+id/btnLogin"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:textColorHint="@color/white">
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:enabled="@{!TextUtils.isEmpty(viewmodel.liveEmail) &amp;&amp; !TextUtils.isEmpty(viewmodel.livePass)}"
+                android:onClick="@{()->viewmodel.login(edtEmail.getText().toString(),editParola.getText().toString())}"
+                android:text="@string/txt_login" />
 
-                <EditText
-                    android:id="@+id/edtEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:hint="@string/txt_email"
-                    android:inputType="textEmailAddress"
-                    android:text="@={viewmodel.liveEmail}"
-                    android:textColor="@color/white" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/btnRegister"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal|bottom"
+                android:enabled="@{!TextUtils.isEmpty(viewmodel.liveEmail) &amp;&amp; !TextUtils.isEmpty(viewmodel.livePass)}"
+                android:onClick="@{()->viewmodel.register(edtEmail.getText().toString(),editParola.getText().toString())}"
+                android:text="@string/txt_register"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/txtObservable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view"
+                android:layout_marginTop="20dp"
+                android:text="@{viewmodel.displayName}" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/view"
@@ -83,38 +71,54 @@
                     android:textColor="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/txtObservable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/view"
-                android:layout_marginTop="20dp"
-                android:text="@{viewmodel.displayName}" />
-
-            <Button
-                android:id="@+id/btnLogin"
-                style="@style/Widget.AppCompat.Button.Colored"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/view2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:enabled="@{!TextUtils.isEmpty(viewmodel.liveEmail) &amp;&amp; !TextUtils.isEmpty(viewmodel.livePass)}"
-                android:onClick="@{()->viewmodel.login(edtEmail.getText().toString(),editParola.getText().toString())}"
-                android:text="@string/txt_login" />
+                android:textColorHint="@color/white">
 
-            <Button
-                android:id="@+id/btnRegister"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal|bottom"
-                android:enabled="@{!TextUtils.isEmpty(viewmodel.liveEmail) &amp;&amp; !TextUtils.isEmpty(viewmodel.livePass)}"
-                android:onClick="@{()->viewmodel.register(edtEmail.getText().toString(),editParola.getText().toString())}"
-                android:text="@string/txt_register"
-                android:textColor="@color/white" />
+                <EditText
+                    android:id="@+id/edtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="@string/txt_email"
+                    android:inputType="textEmailAddress"
+                    android:text="@={viewmodel.liveEmail}"
+                    android:textColor="@color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
 
         </RelativeLayout>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bpTransparent"
+            android:elevation="0dp"
+            app:elevation="0dp">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="0dp"
+                android:minHeight="110dp"
+                app:logo="@mipmap/ic_launcher"
+                app:title="SweetLoc"
+                app:titleMarginStart="50dp"
+                app:titleTextColor="@color/white" />
+
+        </com.google.android.material.appbar.AppBarLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="viewmodel"
+            type="com.aykuttasil.sweetloc.ui.activity.login.LoginViewModel" />
+
+    </data>
 </layout>

@@ -15,13 +15,13 @@ import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.fragment_entry.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EntryFragment : BaseFragment(), Injectable {
 
     @Inject
     lateinit var userRepository: UserRepository
-
 
     @Inject
     lateinit var databaseReference: DatabaseReference
@@ -55,5 +55,13 @@ class EntryFragment : BaseFragment(), Injectable {
             sweetLocHelper.resetSweetLoc(context!!)
 
         }
+
+        launch {
+            if (isLogin) {
+                // var x = RxPermissions(activity!!).ensure("")
+            }
+        }
     }
+
+
 }

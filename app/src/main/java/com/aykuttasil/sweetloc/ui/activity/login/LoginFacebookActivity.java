@@ -2,16 +2,11 @@ package com.aykuttasil.sweetloc.ui.activity.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.aykuttasil.sweetloc.R;
-import com.aykuttasil.sweetloc.helper.SweetLocHelper;
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -104,46 +99,48 @@ public class LoginFacebookActivity extends BaseActivity {
                                 Toast.LENGTH_SHORT).show();
                     } else {
                         //task.getResult().getAdditionalUserInfo().getProfile()
-                        takeSweetLocToken(task.getResult().getUser());
+                        // takeSweetLocToken(task.getResult().getUser());
                     }
                 });
     }
 
-    private void takeSweetLocToken(FirebaseUser user) {
-        View tokenView = LayoutInflater.from(this).inflate(R.layout.custom_view_give_token_layout, null);
-        MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .title("SweetLoc İzleme Anahtarı")
-                .customView(tokenView, true)
-                .cancelable(false)
-                .build();
 
-        tokenView.findViewById(R.id.DevamEt).setOnClickListener(view -> {
-            EditText tokentext = tokenView.findViewById(R.id.EditTextTrackerId);
-            if (!SweetLocHelper.validateIsEmpty(tokentext)) {
-                dialog.dismiss();
-                /*
-                ModelUser modelUser = new ModelUser();
-                modelUser.setUUID(user.getUid());
-                modelUser.setEmail(user.getEmail());
-                modelUser.setParola(user.getProviderId());
-                modelUser.setToken(tokentext.getText().toString());
-                modelUser.setImageUrl(user.getPhotoUrl().toString());
-                modelUser.save();
+//    private void takeSweetLocToken(FirebaseUser user) {
+//        View tokenView = LayoutInflater.from(this).inflate(R.layout.custom_view_give_token_layout, null);
+//        MaterialDialog dialog = new MaterialDialog.Builder(this)
+//                .title("SweetLoc İzleme Anahtarı")
+//                .customView(tokenView, true)
+//                .cancelable(false)
+//                .build();
+//
+//        tokenView.findViewById(R.id.DevamEt).setOnClickListener(view -> {
+//            EditText tokentext = tokenView.findViewById(R.id.EditTextTrackerId);
+//            if (!SweetLocHelper.validateIsEmpty(tokentext)) {
+//                dialog.dismiss();
+//                /*
+//                ModelUser modelUser = new ModelUser();
+//                modelUser.setUUID(user.getUid());
+//                modelUser.setEmail(user.getEmail());
+//                modelUser.setParola(user.getProviderId());
+//                modelUser.setToken(tokentext.getText().toString());
+//                modelUser.setImageUrl(user.getPhotoUrl().toString());
+//                modelUser.save();
+//
+//                FirebaseDatabase.getInstance().getReference()
+//                        .child(ModelUser.class.getSimpleName())
+//                        .child(user.getUid())
+//                        .setValue(modelUser);
+//                        */
+//
+//                //MainActivity_.intent(this).start();
+//                finish();
+//            }
+//        });
+//
+//        dialog.show();
+//
+//    }
 
-                FirebaseDatabase.getInstance().getReference()
-                        .child(ModelUser.class.getSimpleName())
-                        .child(user.getUid())
-                        .setValue(modelUser);
-                        */
-
-                //MainActivity_.intent(this).start();
-                finish();
-            }
-        });
-
-        dialog.show();
-
-    }
 
     @Override
     public void onBackPressed() {

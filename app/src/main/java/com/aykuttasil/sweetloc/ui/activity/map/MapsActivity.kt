@@ -11,7 +11,9 @@ import androidx.core.app.NavUtils
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.afollestad.materialdialogs.DialogAction
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.WhichButton
+import com.afollestad.materialdialogs.actions.getActionButton
 import com.aykuttasil.androidbasichelperlib.UiHelper
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.di.ViewModelFactory
@@ -35,7 +37,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter,
-    GoogleMap.OnInfoWindowClickListener {
+        GoogleMap.OnInfoWindowClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -59,8 +61,8 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
     var mSnackBarKonum: Snackbar? = null
 
     private val TURKEY = LatLngBounds(
-        LatLng(36.299172, 26.248221), //Güney Batı
-        LatLng(41.835412, 44.781357) //Kuzey Doğu
+            LatLng(36.299172, 26.248221), //Güney Batı
+            LatLng(41.835412, 44.781357) //Kuzey Doğu
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,18 +100,19 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
 
     private fun permissionControl() {
         RxPermissions(this)
-            .request(Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION)
-            .subscribe({ result ->
-                if (result!!) {
-                    initMap()
-                } else {
-                    val dialog = UiHelper.UiDialog.newInstance(this).getOKDialog("Uyarı",
-                        "Haritanın doğru çalışması için tüm izinleri vermelisiniz.", null)
-                    dialog.getActionButton(DialogAction.POSITIVE)
-                        .setOnClickListener { _ -> permissionControl() }
-                }
-            }, { error -> Logger.e(error, "HATA") })
+                .request(Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe({ result ->
+                    if (result!!) {
+                        initMap()
+                    } else {
+                        MaterialDialog(this)
+                        val dialog = UiHelper.UiDialog.newInstance(this).getOKDialog("Uyarı",
+                                "Haritanın doğru çalışması için tüm izinleri vermelisiniz.", null)
+                        dialog.getActionButton(WhichButton.POSITIVE)
+                                .setOnClickListener { _ -> permissionControl() }
+                    }
+                }, { error -> Logger.e(error, "HATA") })
     }
 
     private fun initMap() {
@@ -122,9 +125,9 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
 
     override fun onMapReady(googleMap: GoogleMap) {
         if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Logger.i("Permission is not Granted !")
             return
         }
@@ -340,14 +343,14 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
 
     fun FabMapClick() {
         mSnackBarKonum = UiHelper.UiSnackBar.newInstance(toolbar,
-            "Son konumlar getiriliyor.\n" + "Lütfen bekleyiniz... ", Snackbar.LENGTH_INDEFINITE)
+                "Son konumlar getiriliyor.\n" + "Lütfen bekleyiniz... ", Snackbar.LENGTH_INDEFINITE)
         mSnackBarKonum!!.show()
         isReceiveLocation = false
         mSnackBarKonum!!.view.postDelayed({
             // Eğer sendMyLocation bilgisi alınmış ise isReceiveLocation = true olur
             if (!isReceiveLocation) {
                 UiHelper.UiSnackBar.showSimpleSnackBar(toolbar, "Konum alınamadı!",
-                    Snackbar.LENGTH_LONG)
+                        Snackbar.LENGTH_LONG)
             }
         }, TimeUnit.SECONDS.toMillis(WAIT_LOCATION_SECOND.toLong()))
 
