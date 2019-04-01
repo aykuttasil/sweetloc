@@ -61,6 +61,7 @@ open class LoginViewModel @Inject constructor(
                     userRepository.addUserToLocal(it)
                     Single.just(it)
                 }
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     liveSnackbar.value = "${it?.userEmail} ile oturum açıldı."
                     liveUiStates.value = LoginUiStateSuccessfulLogin(it)

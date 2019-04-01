@@ -63,6 +63,11 @@ class UserRepository @Inject constructor(
         }
     }
 
+    fun logoutUser() {
+        FirebaseAuth.getInstance().signOut()
+        // LoginManager.getInstance().logOut()
+    }
+
     fun addUserToLocal(user: UserEntity) {
         userDao.insertItem(user)
     }

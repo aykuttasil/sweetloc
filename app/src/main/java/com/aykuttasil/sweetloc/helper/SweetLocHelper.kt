@@ -11,7 +11,6 @@ import com.aykuttasil.sweetloc.app.Const
 import com.aykuttasil.sweetloc.data.repository.RoomRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver
-import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
 import com.onesignal.OneSignal
 import com.orhanobut.logger.Logger
@@ -32,10 +31,11 @@ class SweetLocHelper @Inject constructor(
     fun resetSweetLoc(context: Context) = runBlocking(context = Dispatchers.IO) {
         val user = userRepository.getUser().blockingGet()
         user?.apply {
-            userRepository.deleteUserFromLocal(this)
+            userRepository.deleteUserFromLocal(this).blockingGet()
         }
+
         stopPeriodicTask(context)
-        logoutUser()
+        userRepository.logoutUser()
 
         /*
         userRepository.getUser()
@@ -103,10 +103,6 @@ class SweetLocHelper @Inject constructor(
         //return FirebaseAuth.getInstance().currentUser != null && dataManager.getUser().blockingGet() != null
     }
 
-    fun logoutUser() {
-        FirebaseAuth.getInstance().signOut()
-        LoginManager.getInstance().logOut()
-    }
 
     /*
     @DebugLog
