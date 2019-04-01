@@ -8,12 +8,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.aykuttasil.sweetloc.R
-import com.aykuttasil.sweetloc.databinding.FragmentUserTrackerListLayoutBinding
+import com.aykuttasil.sweetloc.databinding.FragmentRoomListLayoutBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.aykuttasil.sweetloc.util.adapter.UserTrackerListAdapter
-import kotlinx.android.synthetic.main.fragment_user_tracker_list_layout.*
+import kotlinx.android.synthetic.main.fragment_room_list_layout.*
 import javax.inject.Inject
 
 open class RoomListFragment : BaseFragment(), Injectable {
@@ -22,17 +21,17 @@ open class RoomListFragment : BaseFragment(), Injectable {
     lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
-    lateinit var listAdapter: UserTrackerListAdapter
+    lateinit var listAdapter: RoomListAdapter
 
     private lateinit var roomListViewModel: RoomListViewModel
-    lateinit var binding: FragmentUserTrackerListLayoutBinding
+    lateinit var binding: FragmentRoomListLayoutBinding
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_tracker_list_layout, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_room_list_layout, container, false)
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -48,7 +47,7 @@ open class RoomListFragment : BaseFragment(), Injectable {
     private fun setUI() {
         listUserTracker?.adapter = listAdapter
         fab.setOnClickListener {
-            findNavController(this).navigate(R.id.action_userTrackerListFragment_to_roomCreateFragment)
+            findNavController(this).navigate(R.id.action_roomListFragment_to_roomCreateFragment)
         }
     }
 

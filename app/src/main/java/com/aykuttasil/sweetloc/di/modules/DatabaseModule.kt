@@ -12,7 +12,7 @@ import javax.inject.Singleton
 class DatabaseModule {
 
     companion object {
-        const val DB_NAME = "sweetloc1_2.db"
+        const val DB_NAME = "sweetloc1_4.db"
     }
 
     @Provides
@@ -26,6 +26,7 @@ class DatabaseModule {
     @Singleton
     fun provideUserDao(db: AppDatabase) = db.getUserDao()
 
+    /*
     @Provides
     @Singleton
     fun provideLocationDao(db: AppDatabase) = db.getLocationDao()
@@ -33,4 +34,6 @@ class DatabaseModule {
     @Provides
     @Singleton
     fun provideUserTrackerDao(db: AppDatabase) = db.getUserTrackerDao()
+
+     */
 }

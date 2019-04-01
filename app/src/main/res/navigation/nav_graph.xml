@@ -14,10 +14,8 @@
         android:name="com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListFragment"
         android:label="UserTrackerListFragment">
         <action
-            android:id="@+id/action_userTrackerListFragment_to_roomCreateFragment"
+            android:id="@+id/action_roomListFragment_to_roomCreateFragment"
             app:destination="@id/roomCreateFragment"
-            app:enterAnim="@anim/popup_enter"
-            app:exitAnim="@anim/popup_exit"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
@@ -25,9 +23,9 @@
         android:id="@+id/mainFragment"
         android:name="com.aykuttasil.sweetloc.ui.fragment.entry.EntryFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_entry" >
+        tools:layout="@layout/fragment_entry">
         <action
-            android:id="@+id/action_mainFragment_to_userTrackerListFragment3"
+            android:id="@+id/action_mainFragment_to_roomListFragment"
             app:destination="@id/roomListFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"

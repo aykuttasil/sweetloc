@@ -8,8 +8,8 @@ import android.os.SystemClock
 import com.aykuttasil.androidbasichelperlib.SuperHelper
 import com.aykuttasil.sweetloc.BuildConfig
 import com.aykuttasil.sweetloc.app.Const
+import com.aykuttasil.sweetloc.data.repository.RoomRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
-import com.aykuttasil.sweetloc.data.repository.UserTrackerRepository
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver
 import com.facebook.login.LoginManager
 import com.google.firebase.auth.FirebaseAuth
@@ -19,24 +19,20 @@ import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.jetbrains.anko.alarmManager
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
 
-/**
- * Created by aykutasil on 12.07.2016.
- */
 class SweetLocHelper @Inject constructor(
         private val userRepository: UserRepository,
-        private val userTrackerRepository: UserTrackerRepository
+        private val roomRepository: RoomRepository
 ) : SuperHelper() {
 
     fun resetSweetLoc(context: Context) = runBlocking(context = Dispatchers.IO) {
         val user = userRepository.getUser().blockingGet()
         user?.apply {
-            userRepository.deleteUser(this)
+            userRepository.deleteUserFromLocal(this)
         }
         stopPeriodicTask(context)
         logoutUser()
@@ -44,7 +40,7 @@ class SweetLocHelper @Inject constructor(
         /*
         userRepository.getUser()
                 .flatMapCompletable {
-                    userRepository.deleteUser(it)
+                    userRepository.deleteUserFromLocal(it)
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -58,7 +54,7 @@ class SweetLocHelper @Inject constructor(
     fun checkUser(): Single<Boolean> {
         return Single.create { emitter: SingleEmitter<Boolean> ->
             runBlocking {
-                val userEntity = withContext(Dispatchers.Default) { userRepository.getUserEntity() }
+                val userEntity = userRepository.getUserEntity()
                 val firebaseUser = FirebaseAuth.getInstance().currentUser
 
                 if (userEntity != null && firebaseUser != null) {
@@ -195,7 +191,7 @@ class SweetLocHelper @Inject constructor(
         fun sendNotif(
                 action: String,
                 userRepository: UserRepository,
-                userTrackerRepository: UserTrackerRepository
+                roomRepository: RoomRepository
         ) {
             try {
                 runBlocking {
@@ -217,13 +213,20 @@ class SweetLocHelper @Inject constructor(
 
                     val playerIds = JSONArray()
 
-                    val userEntity = withContext(Dispatchers.IO) { userRepository.getUserEntity() }
+                    /*
+                    val userEntity = userRepository.getUserEntity()
                     val userTrackerList = withContext(Dispatchers.IO) {
-                        userTrackerRepository.getTrackerList(userEntity?.userUUID!!).blockingSingle()
+                        userTrackerRepository.getTrackerList(userEntity?.userId!!).blockingSingle()
                     }
+
+
                     userTrackerList
                             .filter { it.oneSignalUserId != null }
-                            .forEach { playerIds.put(it.oneSignalUserId) }
+                            .foreach {
+                                playerIds.put(it.oneSignalUserId)
+                            }
+
+                     */
 
                     if (BuildConfig.DEBUG) {
                         //playerIds.put("428ef398-76d3-4ca9-ab4c-60d591879365");

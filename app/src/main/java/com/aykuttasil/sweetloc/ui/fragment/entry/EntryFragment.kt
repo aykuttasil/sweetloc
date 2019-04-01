@@ -15,7 +15,6 @@ import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.fragment_entry.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EntryFragment : BaseFragment(), Injectable {
@@ -41,7 +40,7 @@ class EntryFragment : BaseFragment(), Injectable {
         }
 
         btnGoUserTrackerList.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_userTrackerListFragment3)
+            findNavController().navigate(R.id.action_mainFragment_to_roomListFragment)
         }
 
         btnCleanAllData.setOnClickListener {
@@ -56,11 +55,18 @@ class EntryFragment : BaseFragment(), Injectable {
 
         }
 
+        /*
         launch {
+            repeat(5) {
+                val user = userRepository.getUserEntity()!!
+                databaseReference.child(roomMemberNode("-LbJ6AF8XjqEI4Zrni9x", user.userId)).setValue(user)
+            }
             if (isLogin) {
                 // var x = RxPermissions(activity!!).ensure("")
             }
         }
+
+         */
     }
 
 

@@ -1,8 +1,9 @@
 package com.aykuttasil.sweetloc.data.repository
 
-import com.aykuttasil.sweetloc.data.Room
+import com.aykuttasil.sweetloc.data.RoomEntity
 import com.aykuttasil.sweetloc.data.roomsNode
 import com.aykuttasil.sweetloc.data.userRoomNode
+import com.aykuttasil.sweetloc.data.userRoomsNode
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseException
@@ -28,10 +29,10 @@ class RoomRepository @Inject constructor(
             val scope = CoroutineScope(Dispatchers.IO)
             try {
                 scope.launch {
-                    val room = Room(roomName)
-                    val user = userRepository.getUser1()
+                    val room = RoomEntity(roomName)
+                    val user = userRepository.getUserEntity()
                     val roomId = addRoom(room).blockingGet()
-                    addUserRoom(user!!.userUUID, roomId, room).blockingGet()
+                    addUserRoom(user!!.userId, roomId, room).blockingGet()
                     it.onComplete()
                     coroutineContext.cancel()
                 }
@@ -42,10 +43,10 @@ class RoomRepository @Inject constructor(
         }
     }
 
-    fun addRoom(room: Room): Single<String> {
+    fun addRoom(roomEntity: RoomEntity): Single<String> {
         return Single.create { emitter ->
             val record = databaseReference.child(roomsNode()).push()
-            record.setValue(room)
+            record.setValue(roomEntity)
                     .addOnSuccessListener {
                         emitter.onSuccess(record.key ?: "")
                     }.addOnFailureListener { e ->
@@ -57,10 +58,10 @@ class RoomRepository @Inject constructor(
         }
     }
 
-    fun addUserRoom(userId: String, roomId: String, room: Room): Completable {
+    fun addUserRoom(userId: String, roomId: String, roomEntity: RoomEntity): Completable {
         return Completable.create { emitter ->
             val record = databaseReference.child(userRoomNode(userId, roomId))
-            record.setValue(room)
+            record.setValue(roomEntity)
                     .addOnSuccessListener {
                         emitter.onComplete()
                     }
@@ -73,8 +74,8 @@ class RoomRepository @Inject constructor(
         }
     }
 
-    fun getAllRooms(): Single<List<Room>> {
-        return Single.create<List<Room>> {
+    fun getAllRooms(): Single<List<RoomEntity>> {
+        return Single.create<List<RoomEntity>> {
             databaseReference.child(roomsNode())
                     .addValueEventListener(object : ValueEventListener {
                         override fun onCancelled(error: DatabaseError) {
@@ -83,24 +84,23 @@ class RoomRepository @Inject constructor(
                         }
 
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val a = dataSnapshot.getValue(Room::class.java)
+                            val a = dataSnapshot.getValue(RoomEntity::class.java)
                         }
                     })
         }
-
     }
 
-    fun getRoomList(): Single<List<Room>> {
-        return Single.create<List<Room>> { emitter ->
+    fun getUserRooms(userId: String): Single<List<RoomEntity>> {
+        return Single.create<List<RoomEntity>> { emitter ->
             val listener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (emitter.isDisposed) {
                         return
                     }
                     try {
-                        val rooms = arrayListOf<Room>()
+                        val rooms = arrayListOf<RoomEntity>()
                         dataSnapshot.children.forEach {
-                            rooms.add(it.getValue(Room::class.java)!!)
+                            rooms.add(it.getValue(RoomEntity::class.java)!!)
                         }
 
                         emitter.onSuccess(rooms.toList())
@@ -117,7 +117,7 @@ class RoomRepository @Inject constructor(
                 }
             }
 
-            val childReference = databaseReference.child(roomsNode())
+            val childReference = databaseReference.child(userRoomsNode(userId))
             childReference.addListenerForSingleValueEvent(listener)
             emitter.setCancellable { childReference.removeEventListener(listener) }
         }.observeOn(Schedulers.io())
@@ -132,7 +132,7 @@ class RoomRepository @Inject constructor(
                     }
                     try {
                         dataSnapshot.children.forEach {
-                            val room = it.getValue(Room::class.java)
+                            val room = it.getValue(RoomEntity::class.java)
                             if (room?.roomName == name) {
                                 emitter.onSuccess(true)
                             }

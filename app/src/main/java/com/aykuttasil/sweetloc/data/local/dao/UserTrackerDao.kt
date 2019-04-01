@@ -1,29 +1,23 @@
 package com.aykuttasil.sweetloc.data.local.dao
 
-import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
-import com.aykuttasil.sweetloc.data.local.entity.UserTrackerEntity
-import io.reactivex.Flowable
-
+/*
 @Dao
 abstract class UserTrackerDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertItem(item: UserTrackerEntity): Long
+    abstract fun insertItem(item: Room): Long
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun updatetItem(item: UserTrackerEntity)
+    abstract fun updatetItem(item: Room)
 
     @Query("SELECT * FROM UserTracker")
-    abstract fun getItems(): Flowable<List<UserTrackerEntity>>
+    abstract fun getItems(): Flowable<List<Room>>
 
     @Query("SELECT * FROM UserTracker")
-    abstract fun getItemsLiveData(): LiveData<List<UserTrackerEntity>>
+    abstract fun getItemsLiveData(): LiveData<List<Room>>
 
     @Query("SELECT * FROM UserTracker WHERE userTrackerId=:id")
-    abstract fun getItem(id: Long): UserTrackerEntity
+    abstract fun getItem(id: Long): Room
 }
+
+ */

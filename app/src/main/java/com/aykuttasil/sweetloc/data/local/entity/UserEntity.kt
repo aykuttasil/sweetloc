@@ -5,9 +5,9 @@ import androidx.room.PrimaryKey
 import java.text.DateFormat
 import java.util.Date
 
-@Entity(tableName = "User")
+@Entity(tableName = "user")
 data class UserEntity(
-        @PrimaryKey var userUUID: String,
+        @PrimaryKey var userId: String,
         var userEmail: String? = null,
         var userPassword: String? = null,
         var userName: String? = null,

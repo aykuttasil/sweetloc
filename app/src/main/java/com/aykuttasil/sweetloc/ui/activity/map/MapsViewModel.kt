@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.aykuttasil.androidbasichelperlib.SuperHelper
-import com.aykuttasil.sweetloc.data.local.entity.LocationEntity
+import com.aykuttasil.sweetloc.data.LocationEntity
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.data.repository.LocationRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
@@ -68,7 +68,7 @@ class MapsViewModel @Inject constructor(
 
                     sentMyLocation.value = locationEntity
 
-                    return@BiFunction LocModel(user.userUUID, locationEntity)
+                    return@BiFunction LocModel(user.userId, locationEntity)
                 })
                 .retry()
                 .flatMapCompletable {

@@ -1,6 +1,6 @@
 package com.aykuttasil.sweetloc.data.repository
 
-import aykuttasil.com.myviewmodelskeleton.data.local.dao.UserDao
+import com.aykuttasil.sweetloc.data.local.dao.UserDao
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.data.userNode
 import com.google.android.gms.tasks.Task
@@ -10,16 +10,15 @@ import com.onesignal.OneSignal
 import com.orhanobut.logger.Logger
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-        private val userDao: UserDao,
         private val firebaseAuth: FirebaseAuth,
-        private val databaseReference: DatabaseReference
+        private val databaseReference: DatabaseReference,
+        private val userDao: UserDao
 ) {
 
     fun loginUser(
@@ -31,16 +30,11 @@ class UserRepository @Inject constructor(
                     .addOnSuccessListener { success ->
                         val firebaseUser = success.user
                         val userEntity = UserEntity(
-                                userUUID = firebaseUser.uid,
+                                userId = firebaseUser.uid,
                                 userEmail = firebaseUser.email,
                                 userPassword = password
                         )
-                        addUser(userEntity)
-                                .subscribe({
-                                    emitter.onSuccess(userEntity)
-                                }, {
-                                    emitter.onError(it)
-                                })
+                        emitter.onSuccess(userEntity)
                     }
                     .addOnFailureListener { e ->
                         emitter.onError(e)
@@ -57,17 +51,11 @@ class UserRepository @Inject constructor(
                     .addOnSuccessListener { success ->
                         val firebaseUser = success.user
                         val userEntity = UserEntity(
-                                userUUID = firebaseUser.uid,
+                                userId = firebaseUser.uid,
                                 userEmail = firebaseUser.email,
                                 userPassword = password
                         )
-
-                        addUser(userEntity)
-                                .subscribe({
-                                    emitter.onSuccess(userEntity)
-                                }, {
-                                    emitter.onError(it)
-                                })
+                        emitter.onSuccess(userEntity)
                     }
                     .addOnFailureListener { e ->
                         emitter.onError(e)
@@ -75,26 +63,14 @@ class UserRepository @Inject constructor(
         }
     }
 
-    fun addUser(userEntity: UserEntity): Completable {
-        return upsertUser(userEntity)
-                .observeOn(Schedulers.io())
-                .doOnComplete {
-                    userDao.insertItem(userEntity)
-                }
+    fun addUserToLocal(user: UserEntity) {
+        userDao.insertItem(user)
     }
 
-    fun updateUser(userEntity: UserEntity): Completable {
-        return upsertUser(userEntity)
-                .observeOn(Schedulers.io())
-                .doOnComplete {
-                    userDao.updateItem(userEntity)
-                }
-    }
-
-    fun deleteUser(userEntity: UserEntity): Completable {
+    fun deleteUserFromLocal(user: UserEntity): Completable {
         return Completable.create {
             try {
-                userDao.deleteItem(userEntity)
+                userDao.deleteItem(user)
                 it.onComplete()
             } catch (e: Exception) {
                 it.onError(e)
@@ -102,7 +78,18 @@ class UserRepository @Inject constructor(
         }
     }
 
-    private fun upsertUser(userId: String, action: (DatabaseReference) -> Task<Void>): Completable {
+    fun updateUserFromLocal(user: UserEntity): Completable {
+        return Completable.create {
+            try {
+                userDao.updateItem(user)
+                it.onComplete()
+            } catch (e: Exception) {
+                it.onError(e)
+            }
+        }
+    }
+
+    fun processUserToRemote(userId: String, action: (DatabaseReference) -> Task<Void>): Completable {
         return Completable.create { emitter ->
             action(databaseReference.child(userNode(userId)))
                     .addOnSuccessListener {
@@ -117,13 +104,16 @@ class UserRepository @Inject constructor(
         }
     }
 
-    fun upsertUser(userEntity: UserEntity): Completable {
-        return upsertUser(userEntity.userUUID) {
+    fun upsertUserToRemote(userEntity: UserEntity): Single<UserEntity> {
+        return processUserToRemote(userEntity.userId) {
             it.setValue(userEntity)
+        }.toSingle {
+            userEntity
         }
+
     }
 
-    fun getUser1(): UserEntity? = runBlocking {
+    fun getUserEntity(): UserEntity? = runBlocking {
         return@runBlocking withContext(Dispatchers.IO) { userDao.getItem() }
     }
 
@@ -137,29 +127,26 @@ class UserRepository @Inject constructor(
         }
     }
 
-    fun getUserEntity(): UserEntity? {
-        return userDao.getItem()
-    }
-
     fun checkUser(): Boolean {
-        return runBlocking {
-            val userEntity = withContext(Dispatchers.Default) { getUserEntity() }
-            val firebaseUser = FirebaseAuth.getInstance().currentUser
-            return@runBlocking userEntity != null && firebaseUser != null
-        }
+        val userEntity = getUserEntity()
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        return userEntity != null && firebaseUser != null
     }
 
-    fun updateOneSignalId() {
-        OneSignal.idsAvailable { userId, registrationId ->
-            Logger.i("OneSignal userId: $userId")
-            Logger.i("OneSignal regId: $registrationId")
+    fun updateOneSignalId() = runBlocking {
+        withContext(Dispatchers.Default) {
+            OneSignal.idsAvailable { userId, registrationId ->
+                Logger.i("OneSignal userId: $userId")
+                Logger.i("OneSignal regId: $registrationId")
 
-            val user = getUserEntity()?.apply {
-                userOneSignalId = userId
-            }
+                val user = getUserEntity()?.apply {
+                    userOneSignalId = userId
+                }
 
-            user?.apply {
-                updateUser(this).blockingAwait()
+                user?.apply {
+                    upsertUserToRemote(this).blockingGet()
+                    updateUserFromLocal(this).blockingGet()
+                }
             }
         }
     }

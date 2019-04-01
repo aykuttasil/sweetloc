@@ -9,7 +9,6 @@ import com.aykuttasil.sweetloc.service.NotificationOpenedHandler
 import com.aykuttasil.sweetloc.service.NotificationReceivedHandler
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
-import com.facebook.FacebookSdk
 import com.facebook.appevents.AppEventsLogger
 import com.onesignal.OneSignal
 import com.orhanobut.logger.LogLevel
@@ -40,9 +39,9 @@ open class App : Application(), HasActivityInjector {
 
     private fun initSweetLoc() {
         Logger.init("SweetLocLogger")
-            .methodCount(3)
-            .logLevel(if (BuildConfig.DEBUG) LogLevel.FULL else LogLevel.NONE)
-            .methodOffset(0)
+                .methodCount(3)
+                .logLevel(if (BuildConfig.DEBUG) LogLevel.FULL else LogLevel.NONE)
+                .methodOffset(0)
 
 
         initializeFabric()
@@ -51,24 +50,23 @@ open class App : Application(), HasActivityInjector {
         //OneSignal.init(this, "535821025252", "283c0725-f1ae-434a-8ea5-09f61b1246fc", new NotificationOpenedHandler(), new NotificationReceivedHandler());
 
         OneSignal.startInit(this)
-            .setNotificationReceivedHandler(NotificationReceivedHandler())
-            .setNotificationOpenedHandler(NotificationOpenedHandler())
-            //.autoPromptLocation(true)
-            .init()
+                .setNotificationReceivedHandler(NotificationReceivedHandler())
+                .setNotificationOpenedHandler(NotificationOpenedHandler())
+                //.autoPromptLocation(true)
+                .init()
 
-        FacebookSdk.sdkInitialize(applicationContext)
-
-        AppEventsLogger.activateApp(this)
+        // FacebookSdk.sdkInitialize(applicationContext)
+        // AppEventsLogger.activateApp(this)
     }
 
     private fun initializeFabric() {
         val crashlyticsCore = CrashlyticsCore.Builder()
-            .disabled(BuildConfig.DEBUG)
-            .build()
+                .disabled(BuildConfig.DEBUG)
+                .build()
 
         val crashlytics = Crashlytics.Builder()
-            .core(crashlyticsCore)
-            .build()
+                .core(crashlyticsCore)
+                .build()
 
         Fabric.with(this, crashlytics)
     }

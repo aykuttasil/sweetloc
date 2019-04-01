@@ -15,8 +15,8 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             app:layoutManager="LinearLayoutManager"
-            app:listData="@{viewModel.liveUserTrackerEntity}"
-            tools:listitem="@layout/listitem_user_tracker" />
+            app:listData="@{viewModel.liveRoomEntityList}"
+            tools:listitem="@layout/listitem_room" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

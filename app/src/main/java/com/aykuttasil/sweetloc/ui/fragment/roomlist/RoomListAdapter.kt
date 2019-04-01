@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.util.adapter
+package com.aykuttasil.sweetloc.ui.fragment.roomlist
 
 import android.content.Context
 import android.media.AudioManager
@@ -10,36 +10,32 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.aykuttasil.sweetloc.R
-import com.aykuttasil.sweetloc.app.Const
-import com.aykuttasil.sweetloc.data.local.entity.UserTrackerEntity
+import com.aykuttasil.sweetloc.data.RoomEntity
+import com.aykuttasil.sweetloc.data.repository.RoomRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
-import com.aykuttasil.sweetloc.data.repository.UserTrackerRepository
-import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.util.BindableAdapter
-import com.aykuttasil.sweetloc.util.PicassoCircleTransform
 import com.orhanobut.logger.Logger
-import com.squareup.picasso.Picasso
 import org.jetbrains.anko.audioManager
 import javax.inject.Inject
 
-class UserTrackerListAdapter @Inject constructor(
+class RoomListAdapter @Inject constructor(
         val mContext: Context,
         private val userRepository: UserRepository,
-        private val userTrackerRepository: UserTrackerRepository
-) : RecyclerView.Adapter<UserTrackerListAdapter.UserTrackerViewHolder>(), BindableAdapter<UserTrackerEntity> {
+        private val roomRepository: RoomRepository
+) : RecyclerView.Adapter<RoomListAdapter.RoomViewHolder>(), BindableAdapter<RoomEntity> {
 
-    private val mList = arrayListOf<UserTrackerEntity>()
+    private val mList = arrayListOf<RoomEntity>()
 
     override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
-    ): UserTrackerViewHolder {
-        val vi = LayoutInflater.from(mContext).inflate(R.layout.listitem_user_tracker, parent, false)
-        return UserTrackerViewHolder(vi)
+    ): RoomViewHolder {
+        val vi = LayoutInflater.from(mContext).inflate(R.layout.listitem_room, parent, false)
+        return RoomViewHolder(vi)
     }
 
     override fun onBindViewHolder(
-            holder: UserTrackerViewHolder,
+            holder: RoomViewHolder,
             position: Int
     ) {
         holder.bind(mList[position])
@@ -49,30 +45,30 @@ class UserTrackerListAdapter @Inject constructor(
         return mList.size
     }
 
-    override fun setData(items: List<UserTrackerEntity>) {
+    override fun setData(items: List<RoomEntity>) {
         addItemList(items)
     }
 
-    fun addItem(modelUserTracker: UserTrackerEntity) {
-        mList.add(modelUserTracker)
+    fun addItem(room: RoomEntity) {
+        mList.add(room)
         notifyDataSetChanged()
     }
 
-    fun addItemList(list: List<UserTrackerEntity>?) {
+    fun addItemList(list: List<RoomEntity>?) {
         list?.filter { !mList.contains(it) }?.apply {
             mList.addAll(this)
             notifyDataSetChanged()
         }
     }
 
-    fun clearAndAddItemList(list: List<UserTrackerEntity>) {
+    fun clearAndAddItemList(list: List<RoomEntity>) {
         mList.clear()
         mList.addAll(list)
         notifyDataSetChanged()
     }
 
-    fun removeItem(modelUserTracker: UserTrackerEntity) {
-        mList.remove(modelUserTracker)
+    fun removeItem(room: RoomEntity) {
+        mList.remove(room)
         notifyDataSetChanged()
     }
 
@@ -81,7 +77,7 @@ class UserTrackerListAdapter @Inject constructor(
         notifyDataSetChanged()
     }
 
-    inner class UserTrackerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class RoomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var mImageViewProfilePicture: ImageView
         var mTextViewAdSoyad: TextView? = null
         var mTextViewEmail: TextView
@@ -93,23 +89,27 @@ class UserTrackerListAdapter @Inject constructor(
             mButtonWakeUp = itemView.findViewById<View>(R.id.ButtonWakeUp) as Button
         }
 
-        fun bind(modelUserTracker: UserTrackerEntity) {
-            if (!modelUserTracker.profilePictureUrl.isNullOrEmpty()) {
-                Logger.i("Picture Url: " + modelUserTracker.profilePictureUrl)
+        fun bind(room: RoomEntity) {
+            /*
+            if (!room.profilePictureUrl.isNullOrEmpty()) {
+                Logger.i("Picture Url: " + room.profilePictureUrl)
                 // Picasso.Builder(mContext).build()
                 Picasso.get()
-                        .load(modelUserTracker.profilePictureUrl)
+                        .load(room.profilePictureUrl)
                         .transform(PicassoCircleTransform())
                         .into(mImageViewProfilePicture)
             } else {
                 mImageViewProfilePicture.setImageDrawable(itemView.context.resources.getDrawable(
                         R.drawable.ic_account_circle_light_blue_300_24dp))
             }
-            mTextViewEmail.text = modelUserTracker.email
+             */
+
+            mTextViewEmail.text = room.roomName
 
             mButtonWakeUp.setOnClickListener {
                 Logger.i("mButtonWakeUp click")
-                SweetLocHelper.sendNotif(Const.ACTION_PHONE_UNMUTE, userRepository, userTrackerRepository)
+
+                // SweetLocHelper.sendNotif(Const.ACTION_PHONE_UNMUTE, userRepository, userTrackerRepository)
 
                 val audioManager = mContext.audioManager
                 val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)

@@ -1,7 +1,8 @@
 package com.aykuttasil.sweetloc.data.repository
 
+/*
 import com.aykuttasil.sweetloc.data.local.dao.UserTrackerDao
-import com.aykuttasil.sweetloc.data.local.entity.UserTrackerEntity
+import com.aykuttasil.sweetloc.data.local.entity.Room
 import com.aykuttasil.sweetloc.data.userRoomsNode
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -19,7 +20,7 @@ class UserTrackerRepository @Inject constructor(
         private val databaseReference: DatabaseReference
 ) {
 
-    fun addUserTracker(userTrackerEntity: UserTrackerEntity): Completable {
+    fun addUserTracker(userTrackerEntity: Room): Completable {
         return Completable.create { emitter ->
             try {
                 userTrackerDao.insertItem(userTrackerEntity)
@@ -30,17 +31,17 @@ class UserTrackerRepository @Inject constructor(
         }
     }
 
-    fun getTrackerList(userId: String): Observable<List<UserTrackerEntity>> {
-        return Observable.create { emitter: ObservableEmitter<List<UserTrackerEntity>> ->
+    fun getTrackerList(userId: String): Observable<List<Room>> {
+        return Observable.create { emitter: ObservableEmitter<List<Room>> ->
             val listener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (emitter.isDisposed) {
                         return
                     }
                     try {
-                        val listUserTrackerEntity = arrayListOf<UserTrackerEntity>()
+                        val listUserTrackerEntity = arrayListOf<Room>()
                         dataSnapshot.children.forEach {
-                            listUserTrackerEntity.add(it.getValue(UserTrackerEntity::class.java)!!)
+                            listUserTrackerEntity.add(it.getValue(Room::class.java)!!)
                         }
 
                         emitter.onNext(listUserTrackerEntity)
@@ -63,3 +64,4 @@ class UserTrackerRepository @Inject constructor(
         }.observeOn(Schedulers.io())
     }
 }
+ */

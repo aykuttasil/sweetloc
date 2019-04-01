@@ -10,6 +10,7 @@ import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.model.process.DataOkDialog
 import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
 import com.aykuttasil.sweetloc.util.SingleLiveEvent
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
@@ -52,6 +53,26 @@ open class LoginViewModel @Inject constructor(
         liveUiStates.value = LoginUiStateProgress()
 
         userRepository.loginUser(email, password)
+                .flatMap { userEntity ->
+                    userRepository.upsertUserToRemote(userEntity)
+                }
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    userRepository.addUserToLocal(it)
+                    Single.just(it)
+                }
+                .subscribe({
+                    liveSnackbar.value = "${it?.userEmail} ile oturum açıldı."
+                    liveUiStates.value = LoginUiStateSuccessfulLogin(it)
+                }, {
+                    it.printStackTrace()
+                    val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
+                    liveUiStates.value = LoginUiStateError(dialog)
+                }).addTo(disposables)
+
+
+        /*
+        userRepository.loginUser(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -63,12 +84,33 @@ open class LoginViewModel @Inject constructor(
                     liveUiStates.value = LoginUiStateError(dialog)
                 }).addTo(disposables)
 
+         */
+
     }
 
     fun register(
             email: String,
             password: String
     ) {
+        userRepository.registerUser(email, password)
+                .flatMap { userEntity ->
+                    userRepository.upsertUserToRemote(userEntity)
+                }
+                .subscribeOn(Schedulers.io())
+                .flatMap {
+                    userRepository.addUserToLocal(it)
+                    Single.just(it)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    liveSnackbar.value = "${it?.userEmail} ile oturum açıldı."
+                    liveUiStates.value = LoginUiStateSuccessfulLogin(it)
+                }, {
+                    it.printStackTrace()
+                    val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
+                    liveUiStates.value = LoginUiStateError(dialog)
+                }).addTo(disposables)
+        /*
         userRepository.registerUser(email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -80,5 +122,7 @@ open class LoginViewModel @Inject constructor(
                     val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
                     liveUiStates.value = LoginUiStateError(dialog)
                 }).addTo(disposables)
+
+         */
     }
 }

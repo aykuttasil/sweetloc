@@ -1,5 +1,6 @@
-package aykuttasil.com.myviewmodelskeleton.data.local.dao
+package com.aykuttasil.sweetloc.data.local.dao
 
+/*
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
@@ -55,3 +56,5 @@ abstract class LocationDao {
     abstract fun insertAll(vararg locations: LocationEntity)
     */
 }
+
+ */

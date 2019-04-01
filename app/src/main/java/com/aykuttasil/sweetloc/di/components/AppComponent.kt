@@ -12,16 +12,14 @@ import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
-/**
- * Created by aykutasil on 8.12.2017.
- */
 @Singleton
 @Component(modules = [
     (AndroidSupportInjectionModule::class),
     (ActivityBuilder::class),
     (AppModule::class),
     (NetworkModule::class),
-    (DatabaseModule::class)])
+    (DatabaseModule::class)
+])
 interface AppComponent : AndroidInjector<App> {
 
     @Component.Builder
