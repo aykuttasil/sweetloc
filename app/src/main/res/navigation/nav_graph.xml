@@ -7,22 +7,26 @@
     <fragment
         android:id="@+id/roomCreateFragment"
         android:name="com.aykuttasil.sweetloc.ui.fragment.roomcreate.RoomCreateFragment"
-        android:label="room_create_fragment"
+        android:label="Create Room"
         tools:layout="@layout/room_create_fragment" />
     <fragment
         android:id="@+id/roomListFragment"
         android:name="com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListFragment"
-        android:label="UserTrackerListFragment">
+        android:label="Rooms">
         <action
             android:id="@+id/action_roomListFragment_to_roomCreateFragment"
             app:destination="@id/roomCreateFragment"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_roomListFragment_pop"
+            app:popUpTo="@id/roomListFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.aykuttasil.sweetloc.ui.fragment.entry.EntryFragment"
-        android:label="fragment_main"
+        android:label="SweetLoc"
         tools:layout="@layout/fragment_entry">
         <action
             android:id="@+id/action_mainFragment_to_roomListFragment"

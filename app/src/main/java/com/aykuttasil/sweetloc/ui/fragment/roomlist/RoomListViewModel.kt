@@ -11,14 +11,13 @@ import com.aykuttasil.sweetloc.data.repository.RoomRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
 import io.reactivex.rxkotlin.addTo
-import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 class RoomListViewModel @Inject constructor(
         private val app: App,
         private val userRepository: UserRepository,
         private val roomRepository: RoomRepository
-) : BaseAndroidViewModel(app), LifecycleObserver, CoroutineScope {
+) : BaseAndroidViewModel(app), LifecycleObserver {
 
     val liveRoomEntityList: MutableLiveData<List<RoomEntity>> = MutableLiveData()
 

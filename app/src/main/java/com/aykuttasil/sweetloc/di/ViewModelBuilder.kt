@@ -10,6 +10,7 @@ import com.aykuttasil.sweetloc.ui.activity.profile.ProfileViewModel
 import com.aykuttasil.sweetloc.ui.fragment.entry.EntryViewModel
 import com.aykuttasil.sweetloc.ui.fragment.roomcreate.RoomCreateViewModel
 import com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListViewModel
+import com.aykuttasil.sweetloc.ui.fragment.roommemberlist.RoomMemberListViewModel
 import com.aykuttasil.sweetloc.ui.fragment.usergroup.UserGroupsViewModel
 import dagger.Binds
 import dagger.Module
@@ -57,6 +58,12 @@ abstract class ViewModelBuilder {
     @Binds
     @ViewModelKey(RoomCreateViewModel::class)
     abstract fun provideRoomCreateViewModel(viewModel: RoomCreateViewModel): ViewModel
+
+    @IntoMap
+    @Binds
+    @ViewModelKey(RoomMemberListViewModel::class)
+    abstract fun provideRoomMemberListViewModel(viewModel: RoomMemberListViewModel): ViewModel
+
 
     @Binds
     abstract fun provideViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory

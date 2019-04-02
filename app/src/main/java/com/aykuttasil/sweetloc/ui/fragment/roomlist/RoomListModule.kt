@@ -17,6 +17,12 @@ class RoomListModule {
     ): RoomListAdapter = RoomListAdapter(context, userRepository, roomRepository)
 
     @Provides
+    fun provideRoomsAdapter(context: Context,
+                            userRepository: UserRepository,
+                            roomRepository: RoomRepository
+    ): RoomsAdapter = RoomsAdapter()
+
+    @Provides
     @PerFragment
     fun provideContext(roomListFragment: RoomListFragment): Context {
         return roomListFragment.context!!

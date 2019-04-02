@@ -8,12 +8,16 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
 import com.aykuttasil.sweetloc.ui.activity.profile.ProfileActivity
 import com.aykuttasil.sweetloc.util.extension.setupToolbar
+import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.notificationManager
 import javax.inject.Inject
 
@@ -27,20 +31,26 @@ open class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initUiComponents()
+
+        setupToolbar(R.id.toolbar) {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeButtonEnabled(true)
+            setDefaultDisplayHomeAsUpEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+            title = "SweetLoc"
+        }
+
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        NavigationUI.setupActionBarWithNavController(this, navController)
+        NavigationUI.setupWithNavController(toolbar, navController)
 
         mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
         lifecycle.addObserver(mainActivityViewModel)
     }
 
-    private fun initUiComponents() {
-        setToolbar()
-    }
-
-    private fun setToolbar() {
-        setupToolbar(R.id.toolbar) {
-            title = "SweetLoc"
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.nav_host_fragment).navigateUp()
     }
 
     private fun initMain() {

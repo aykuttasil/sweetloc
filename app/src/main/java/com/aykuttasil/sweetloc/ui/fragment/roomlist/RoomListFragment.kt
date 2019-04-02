@@ -21,7 +21,7 @@ open class RoomListFragment : BaseFragment(), Injectable {
     lateinit var viewModelFactory: ViewModelFactory
 
     @Inject
-    lateinit var listAdapter: RoomListAdapter
+    lateinit var listAdapter: RoomsAdapter
 
     private lateinit var roomListViewModel: RoomListViewModel
     lateinit var binding: FragmentRoomListLayoutBinding

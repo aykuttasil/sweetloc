@@ -1,6 +1,5 @@
 package com.aykuttasil.sweetloc.ui.fragment.entry
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -52,7 +51,6 @@ class EntryFragment : BaseFragment(), Injectable {
 
         btnLogout.setOnClickListener {
             sweetLocHelper.resetSweetLoc(context!!)
-
         }
 
         /*

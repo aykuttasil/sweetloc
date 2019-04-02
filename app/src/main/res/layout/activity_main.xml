@@ -18,7 +18,6 @@
         app:title="SweetLoc"
         app:titleTextColor="@color/colorPrimary" />
 
-
     <fragment
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
