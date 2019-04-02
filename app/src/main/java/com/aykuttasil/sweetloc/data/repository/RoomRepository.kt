@@ -100,7 +100,9 @@ class RoomRepository @Inject constructor(
                     try {
                         val rooms = arrayListOf<RoomEntity>()
                         dataSnapshot.children.forEach {
-                            rooms.add(it.getValue(RoomEntity::class.java)!!)
+                            val room = it.getValue(RoomEntity::class.java)
+                            room?.roomId = it.key
+                            rooms.add(room!!)
                         }
 
                         emitter.onSuccess(rooms.toList())

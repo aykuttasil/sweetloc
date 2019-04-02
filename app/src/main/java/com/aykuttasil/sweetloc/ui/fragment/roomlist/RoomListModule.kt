@@ -11,12 +11,6 @@ import dagger.Provides
 class RoomListModule {
 
     @Provides
-    fun provideAdapter(context: Context,
-                       userRepository: UserRepository,
-                       roomRepository: RoomRepository
-    ): RoomListAdapter = RoomListAdapter(context, userRepository, roomRepository)
-
-    @Provides
     fun provideRoomsAdapter(context: Context,
                             userRepository: UserRepository,
                             roomRepository: RoomRepository

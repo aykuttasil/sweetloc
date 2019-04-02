@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.findNavController
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.databinding.FragmentRoomListLayoutBinding
 import com.aykuttasil.sweetloc.di.Injectable
@@ -31,7 +30,7 @@ open class RoomListFragment : BaseFragment(), Injectable {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_room_list_layout, container, false)
+        binding = FragmentRoomListLayoutBinding.inflate(inflater)
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -47,7 +46,7 @@ open class RoomListFragment : BaseFragment(), Injectable {
     private fun setUI() {
         listUserTracker?.adapter = listAdapter
         fab.setOnClickListener {
-            findNavController(this).navigate(R.id.action_roomListFragment_to_roomCreateFragment)
+            it.findNavController().navigate(R.id.action_roomListFragment_to_roomCreateFragment)
         }
     }
 

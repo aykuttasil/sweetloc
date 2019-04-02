@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import com.aykuttasil.sweetloc.databinding.RoomMemberlistFragmentBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
@@ -21,9 +22,16 @@ class RoomMemberListFragment : BaseFragment(), Injectable {
     lateinit var viewModel: RoomMemberListViewModel
     lateinit var binding: RoomMemberlistFragmentBinding
 
+    val args: RoomMemberListFragmentArgs by navArgs()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = RoomMemberlistFragmentBinding.inflate(inflater)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        TOAST("Room Id:${args.roomId}")
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

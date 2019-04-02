@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,9 @@ class RoomsAdapter : ListAdapter<RoomEntity, RoomsAdapter.MyViewHolder>(RoomsAda
         fun bind(room: RoomEntity) {
             binding.room = room
             binding.root.setOnClickListener {
+                val direction = RoomListFragmentDirections.actionRoomListFragmentToRoomMemberListFragment(room.roomId!!)
+                it.findNavController().navigate(direction)
+
                 Toast.makeText(itemView.context, room.roomName, Toast.LENGTH_SHORT).show()
             }
             binding.executePendingBindings()
