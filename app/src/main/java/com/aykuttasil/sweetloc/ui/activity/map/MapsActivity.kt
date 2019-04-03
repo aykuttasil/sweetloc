@@ -51,7 +51,7 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
         private val WAIT_LOCATION_SECOND = 30
     }
 
-    lateinit var mapsViewModel: MapsViewModel
+    lateinit var viewModel: MapsViewModel
 
     private var isReceiveLocation = false
 
@@ -68,7 +68,7 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        mapsViewModel = ViewModelProviders.of(this, viewModelFactory).get(MapsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MapsViewModel::class.java)
 
         setup()
 
@@ -117,7 +117,7 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
 
     private fun initMap() {
         (map as SupportMapFragment).getMapAsync(this)
-        mapsViewModel.sendMyLocation().observe(this, Observer {
+        viewModel.sendMyLocation().observe(this, Observer {
             Logger.i("aa: " + it)
         })
         // initLocationListener()

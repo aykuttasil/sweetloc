@@ -26,7 +26,7 @@ open class MainActivity : BaseActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var mainActivityViewModel: MainActivityViewModel
+    private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,12 +41,13 @@ open class MainActivity : BaseActivity() {
             title = "SweetLoc"
         }
 
+
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
         NavigationUI.setupWithNavController(toolbar, navController)
 
-        mainActivityViewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
-        lifecycle.addObserver(mainActivityViewModel)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
+        lifecycle.addObserver(viewModel)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -92,7 +93,7 @@ open class MainActivity : BaseActivity() {
         when (requestCode) {
             LOGIN_REQUEST_CODE -> when (resultCode) {
                 Activity.RESULT_OK -> {
-                    mainActivityViewModel.isUserLogin.value = true
+                    viewModel.isUserLogin.value = true
                 }
             }
         }

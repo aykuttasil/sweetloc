@@ -1,6 +1,5 @@
 package com.aykuttasil.sweetloc.ui.fragment.roomcreate
 
-import androidx.lifecycle.MutableLiveData
 import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.data.RoomEntity
 import com.aykuttasil.sweetloc.data.repository.RoomRepository
@@ -16,9 +15,6 @@ class RoomCreateViewModel @Inject constructor(
         val userRepository: UserRepository,
         val roomRepository: RoomRepository
 ) : BaseAndroidViewModel(app) {
-
-    val liveProgress = MutableLiveData<Boolean>()
-    val liveSnackbar = MutableLiveData<String>()
 
     fun createRoom(roomName: String) {
         launch {

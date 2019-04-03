@@ -38,7 +38,6 @@ open class LoginViewModel @Inject constructor(
 ) : BaseAndroidViewModel(app) {
 
     val liveUiStates = MutableLiveData<LoginUiStates>()
-    val liveSnackbar = SingleLiveEvent<String>()
     val liveOkDialog = SingleLiveEvent<DataOkDialog>()
     val liveEmail = MutableLiveData<String>()
     val livePass = MutableLiveData<String>()

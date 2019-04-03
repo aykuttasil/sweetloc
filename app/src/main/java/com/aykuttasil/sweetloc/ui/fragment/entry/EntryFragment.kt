@@ -5,13 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.di.Injectable
+import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
+import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
 import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.fragment_entry.*
 import javax.inject.Inject
@@ -26,6 +29,11 @@ class EntryFragment : BaseFragment(), Injectable {
 
     @Inject
     lateinit var sweetLocHelper: SweetLocHelper
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    lateinit var viewModel: EntryViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_entry, container, false)
@@ -52,19 +60,16 @@ class EntryFragment : BaseFragment(), Injectable {
         btnLogout.setOnClickListener {
             sweetLocHelper.resetSweetLoc(context!!)
         }
+    }
 
-        /*
-        launch {
-            repeat(5) {
-                val user = userRepository.getUserEntity()!!
-                databaseReference.child(roomMemberNode("-LbJ6AF8XjqEI4Zrni9x", user.userId)).setValue(user)
-            }
-            if (isLogin) {
-                // var x = RxPermissions(activity!!).ensure("")
-            }
-        }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(EntryViewModel::class.java)
+        initObservers()
+    }
 
-         */
+    override fun getViewModel(): BaseAndroidViewModel {
+        return viewModel
     }
 
 

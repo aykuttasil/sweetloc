@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.aykuttasil.sweetloc.databinding.RoomMemberlistFragmentBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
+import com.aykuttasil.sweetloc.ui.fragment.MyFragmentContract
+import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
 import com.aykuttasil.sweetloc.util.extension.TOAST
 import javax.inject.Inject
 
-class RoomMemberListFragment : BaseFragment(), Injectable {
+class RoomMemberListFragment : BaseFragment(), MyFragmentContract, Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -23,6 +24,7 @@ class RoomMemberListFragment : BaseFragment(), Injectable {
     lateinit var binding: RoomMemberlistFragmentBinding
 
     private val args: RoomMemberListFragmentArgs by navArgs()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = RoomMemberlistFragmentBinding.inflate(inflater)
@@ -39,10 +41,11 @@ class RoomMemberListFragment : BaseFragment(), Injectable {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RoomMemberListViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        initObservers()
+    }
 
-        viewModel.liveSnackbar.observe(viewLifecycleOwner, Observer {
-            TOAST(it)
-        })
+    override fun getViewModel(): BaseAndroidViewModel {
+        return viewModel
     }
 
 }

@@ -5,22 +5,29 @@ import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.aykuttasil.sweetloc.R
+import androidx.lifecycle.ViewModelProviders
 import com.aykuttasil.sweetloc.databinding.FragmentProfileBinding
 import com.aykuttasil.sweetloc.di.Injectable
+import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.aykuttasil.sweetloc.util.delegates.Inflate
+import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
+import javax.inject.Inject
 
 open class ProfileFragment : BaseFragment(), Injectable {
 
-    private val binding: FragmentProfileBinding by Inflate(R.layout.fragment_profile)
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    lateinit var viewModel: ProfileViewModel
+    lateinit var binding: FragmentProfileBinding
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentProfileBinding.inflate(inflater)
         return binding.root
     }
 
@@ -31,6 +38,12 @@ open class ProfileFragment : BaseFragment(), Injectable {
         super.onViewCreated(view, savedInstanceState)
         setInformation()
         TextViewEmail.movementMethod = ScrollingMovementMethod()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java)
+        binding.lifecycleOwner = this
     }
 
     private fun setInformation() {
@@ -47,5 +60,9 @@ open class ProfileFragment : BaseFragment(), Injectable {
                 .into(ImageViewProfilePicture)
         }
         */
+    }
+
+    override fun getViewModel(): BaseAndroidViewModel {
+        return viewModel
     }
 }

@@ -1,6 +1,7 @@
 package com.aykuttasil.sweetloc.ui.activity.profile
 
-import androidx.lifecycle.ViewModel
+import com.aykuttasil.sweetloc.App
+import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
 import javax.inject.Inject
 
-class ProfileViewModel @Inject constructor() : ViewModel()
+class ProfileViewModel @Inject constructor(app: App) : BaseAndroidViewModel(app)
