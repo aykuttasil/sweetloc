@@ -3,9 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.aykuttasil.sweetloc">
 
-    <uses-permission
-        android:name="android.permission.READ_PHONE_STATE"
-        tools:node="remove" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,9 +10,14 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
+    <uses-permission
+        android:name="android.permission.READ_PHONE_STATE"
+        tools:node="remove" />
+
+
     <application
         android:name=".App"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -78,10 +80,9 @@
             </intent-filter>
         </activity>
 
-        <provider
-            android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider1323769607674772"
-            android:exported="true" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <!--
         <provider
@@ -89,6 +90,50 @@
             android:authorities="${applicationId}"
             android:enabled="true"
             android:exported="false" />-->
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="1180ed8815863b0006d4df63e666bc74901dc3ec"
+            tools:replace="android:value" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <meta-data
+            android:name="com.onesignal.BadgeCount"
+            android:value="DISABLE" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1323769607674772"
+            android:exported="true" />
+
+        <receiver
+            android:name=".receiver.BootupReceiver"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.aykuttasil.sweetloc.action.BOOTUP" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".receiver.SingleLocationRequestReceiver"
+            android:process=":remote" />
+
+        <!-- Uygulama kapalı olsa bile broadcastreceiver ın çalışması için process=remote yapılıyor. -->
+        <receiver
+            android:name=".receiver.GeofenceBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
 
         <service
             android:name=".service.MyFirebaseInstanceIdService"
@@ -128,54 +173,11 @@
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
+        <!-- Uygulama iconu üzerindeki bildirim sayısının gösterilmesini disable ediyoruz. -->
         <service
             android:name=".service.GeofenceTransitionsJobIntentService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
-        <receiver
-            android:name=".receiver.BootupReceiver"
-            android:enabled="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="com.aykuttasil.sweetloc.action.BOOTUP" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-
-        <!-- Uygulama kapalı olsa bile broadcastreceiver ın çalışması için process=remote yapılıyor. -->
-        <receiver
-            android:name=".receiver.SingleLocationRequestReceiver"
-            android:process=":remote" />
-
-        <receiver
-            android:name=".receiver.GeofenceBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true" />
-
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="1180ed8815863b0006d4df63e666bc74901dc3ec"
-            tools:replace="android:value" />
-
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
-        <!-- Uygulama iconu üzerindeki bildirim sayısının gösterilmesini disable ediyoruz. -->
-        <meta-data
-            android:name="com.onesignal.BadgeCount"
-            android:value="DISABLE" />
 
     </application>
 

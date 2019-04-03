@@ -1,47 +1,44 @@
-package com.aykuttasil.sweetloc.service;
+package com.aykuttasil.sweetloc.service
 
-import android.os.Bundle;
+import android.os.Bundle
 
-import com.aykuttasil.sweetloc.app.Const;
-import com.aykuttasil.sweetloc.model.event.ErrorEvent;
-import com.google.android.gms.gcm.GcmNetworkManager;
-import com.google.android.gms.gcm.GcmTaskService;
-import com.google.android.gms.gcm.TaskParams;
+import com.aykuttasil.sweetloc.app.Const
+import com.aykuttasil.sweetloc.model.event.ErrorEvent
+import com.google.android.gms.gcm.GcmNetworkManager
+import com.google.android.gms.gcm.GcmTaskService
+import com.google.android.gms.gcm.TaskParams
 
-import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBus
 
-public class MyGcmTaskService extends GcmTaskService {
+class MyGcmTaskService : GcmTaskService() {
 
-    private static String TAG = MyGcmTaskService.class.getSimpleName();
-
-    @Override
-    public void onInitializeTasks() {
+    override fun onInitializeTasks() {
 
     }
 
-    @Override
-    public int onRunTask(TaskParams taskParams) {
+    override fun onRunTask(taskParams: TaskParams): Int {
         try {
-            Bundle bundle = taskParams.getExtras();
+            val bundle = taskParams.extras
 
-            switch (bundle.getString(Const.TASK_TYPE)) {
-                case Const.TASK_LOCATION: {
-                    return SchedulerLocationTask(bundle);
+            return when (bundle.getString(Const.TASK_TYPE)) {
+                Const.TASK_LOCATION -> {
+                    SchedulerLocationTask(bundle)
                 }
-                default: {
-                    return GcmNetworkManager.RESULT_SUCCESS;
+                else -> {
+                    GcmNetworkManager.RESULT_SUCCESS
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            ErrorEvent errorEvent = new ErrorEvent();
-            errorEvent.setErrorContent(e.getMessage());
-            EventBus.getDefault().post(errorEvent);
-            return GcmNetworkManager.RESULT_RESCHEDULE;
+        } catch (e: Exception) {
+            e.printStackTrace()
+            val errorEvent = ErrorEvent()
+            errorEvent.errorContent = e.message
+            EventBus.getDefault().post(errorEvent)
+            return GcmNetworkManager.RESULT_RESCHEDULE
         }
+
     }
 
-    private int SchedulerLocationTask(Bundle bundle) {
+    private fun SchedulerLocationTask(bundle: Bundle): Int {
         /*
         String jsonModel = null;
         String uuid = null;
@@ -94,7 +91,12 @@ public class MyGcmTaskService extends GcmTaskService {
         EventBus.getDefault().post(modelGcmTask);
         return GcmNetworkManager.RESULT_RESCHEDULE;
         */
-        return GcmNetworkManager.RESULT_SUCCESS;
+        return GcmNetworkManager.RESULT_SUCCESS
+    }
+
+    companion object {
+
+        private val TAG = MyGcmTaskService::class.java.simpleName
     }
 
     //////////////

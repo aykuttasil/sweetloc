@@ -10,12 +10,12 @@ import com.aykuttasil.sweetloc.databinding.RoomMemberlistFragmentBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.aykuttasil.sweetloc.ui.fragment.MyFragmentContract
+import com.aykuttasil.sweetloc.ui.fragment.IFragmentContract
 import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
 import kotlinx.android.synthetic.main.room_memberlist_fragment.*
 import javax.inject.Inject
 
-class RoomMemberListFragment : BaseFragment(), MyFragmentContract, Injectable {
+class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory

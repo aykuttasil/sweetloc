@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseFragment : Fragment(), MyFragmentContract, CoroutineScope {
+abstract class BaseFragment : Fragment(), IFragmentContract, CoroutineScope {
 
     private val job = Job()
 
