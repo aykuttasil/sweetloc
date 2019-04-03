@@ -36,16 +36,8 @@ open class RoomListFragment : BaseFragment(), Injectable {
         return binding.root
     }
 
-    override fun onViewCreated(
-            view: View,
-            savedInstanceState: Bundle?
-    ) {
-        super.onViewCreated(view, savedInstanceState)
-        setUI()
-    }
-
-    private fun setUI() {
-        listUserTracker?.adapter = listAdapter
+    override fun initUiComponents() {
+        listRoom?.adapter = listAdapter
         fab.setOnClickListener {
             it.findNavController().navigate(R.id.action_roomListFragment_to_roomCreateFragment)
         }
@@ -54,8 +46,8 @@ open class RoomListFragment : BaseFragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RoomListViewModel::class.java)
-        lifecycle.addObserver(viewModel)
         binding.viewModel = viewModel
+        lifecycle.addObserver(viewModel)
         initObservers()
     }
 

@@ -25,6 +25,9 @@ class RoomCreateFragment : BaseFragment(), Injectable {
         return binding.root
     }
 
+    override fun initUiComponents() {
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RoomCreateViewModel::class.java)

@@ -62,6 +62,10 @@ class EntryFragment : BaseFragment(), Injectable {
         }
     }
 
+    override fun initUiComponents() {
+
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(EntryViewModel::class.java)

@@ -27,6 +27,10 @@ class UserGroupsFragment : BaseFragment(), Injectable {
         return inflater.inflate(R.layout.fragment_user_groups, container, false)
     }
 
+    override fun initUiComponents() {
+
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserGroupsViewModel::class.java)

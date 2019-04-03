@@ -31,6 +31,10 @@ open class ProfileFragment : BaseFragment(), Injectable {
         return binding.root
     }
 
+    override fun initUiComponents() {
+
+    }
+
     override fun onViewCreated(
             view: View,
             savedInstanceState: Bundle?

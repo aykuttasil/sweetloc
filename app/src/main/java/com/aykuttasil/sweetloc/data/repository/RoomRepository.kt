@@ -1,6 +1,8 @@
 package com.aykuttasil.sweetloc.data.repository
 
 import com.aykuttasil.sweetloc.data.RoomEntity
+import com.aykuttasil.sweetloc.data.local.entity.UserEntity
+import com.aykuttasil.sweetloc.data.roomMembersNode
 import com.aykuttasil.sweetloc.data.roomsNode
 import com.aykuttasil.sweetloc.data.userRoomNode
 import com.aykuttasil.sweetloc.data.userRoomsNode
@@ -120,6 +122,40 @@ class RoomRepository @Inject constructor(
             }
 
             val childReference = databaseReference.child(userRoomsNode(userId))
+            childReference.addListenerForSingleValueEvent(listener)
+            emitter.setCancellable { childReference.removeEventListener(listener) }
+        }.observeOn(Schedulers.io())
+    }
+
+    fun getRoomMembers(roomId: String): Single<List<UserEntity>> {
+        return Single.create<List<UserEntity>> { emitter ->
+            val listener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (emitter.isDisposed) {
+                        return
+                    }
+                    try {
+                        val users = arrayListOf<UserEntity>()
+                        dataSnapshot.children.forEach {
+                            val user = it.getValue(UserEntity::class.java)
+                            users.add(user!!)
+                        }
+
+                        emitter.onSuccess(users.toList())
+                    } catch (e: Exception) {
+                        emitter.onError(DatabaseException("Problem in DB", e))
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    if (emitter.isDisposed) {
+                        return
+                    }
+                    emitter.onError(databaseError.toException())
+                }
+            }
+
+            val childReference = databaseReference.child(roomMembersNode(roomId))
             childReference.addListenerForSingleValueEvent(listener)
             emitter.setCancellable { childReference.removeEventListener(listener) }
         }.observeOn(Schedulers.io())

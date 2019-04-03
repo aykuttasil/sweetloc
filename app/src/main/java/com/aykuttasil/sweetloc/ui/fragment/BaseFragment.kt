@@ -1,5 +1,7 @@
 package com.aykuttasil.sweetloc.ui.fragment
 
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
@@ -21,6 +23,13 @@ abstract class BaseFragment : Fragment(), MyFragmentContract, CoroutineScope {
             TOAST(it)
         })
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initUiComponents()
+    }
+
+    abstract fun initUiComponents()
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -12,7 +12,7 @@ import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import com.aykuttasil.sweetloc.ui.fragment.MyFragmentContract
 import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
-import com.aykuttasil.sweetloc.util.extension.TOAST
+import kotlinx.android.synthetic.main.room_memberlist_fragment.*
 import javax.inject.Inject
 
 class RoomMemberListFragment : BaseFragment(), MyFragmentContract, Injectable {
@@ -25,15 +25,13 @@ class RoomMemberListFragment : BaseFragment(), MyFragmentContract, Injectable {
 
     private val args: RoomMemberListFragmentArgs by navArgs()
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = RoomMemberlistFragmentBinding.inflate(inflater)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        TOAST("Room Id:${args.roomId}")
+    override fun initUiComponents() {
+        listRoomMember.adapter = RoomMembersAdapter()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
