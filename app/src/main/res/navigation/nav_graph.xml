@@ -19,12 +19,12 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
-            android:id="@+id/action_roomListFragment_pop"
-            app:popUpTo="@id/roomListFragment"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_roomListFragment_to_roomMemberListFragment"
-            app:destination="@id/roomMemberListFragment" />
+            app:destination="@id/roomMemberListFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
@@ -42,9 +42,12 @@
     <fragment
         android:id="@+id/roomMemberListFragment"
         android:name="com.aykuttasil.sweetloc.ui.fragment.roommemberlist.RoomMemberListFragment"
-        android:label="RoomMemberListFragment" >
+        android:label="{roomName}">
         <argument
             android:name="roomId"
+            app:argType="string" />
+        <argument
+            android:name="roomName"
             app:argType="string" />
     </fragment>
 </navigation>

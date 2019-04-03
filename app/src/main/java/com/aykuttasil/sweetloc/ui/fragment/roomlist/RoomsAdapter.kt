@@ -33,9 +33,9 @@ class RoomsAdapter : ListAdapter<RoomEntity, RoomsAdapter.MyViewHolder>(RoomsAda
         fun bind(room: RoomEntity) {
             binding.room = room
             binding.root.setOnClickListener {
-                val direction = RoomListFragmentDirections.actionRoomListFragmentToRoomMemberListFragment(room.roomId!!)
+                val direction = RoomListFragmentDirections.actionRoomListFragmentToRoomMemberListFragment(room.roomId!!, room.roomName
+                        ?: "")
                 it.findNavController().navigate(direction)
-
                 Toast.makeText(itemView.context, room.roomName, Toast.LENGTH_SHORT).show()
             }
             binding.executePendingBindings()

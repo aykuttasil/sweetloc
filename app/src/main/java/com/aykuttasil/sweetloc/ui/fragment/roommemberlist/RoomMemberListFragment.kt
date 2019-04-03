@@ -22,7 +22,7 @@ class RoomMemberListFragment : BaseFragment(), Injectable {
     lateinit var viewModel: RoomMemberListViewModel
     lateinit var binding: RoomMemberlistFragmentBinding
 
-    val args: RoomMemberListFragmentArgs by navArgs()
+    private val args: RoomMemberListFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = RoomMemberlistFragmentBinding.inflate(inflater)
