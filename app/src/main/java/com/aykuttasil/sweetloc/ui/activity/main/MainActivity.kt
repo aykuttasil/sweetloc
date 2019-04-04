@@ -1,6 +1,8 @@
 package com.aykuttasil.sweetloc.ui.activity.main
 
 import android.app.Activity
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -18,7 +20,6 @@ import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
 import com.aykuttasil.sweetloc.ui.activity.profile.ProfileActivity
 import com.aykuttasil.sweetloc.util.extension.setupToolbar
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.notificationManager
 import javax.inject.Inject
 
 open class MainActivity : BaseActivity() {
@@ -62,7 +63,7 @@ open class MainActivity : BaseActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun checkAndOpenAudioSettings() {
-        if (!notificationManager.isNotificationPolicyAccessGranted) {
+        if (!(getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).isNotificationPolicyAccessGranted) {
             val intent = Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
             startActivity(intent)
         }

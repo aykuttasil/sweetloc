@@ -1,6 +1,7 @@
 package com.aykuttasil.sweetloc.helper
 
 import android.app.AlarmManager
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -18,7 +19,6 @@ import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.anko.alarmManager
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
@@ -138,7 +138,8 @@ class SweetLocHelper @Inject constructor(
     */
 
     fun startPeriodicTask(context: Context) {
-        val alarmManager = context.alarmManager
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
         val intent = Intent(context.applicationContext, SingleLocationRequestReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context,
                 Const.REQUEST_CODE_BROADCAST_LOCATION,
@@ -151,7 +152,8 @@ class SweetLocHelper @Inject constructor(
     }
 
     fun stopPeriodicTask(context: Context) {
-        val alarmManager = context.alarmManager
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
         val intent = Intent(context.applicationContext, SingleLocationRequestReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(context,
                 Const.REQUEST_CODE_BROADCAST_LOCATION,

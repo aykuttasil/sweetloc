@@ -1,14 +1,13 @@
-package com.aykuttasil.sweetloc.service;
+package com.aykuttasil.sweetloc.service
 
-import com.onesignal.OSNotification;
-import com.onesignal.OneSignal;
-import com.orhanobut.logger.Logger;
+import com.onesignal.OSNotification
+import com.onesignal.OneSignal
+import com.orhanobut.logger.Logger
 
-public class NotificationReceivedHandler implements OneSignal.NotificationReceivedHandler {
+class NotificationReceivedHandler : OneSignal.NotificationReceivedHandler {
 
-    @Override
-    public void notificationReceived(OSNotification notification) {
-        Logger.json(notification.toJSONObject().toString());
+    override fun notificationReceived(notification: OSNotification) {
+        Logger.json(notification.toJSONObject().toString())
 
         /*
         try {
