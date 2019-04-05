@@ -7,8 +7,10 @@ apply plugin: 'com.fernandocejas.frodo'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 
-//By default frodo is ON on debug build variants, although
-//we can enable-disable it with this configuration.
+// By default frodo is ON on debug build variants, although
+// we can enable-disable it with this configuration.
+// Frodo is an android library inspired by Jake Wharton's Hugo, mainly used for logging RxJava Observables and Subscribers outputs on the logcat.
+// https://github.com/android10/frodo
 frodo {
     enabled = true
 }
@@ -166,7 +168,7 @@ dependencies {
     implementation 'com.andkulikov:transitionseverywhere:1.7.5'
     implementation 'com.patloew.rxlocation:rxlocation:1.0.4'
     // implementation 'com.onesignal:OneSignal:3.10.7@aar'
-    implementation 'com.onesignal:OneSignal:[3.9.1, 3.99.99]'
+    implementation 'com.onesignal:OneSignal:3.10.7'
 
     def daggerVersion = "2.21"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
