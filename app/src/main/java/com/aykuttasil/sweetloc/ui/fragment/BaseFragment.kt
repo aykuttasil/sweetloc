@@ -18,7 +18,7 @@ abstract class BaseFragment : Fragment(), IFragmentContract, CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
-    fun initObservers() {
+    fun initGlobalObservers() {
         getViewModel().liveSnackbar.observe(viewLifecycleOwner, Observer {
             TOAST(it)
         })

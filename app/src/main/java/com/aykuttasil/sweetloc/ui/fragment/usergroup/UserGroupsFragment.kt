@@ -34,7 +34,7 @@ class UserGroupsFragment : BaseFragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserGroupsViewModel::class.java)
-        initObservers()
+        initGlobalObservers()
     }
 
     override fun getViewModel(): BaseAndroidViewModel {

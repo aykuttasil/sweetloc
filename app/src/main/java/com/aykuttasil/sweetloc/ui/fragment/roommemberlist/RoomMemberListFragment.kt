@@ -39,7 +39,7 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RoomMemberListViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        initObservers()
+        initGlobalObservers()
     }
 
     override fun getViewModel(): BaseAndroidViewModel {

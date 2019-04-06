@@ -48,7 +48,7 @@ open class RoomListFragment : BaseFragment(), Injectable {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RoomListViewModel::class.java)
         binding.viewModel = viewModel
         lifecycle.addObserver(viewModel)
-        initObservers()
+        initGlobalObservers()
     }
 
     override fun getViewModel(): BaseAndroidViewModel {

@@ -33,7 +33,7 @@ class RoomCreateFragment : BaseFragment(), Injectable {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RoomCreateViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        initObservers()
+        initGlobalObservers()
     }
 
     override fun getViewModel(): BaseAndroidViewModel {

@@ -69,7 +69,7 @@ class EntryFragment : BaseFragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(EntryViewModel::class.java)
-        initObservers()
+        initGlobalObservers()
     }
 
     override fun getViewModel(): BaseAndroidViewModel {
