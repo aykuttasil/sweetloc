@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
+import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.databinding.RoomMemberlistFragmentBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
@@ -26,7 +28,7 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
     private val args: RoomMemberListFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = RoomMemberlistFragmentBinding.inflate(inflater)
+        binding = DataBindingUtil.inflate(inflater, R.layout.room_memberlist_fragment, container, false)
         return binding.root
     }
 

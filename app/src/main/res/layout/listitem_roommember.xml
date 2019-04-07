@@ -8,6 +8,7 @@
         android:layout_height="100dp"
         android:layout_margin="10dp"
         android:padding="10dp"
+        app:cardUseCompatPadding="true"
         app:contentPadding="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +28,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Aykut Asil" />
+                tools:text="@tools:sample/full_names" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
