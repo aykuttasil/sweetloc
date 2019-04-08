@@ -1,36 +1,9 @@
 package com.aykuttasil.sweetloc.data
 
 
-import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import java.text.DateFormat
 import java.util.Date
 
-data class RoomEntity(
-        var roomId: String? = null,
-        var roomName: String? = null,
-        var roomOwner: String? = null,
-        var createDate: Long? = Date().time,
-        var createDateString: String? = DateFormat.getInstance().format(Date())
-) {
-    var location: LocationEntity? = null
-    var member: UserEntity? = null
-}
-
-data class LocationEntity(
-        val locationId: Long? = null,
-        val name: String? = null,
-        val address: String? = null,
-        val latitude: Double,
-        val longitude: Double,
-        val accuracy: Double?,
-        val time: Long? = null,
-        val formatTime: String? = null,
-        val speed: Long? = null,
-        val createDate: String? = null,
-        val placesName: String? = null
-)
-
-/*
 data class UserModel(
         var userId: String? = null,
         var userEmail: String? = null,
@@ -43,10 +16,31 @@ data class UserModel(
         var userImageUrl: String? = null,
         var userOneSignalId: String? = null,
         var userCity: String? = null,
-        var userCreateDate: Long = Date().time,
-        var userCreateDateString: String = DateFormat.getInstance().format(Date())
+        var userCreateDate: Long? = Date().time,
+        var userCreateDateString: String? = DateFormat.getInstance().format(Date())
 )
- */
+
+data class RoomEntity(
+        var roomId: String? = null,
+        var roomName: String? = null,
+        var roomOwner: String? = null,
+        var createDate: Long? = Date().time,
+        var createDateString: String? = DateFormat.getInstance().format(Date())
+)
+
+data class LocationEntity(
+        val locationId: Long? = null,
+        val name: String? = null,
+        val address: String? = null,
+        val latitude: Double? = null,
+        val longitude: Double? = null,
+        val accuracy: Double? = null,
+        val time: Long? = null,
+        val formatTime: String? = null,
+        val speed: Long? = null,
+        val createDate: String? = null,
+        val placesName: String? = null
+)
 
 fun roomsNode() = "rooms"
 fun roomNode(roomId: String) = "${roomsNode()}/$roomId"

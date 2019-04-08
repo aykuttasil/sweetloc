@@ -18,6 +18,6 @@ data class UserEntity(
         var userImageUrl: String? = null,
         var userOneSignalId: String? = null,
         var userCity: String? = null,
-        var userCreateDate: Long = Date().time,
-        var userCreateDateString: String = DateFormat.getInstance().format(Date())
+        var userCreateDate: Long? = Date().time,
+        var userCreateDateString: String? = DateFormat.getInstance().format(Date())
 )

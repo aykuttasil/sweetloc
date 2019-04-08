@@ -29,6 +29,7 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.room_memberlist_fragment, container, false)
+        binding.lifecycleOwner = this
         return binding.root
     }
 
@@ -39,9 +40,11 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RoomMemberListViewModel::class.java)
-        binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        lifecycle.addObserver(viewModel)
         initGlobalObservers()
+
+        viewModel.setRoomMemberList(args.roomId)
     }
 
     override fun getViewModel(): BaseAndroidViewModel {

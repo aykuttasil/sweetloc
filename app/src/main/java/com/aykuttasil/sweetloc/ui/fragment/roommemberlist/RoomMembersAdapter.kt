@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aykuttasil.sweetloc.R
+import com.aykuttasil.sweetloc.data.UserModel
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.databinding.ListitemRoommemberBinding
 import com.aykuttasil.sweetloc.util.BindableAdapter
 
-class RoomMembersAdapter : ListAdapter<UserEntity, RoomMembersAdapter.MyViewHolder>(RoomMembersAdapter.DIFF_CALLBACK), BindableAdapter<UserEntity> {
+class RoomMembersAdapter : ListAdapter<UserModel, RoomMembersAdapter.MyViewHolder>(RoomMembersAdapter.DIFF_CALLBACK), BindableAdapter<UserModel> {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val vi: ListitemRoommemberBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.listitem_roommember, parent, false)
@@ -23,13 +24,13 @@ class RoomMembersAdapter : ListAdapter<UserEntity, RoomMembersAdapter.MyViewHold
         holder.bind(getItem(position));
     }
 
-    override fun setData(items: List<UserEntity>) {
+    override fun setData(items: List<UserModel>) {
         submitList(items)
     }
 
     inner class MyViewHolder(val binding: ListitemRoommemberBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(user: UserEntity) {
+        fun bind(user: UserModel) {
             binding.user = user
             binding.root.setOnClickListener {
                 Toast.makeText(itemView.context, user.userName, Toast.LENGTH_SHORT).show()
@@ -52,12 +53,12 @@ class RoomMembersAdapter : ListAdapter<UserEntity, RoomMembersAdapter.MyViewHold
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserEntity>() {
-            override fun areItemsTheSame(oldItem: UserEntity, newItem: UserEntity): Boolean {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserModel>() {
+            override fun areItemsTheSame(oldItem: UserModel, newItem: UserModel): Boolean {
                 return oldItem.userId == newItem.userId
             }
 
-            override fun areContentsTheSame(oldItem: UserEntity, newItem: UserEntity): Boolean {
+            override fun areContentsTheSame(oldItem: UserModel, newItem: UserModel): Boolean {
                 return oldItem.userName == newItem.userName
             }
 

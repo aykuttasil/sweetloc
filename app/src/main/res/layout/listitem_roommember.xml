@@ -23,19 +23,21 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@{user.userName}"
+                android:text="@{user.userEmail}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@tools:sample/full_names" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 
     <data>
 
         <variable
             name="user"
-            type="com.aykuttasil.sweetloc.data.local.entity.UserEntity" />
+            type="com.aykuttasil.sweetloc.data.UserModel" />
     </data>
 </layout>

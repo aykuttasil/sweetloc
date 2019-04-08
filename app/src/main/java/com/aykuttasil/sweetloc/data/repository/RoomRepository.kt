@@ -1,7 +1,9 @@
 package com.aykuttasil.sweetloc.data.repository
 
 import com.aykuttasil.sweetloc.data.RoomEntity
+import com.aykuttasil.sweetloc.data.UserModel
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
+import com.aykuttasil.sweetloc.data.roomMemberNode
 import com.aykuttasil.sweetloc.data.roomMembersNode
 import com.aykuttasil.sweetloc.data.roomsNode
 import com.aykuttasil.sweetloc.data.userRoomNode
@@ -14,10 +16,6 @@ import com.google.firebase.database.ValueEventListener
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -25,25 +23,6 @@ class RoomRepository @Inject constructor(
         private val userRepository: UserRepository,
         private val databaseReference: DatabaseReference
 ) {
-
-    fun createRoom(roomName: String): Completable {
-        return Completable.create {
-            val scope = CoroutineScope(Dispatchers.IO)
-            try {
-                scope.launch {
-                    val room = RoomEntity(roomName)
-                    val user = userRepository.getUserEntity()
-                    val roomId = addRoom(room).blockingGet()
-                    addUserRoom(user!!.userId, roomId, room).blockingGet()
-                    it.onComplete()
-                    coroutineContext.cancel()
-                }
-            } catch (e: Exception) {
-                scope.coroutineContext.cancel()
-                it.onError(e)
-            }
-        }
-    }
 
     fun addRoom(roomEntity: RoomEntity): Single<String> {
         return Single.create { emitter ->
@@ -64,6 +43,22 @@ class RoomRepository @Inject constructor(
         return Completable.create { emitter ->
             val record = databaseReference.child(userRoomNode(userId, roomId))
             record.setValue(roomEntity)
+                    .addOnSuccessListener {
+                        emitter.onComplete()
+                    }
+                    .addOnFailureListener { e ->
+                        if (emitter.isDisposed) {
+                            return@addOnFailureListener
+                        }
+                        emitter.onError(e)
+                    }
+        }
+    }
+
+    fun addRoomMember(userId: String, roomId: String, userEntity: UserEntity): Completable {
+        return Completable.create { emitter ->
+            val record = databaseReference.child(roomMemberNode(roomId, userId))
+            record.setValue(userEntity)
                     .addOnSuccessListener {
                         emitter.onComplete()
                     }
@@ -127,22 +122,23 @@ class RoomRepository @Inject constructor(
         }.observeOn(Schedulers.io())
     }
 
-    fun getRoomMembers(roomId: String): Single<List<UserEntity>> {
-        return Single.create<List<UserEntity>> { emitter ->
+    fun getRoomMembers(roomId: String): Single<List<UserModel>> {
+        return Single.create<List<UserModel>> { emitter ->
             val listener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (emitter.isDisposed) {
                         return
                     }
                     try {
-                        val users = arrayListOf<UserEntity>()
+                        val users = arrayListOf<UserModel>()
                         dataSnapshot.children.forEach {
-                            val user = it.getValue(UserEntity::class.java)
+                            val user = it.getValue(UserModel::class.java)
                             users.add(user!!)
                         }
 
                         emitter.onSuccess(users.toList())
                     } catch (e: Exception) {
+                        e.printStackTrace()
                         emitter.onError(DatabaseException("Problem in DB", e))
                     }
                 }

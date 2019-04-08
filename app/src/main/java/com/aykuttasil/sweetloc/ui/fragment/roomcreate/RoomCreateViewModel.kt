@@ -27,8 +27,10 @@ class RoomCreateViewModel @Inject constructor(
                 val user = userRepository.getUserEntity()
                 val room = RoomEntity(roomName = roomName, roomOwner = user?.userId)
                 val roomId = withContext(Dispatchers.Default) { roomRepository.addRoom(room).blockingGet() }
-                val x = withContext(Dispatchers.Default) { roomRepository.addUserRoom(user!!.userId, roomId, room).blockingGet() }
-                if (x == null) {
+                val isOkAddUserRoom = withContext(Dispatchers.Default) { roomRepository.addUserRoom(user!!.userId, roomId, room).blockingGet() }
+                val isOkAddRoomUser = withContext(Dispatchers.Default) { roomRepository.addRoomMember(user!!.userId, roomId, user).blockingGet() }
+
+                if (isOkAddUserRoom == null && isOkAddRoomUser == null) {
                     liveSnackbar.value = "Room added."
                 } else {
                     liveSnackbar.value = "Room didn't add!"
