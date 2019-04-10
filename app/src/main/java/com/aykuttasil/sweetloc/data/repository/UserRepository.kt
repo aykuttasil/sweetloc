@@ -112,9 +112,7 @@ class UserRepository @Inject constructor(
     fun upsertUserToRemote(userEntity: UserEntity): Single<UserEntity> {
         return processUserToRemote(userEntity.userId) {
             it.setValue(userEntity)
-        }.toSingle {
-            userEntity
-        }
+        }.toSingle { userEntity }
 
     }
 

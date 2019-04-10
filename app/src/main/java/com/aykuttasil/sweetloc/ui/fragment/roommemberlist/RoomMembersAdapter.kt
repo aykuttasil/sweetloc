@@ -33,7 +33,7 @@ class RoomMembersAdapter : ListAdapter<UserModel, RoomMembersAdapter.MyViewHolde
         fun bind(user: UserModel) {
             binding.user = user
             binding.root.setOnClickListener {
-                Toast.makeText(itemView.context, user.userName, Toast.LENGTH_SHORT).show()
+                // Toast.makeText(itemView.context, user.userName, Toast.LENGTH_SHORT).show()
             }
             binding.executePendingBindings()
             /*

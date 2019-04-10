@@ -60,6 +60,14 @@ class EntryFragment : BaseFragment(), Injectable {
         btnLogout.setOnClickListener {
             sweetLocHelper.resetSweetLoc(context!!)
         }
+
+        btnAction.setOnClickListener {
+            val user = userRepository.getUserEntity()
+            userRepository.processUserToRemote(user!!.userId) {
+                user.userEmail = "testetstetstst@gmail.com"
+                it.updateChildren(mapOf("userEmail" to user.userEmail))
+            }.subscribe()
+        }
     }
 
     override fun initUiComponents() {
