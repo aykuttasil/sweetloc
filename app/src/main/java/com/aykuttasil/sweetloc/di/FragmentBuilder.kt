@@ -1,8 +1,9 @@
 package com.aykuttasil.sweetloc.di
 
 import com.aykuttasil.sweetloc.di.scopes.PerFragment
-import com.aykuttasil.sweetloc.ui.activity.profile.ProfileFragment
+
 import com.aykuttasil.sweetloc.ui.fragment.entry.EntryFragment
+import com.aykuttasil.sweetloc.ui.fragment.profile.ProfileFragment
 import com.aykuttasil.sweetloc.ui.fragment.roomcreate.RoomCreateFragment
 import com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListFragment
 import com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListModule
@@ -20,10 +21,6 @@ abstract class FragmentBuilder {
     abstract fun bindEntryFragment(): EntryFragment
 
     @PerFragment
-    @ContributesAndroidInjector
-    abstract fun bindProfileActivityFragment(): ProfileFragment
-
-    @PerFragment
     @ContributesAndroidInjector(modules = [RoomListModule::class])
     abstract fun bindRoomListFragment(): RoomListFragment
 
@@ -38,4 +35,8 @@ abstract class FragmentBuilder {
     @PerFragment
     @ContributesAndroidInjector
     abstract fun bindRoomMemberListFragment(): RoomMemberListFragment
+
+    @PerFragment
+    @ContributesAndroidInjector
+    abstract fun bindProfileFragment1(): ProfileFragment
 }

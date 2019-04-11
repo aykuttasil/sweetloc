@@ -64,7 +64,7 @@ class EntryFragment : BaseFragment(), Injectable {
         btnAction.setOnClickListener {
             val user = userRepository.getUserEntity()
             userRepository.processUserToRemote(user!!.userId) {
-                user.userEmail = "testetstetstst@gmail.com"
+                user.userEmail = "testetstetstst123@gmail.com"
                 it.updateChildren(mapOf("userEmail" to user.userEmail))
             }.subscribe()
         }

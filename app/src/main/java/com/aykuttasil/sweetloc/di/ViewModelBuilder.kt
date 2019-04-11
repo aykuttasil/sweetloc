@@ -6,8 +6,8 @@ import com.aykuttasil.sweetloc.di.key.ViewModelKey
 import com.aykuttasil.sweetloc.ui.activity.login.LoginViewModel
 import com.aykuttasil.sweetloc.ui.activity.main.MainActivityViewModel
 import com.aykuttasil.sweetloc.ui.activity.map.MapsViewModel
-import com.aykuttasil.sweetloc.ui.activity.profile.ProfileViewModel
 import com.aykuttasil.sweetloc.ui.fragment.entry.EntryViewModel
+import com.aykuttasil.sweetloc.ui.fragment.profile.ProfileViewModel
 import com.aykuttasil.sweetloc.ui.fragment.roomcreate.RoomCreateViewModel
 import com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListViewModel
 import com.aykuttasil.sweetloc.ui.fragment.roommemberlist.RoomMemberListViewModel
@@ -36,11 +36,6 @@ abstract class ViewModelBuilder {
 
     @IntoMap
     @Binds
-    @ViewModelKey(ProfileViewModel::class)
-    abstract fun provideProfileVieWModel(viewModel: ProfileViewModel): ViewModel
-
-    @IntoMap
-    @Binds
     @ViewModelKey(MapsViewModel::class)
     abstract fun provideMapsViewModel(viewModel: MapsViewModel): ViewModel
 
@@ -64,6 +59,10 @@ abstract class ViewModelBuilder {
     @ViewModelKey(RoomMemberListViewModel::class)
     abstract fun provideRoomMemberListViewModel(viewModel: RoomMemberListViewModel): ViewModel
 
+    @IntoMap
+    @Binds
+    @ViewModelKey(ProfileViewModel::class)
+    abstract fun provideProfileViewModel(viewModel: ProfileViewModel): ViewModel
 
     @Binds
     abstract fun provideViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory

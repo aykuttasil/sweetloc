@@ -7,8 +7,6 @@ import com.aykuttasil.sweetloc.ui.activity.main.MainActivity
 import com.aykuttasil.sweetloc.ui.activity.main.MainActivityModule
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivityModule
-import com.aykuttasil.sweetloc.ui.activity.profile.ProfileActivity
-import com.aykuttasil.sweetloc.ui.activity.profile.ProfileActivityModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -22,10 +20,6 @@ abstract class ActivityBuilder {
     @PerActivity
     @ContributesAndroidInjector(modules = [(LoginActivityModule::class)])
     abstract fun bindLoginActivity(): LoginActivity
-
-    @PerActivity
-    @ContributesAndroidInjector(modules = [(ProfileActivityModule::class)])
-    abstract fun bindProfileActivity(): ProfileActivity
 
     @PerActivity
     @ContributesAndroidInjector(modules = [(MapsActivityModule::class)])
