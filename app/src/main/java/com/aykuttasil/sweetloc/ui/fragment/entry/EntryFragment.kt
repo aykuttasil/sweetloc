@@ -14,7 +14,7 @@ import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
+import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.fragment_entry.*
 import javax.inject.Inject
@@ -68,6 +68,14 @@ class EntryFragment : BaseFragment(), Injectable {
                 it.updateChildren(mapOf("userEmail" to user.userEmail))
             }.subscribe()
         }
+
+        btnProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
+        }
+    }
+
+    override fun initViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(EntryViewModel::class.java)
     }
 
     override fun initUiComponents() {
@@ -76,8 +84,7 @@ class EntryFragment : BaseFragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(EntryViewModel::class.java)
-        initGlobalObservers()
+
     }
 
     override fun getViewModel(): BaseAndroidViewModel {

@@ -11,7 +11,7 @@ import com.aykuttasil.sweetloc.databinding.FragmentRoomListLayoutBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
+import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import kotlinx.android.synthetic.main.fragment_room_list_layout.*
 import javax.inject.Inject
 
@@ -43,12 +43,14 @@ open class RoomListFragment : BaseFragment(), Injectable {
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RoomListViewModel::class.java)
         binding.viewModel = viewModel
         lifecycle.addObserver(viewModel)
-        initGlobalObservers()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun getViewModel(): BaseAndroidViewModel {

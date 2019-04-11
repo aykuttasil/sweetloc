@@ -38,6 +38,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_mainFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/roomMemberListFragment"
@@ -50,4 +53,8 @@
             android:name="roomName"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.aykuttasil.sweetloc.ui.fragment.profile.ProfileFragment"
+        android:label="Profile" />
 </navigation>

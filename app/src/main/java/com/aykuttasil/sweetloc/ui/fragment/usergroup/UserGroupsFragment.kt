@@ -9,7 +9,7 @@ import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
+import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import javax.inject.Inject
 
 class UserGroupsFragment : BaseFragment(), Injectable {
@@ -31,10 +31,12 @@ class UserGroupsFragment : BaseFragment(), Injectable {
 
     }
 
+    override fun initViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserGroupsViewModel::class.java)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserGroupsViewModel::class.java)
-        initGlobalObservers()
     }
 
     override fun getViewModel(): BaseAndroidViewModel {

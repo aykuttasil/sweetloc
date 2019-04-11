@@ -1,7 +1,6 @@
 package com.aykuttasil.sweetloc.ui.fragment.roomlist
 
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
@@ -9,7 +8,7 @@ import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.data.RoomEntity
 import com.aykuttasil.sweetloc.data.repository.RoomRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
-import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
+import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
@@ -17,7 +16,7 @@ class RoomListViewModel @Inject constructor(
         private val app: App,
         private val userRepository: UserRepository,
         private val roomRepository: RoomRepository
-) : BaseAndroidViewModel(app), LifecycleObserver {
+) : BaseAndroidViewModel(app) {
 
     val liveRoomEntityList: MutableLiveData<List<RoomEntity>> = MutableLiveData()
 

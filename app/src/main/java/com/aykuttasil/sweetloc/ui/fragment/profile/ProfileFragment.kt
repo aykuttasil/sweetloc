@@ -11,7 +11,7 @@ import com.aykuttasil.sweetloc.databinding.FragmentProfileLayoutBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
+import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment(), Injectable {
@@ -27,15 +27,19 @@ class ProfileFragment : BaseFragment(), Injectable {
         return binding.root
     }
 
-    override fun initUiComponents() {
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+    }
+
+    override fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java)
+        lifecycle.addObserver(viewModel)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        initGlobalObservers()
+    }
+
+    override fun initUiComponents() {
+
     }
 
     override fun getViewModel(): BaseAndroidViewModel {

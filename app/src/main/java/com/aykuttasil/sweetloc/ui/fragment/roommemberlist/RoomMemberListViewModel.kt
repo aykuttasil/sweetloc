@@ -1,20 +1,18 @@
 package com.aykuttasil.sweetloc.ui.fragment.roommemberlist
 
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.data.UserModel
-import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.data.repository.RoomRepository
-import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
+import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
 class RoomMemberListViewModel @Inject constructor(
         private val app: App,
         private val roomRepository: RoomRepository
-) : BaseAndroidViewModel(app), LifecycleObserver {
+) : BaseAndroidViewModel(app) {
 
     val liveRoomMemberList: MutableLiveData<List<UserModel>> = MutableLiveData()
 

@@ -7,7 +7,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.helper.SweetLocHelper
-import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
+import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(

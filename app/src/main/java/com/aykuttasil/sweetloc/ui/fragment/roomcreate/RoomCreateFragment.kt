@@ -9,7 +9,7 @@ import com.aykuttasil.sweetloc.databinding.RoomCreateFragmentBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.aykuttasil.sweetloc.util.BaseAndroidViewModel
+import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import javax.inject.Inject
 
 class RoomCreateFragment : BaseFragment(), Injectable {
@@ -28,12 +28,15 @@ class RoomCreateFragment : BaseFragment(), Injectable {
     override fun initUiComponents() {
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RoomCreateViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        initGlobalObservers()
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
     }
 
     override fun getViewModel(): BaseAndroidViewModel {
