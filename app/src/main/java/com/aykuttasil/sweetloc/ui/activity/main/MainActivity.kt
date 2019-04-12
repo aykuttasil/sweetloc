@@ -86,11 +86,8 @@ open class MainActivity : BaseActivity() {
         return true
     }
 
-    override fun onActivityResult(
-            requestCode: Int,
-            resultCode: Int,
-            data: Intent?
-    ) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             LOGIN_REQUEST_CODE -> when (resultCode) {
                 Activity.RESULT_OK -> {

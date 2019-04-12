@@ -96,7 +96,7 @@ open class LoginViewModel @Inject constructor(
                 .flatMap { userEntity ->
                     userRepository.upsertUserToRemote(userEntity)
                 }
-                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
                 .flatMap {
                     userRepository.addUserToLocal(it)
                     Single.just(it)

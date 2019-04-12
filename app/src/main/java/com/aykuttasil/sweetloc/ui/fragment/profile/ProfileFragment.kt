@@ -1,17 +1,20 @@
 package com.aykuttasil.sweetloc.ui.fragment.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.databinding.FragmentProfileLayoutBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
-import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
+import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
+import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment(), Injectable {
@@ -29,6 +32,14 @@ class ProfileFragment : BaseFragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        viewModel.liveLogout.observe(viewLifecycleOwner, Observer { isLogout ->
+            if (isLogout) {
+                val intent = Intent(context!!, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+                activity?.finish()
+            }
+        })
     }
 
     override fun initViewModel() {
