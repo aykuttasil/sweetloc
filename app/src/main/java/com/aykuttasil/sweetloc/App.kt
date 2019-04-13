@@ -9,7 +9,6 @@ import com.aykuttasil.sweetloc.service.NotificationOpenedHandler
 import com.aykuttasil.sweetloc.service.NotificationReceivedHandler
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
-import com.facebook.appevents.AppEventsLogger
 import com.onesignal.OneSignal
 import com.orhanobut.logger.LogLevel
 import com.orhanobut.logger.Logger
@@ -38,7 +37,7 @@ open class App : Application(), HasActivityInjector {
     }
 
     private fun initSweetLoc() {
-        Logger.init("SweetLocLogger")
+        Logger.init("SweetlocLogger")
                 .methodCount(3)
                 .logLevel(if (BuildConfig.DEBUG) LogLevel.FULL else LogLevel.NONE)
                 .methodOffset(0)
@@ -75,7 +74,7 @@ open class App : Application(), HasActivityInjector {
         try {
             super.attachBaseContext(base)
             MultiDex.install(this)
-        } catch (ignored: RuntimeException) {
+        } catch (e: RuntimeException) {
         }
     }
 }
