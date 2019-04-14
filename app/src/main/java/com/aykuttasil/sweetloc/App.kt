@@ -42,7 +42,6 @@ open class App : Application(), HasActivityInjector {
                 .logLevel(if (BuildConfig.DEBUG) LogLevel.FULL else LogLevel.NONE)
                 .methodOffset(0)
 
-
         initializeFabric()
 
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.ERROR)
