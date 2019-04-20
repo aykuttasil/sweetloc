@@ -60,12 +60,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            resValue "string", "GOOGLE_MAPS_ANDROID_API_KEY", "(your development Maps API key)"
+            //resValue "string", "GOOGLE_MAPS_ANDROID_API_KEY", "(your development Maps API key)"
         }
         debug {
             minifyEnabled false
             debuggable true
-            resValue "string", "GOOGLE_MAPS_ANDROID_API_KEY", "(your development Maps API key)"
+            //resValue "string", "GOOGLE_MAPS_ANDROID_API_KEY", "(your development Maps API key)"
         }
     }
 
