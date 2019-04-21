@@ -37,7 +37,6 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
         listRoomMember.adapter = RoomMembersAdapter()
     }
 
-
     override fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(RoomMemberListViewModel::class.java)
         binding.viewModel = viewModel
@@ -52,5 +51,4 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
     override fun getViewModel(): BaseAndroidViewModel {
         return viewModel
     }
-
 }

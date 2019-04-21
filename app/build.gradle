@@ -16,11 +16,11 @@ frodo {
 }
 
 android {
-    compileSdkVersion project.sdk
+    compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion project.minSdk
-        targetSdkVersion project.sdk
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode 7
         versionName "1.0.6"
         multiDexEnabled true
@@ -75,6 +75,9 @@ android {
     }
 
     sourceSets {
+        main {
+            java.srcDir 'src/main/kotlin'
+        }
         debug {
             manifest.srcFile 'src/debug/AndroidManifest.xml'
         }
@@ -110,15 +113,13 @@ dependencies {
     releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
     debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
 
-    releaseImplementation 'com.github.ajitsing:sherlock-no-op:1.0.4@aar'
-    debugImplementation('com.github.ajitsing:sherlock:1.0.4@aar') {
+    releaseImplementation Libs.sherlock_no_op
+    debugImplementation(Libs.sherlock) {
         transitive = true
     }
     implementation 'com.orhanobut:logger:1.15'
 
     implementation 'com.google.android.material:material:1.0.0'
-
-    implementation Libs.mvRx
 
     implementation 'androidx.core:core-ktx:1.1.0-alpha05'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -169,24 +170,23 @@ dependencies {
     implementation 'com.patloew.rxlocation:rxlocation:1.0.4'
     implementation 'com.onesignal:OneSignal:3.10.7'
 
-    def daggerVersion = "2.21"
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    implementation "com.google.dagger:dagger:$daggerVersion"
-    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
-    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    kapt Libs.dagger_compiler
+    implementation Libs.dagger
+    kapt Libs.dagger_android_processor
+    implementation Libs.dagger_android_support
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$Versions.kotlin_version"
-    implementation "org.jetbrains.anko:anko:$anko_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
+    implementation Libs.kotlin_stdlib_jdk8
+    implementation Libs.anko
+    implementation Libs.kotlinx_coroutines_core
+    implementation Libs.kotlinx_coroutines_android
 
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation Libs.rxkotlin
+    implementation Libs.rxandroid
     implementation 'com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar'
 
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    kapt "com.jakewharton:butterknife-compiler:10.1.0"
+    implementation Libs.butterknife
+    kapt Libs.butterknife_compiler
 
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     kapt "com.github.bumptech.glide:compiler:4.9.0"

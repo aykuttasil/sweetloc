@@ -34,7 +34,6 @@ class RoomCreateFragment : BaseFragment(), Injectable {
         binding.viewModel = viewModel
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
     }
