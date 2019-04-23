@@ -121,8 +121,8 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.0.0'
 
-    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation Libs.androidx_core_core_ktx
+    implementation Libs.legacy_support_v4
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.palette:palette:1.0.0'
@@ -138,7 +138,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
 
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.9@aar') {
+    implementation(Libs.crashlytics) {
         transitive = true
     }
 
