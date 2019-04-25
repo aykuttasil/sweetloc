@@ -155,7 +155,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-gcm:16.1.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
 
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.13.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.1'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
@@ -165,9 +165,9 @@ dependencies {
     implementation "com.github.aykuttasil:AndroidBasicHelper:2.0.0-alpha1"
 
     implementation 'org.greenrobot:eventbus:3.1.1'
-    implementation 'com.facebook.android:facebook-android-sdk:4.41.0'
-    implementation 'com.andkulikov:transitionseverywhere:1.7.5'
-    implementation 'com.patloew.rxlocation:rxlocation:1.0.4'
+    implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
+    implementation 'com.andkulikov:transitionseverywhere:1.8.1'
+    implementation 'com.patloew.rxlocation:rxlocation:1.0.5'
     implementation 'com.onesignal:OneSignal:3.10.7'
 
     kapt Libs.dagger_compiler
@@ -191,6 +191,23 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     kapt "com.github.bumptech.glide:compiler:4.9.0"
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.9.0'
+
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-core:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-attr:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-measurement:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-disk:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-recorder:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-phoenix:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-crash:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-shared-preferences:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-geiger-counter:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-timber:0.9.27'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-build-config:0.9.27'
+    debugImplementation 'com.github.Commit451:Hyperion-Chuck:1.0.0'
+
+    implementation "com.github.skydoves:needs:1.0.2"
+
+    implementation "com.github.vondear.RxTool:RxKit:v2.2.7"
 
 }
 apply plugin: 'com.google.gms.google-services'

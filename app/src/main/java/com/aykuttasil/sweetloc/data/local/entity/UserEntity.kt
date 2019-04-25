@@ -19,5 +19,6 @@ data class UserEntity(
         var userOneSignalId: String? = null,
         var userCity: String? = null,
         var userCreateDate: Long? = Date().time,
-        var userCreateDateString: String? = DateFormat.getInstance().format(Date())
+        var userCreateDateString: String? = DateFormat.getInstance().format(Date()),
+        var userLastLoginDate: Long? = Date().time
 )

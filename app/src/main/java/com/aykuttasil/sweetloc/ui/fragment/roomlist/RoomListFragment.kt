@@ -49,10 +49,6 @@ open class RoomListFragment : BaseFragment(), Injectable {
         lifecycle.addObserver(viewModel)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun getViewModel(): BaseAndroidViewModel {
         return viewModel
     }

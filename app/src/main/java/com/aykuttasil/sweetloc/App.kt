@@ -13,6 +13,7 @@ import com.onesignal.OneSignal
 import com.orhanobut.logger.LogLevel
 import com.orhanobut.logger.Logger
 import com.patloew.rxlocation.RxLocation
+import com.vondear.rxtool.RxTool
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import io.fabric.sdk.android.Fabric
@@ -55,6 +56,8 @@ open class App : Application(), HasActivityInjector {
 
         // FacebookSdk.sdkInitialize(applicationContext)
         // AppEventsLogger.activateApp(this)
+
+        RxTool.init(this)
     }
 
     private fun initializeFabric() {

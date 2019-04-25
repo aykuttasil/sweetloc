@@ -38,7 +38,6 @@ abstract class BaseFragment : Fragment(), IFragmentContract, CoroutineScope {
 
             dialog.show()
         })
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

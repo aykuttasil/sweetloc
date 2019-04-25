@@ -12,10 +12,12 @@ import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.helper.SweetLocHelper
+import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DatabaseReference
+import com.skydoves.needs.*
 import kotlinx.android.synthetic.main.fragment_entry.*
 import javax.inject.Inject
 
@@ -46,6 +48,7 @@ class EntryFragment : BaseFragment(), Injectable {
             startActivity(Intent(activity, LoginActivity::class.java))
         }
 
+
         btnGoUserTrackerList.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_roomListFragment)
         }
@@ -61,12 +64,16 @@ class EntryFragment : BaseFragment(), Injectable {
             sweetLocHelper.resetSweetLoc(context!!)
         }
 
+        val needs = initNeeds()
         btnAction.setOnClickListener {
+            needs.show(view)
+            /*
             val user = userRepository.getUserEntity()
             userRepository.processUserToRemote(user!!.userId) {
                 user.userEmail = "testetstetstst123@gmail.com"
                 it.updateChildren(mapOf("userEmail" to user.userEmail))
             }.subscribe()
+            */
         }
 
         btnProfile.setOnClickListener {
@@ -74,16 +81,40 @@ class EntryFragment : BaseFragment(), Injectable {
         }
     }
 
+    private fun initNeeds(): Needs {
+        val needs = createNeeds(context!!) {
+            // titleIcon = null
+            title = "Permission instructions \nfor using this Android app."
+            // titleTextForm = null
+            addNeedsItem(NeedsItem(null, "SD Card", "(Required)", "Access photos, media, and files on device."))
+            addNeedsItem(NeedsItem(null, "Location", "(Required)", "Access this device's location."))
+            addNeedsItem(NeedsItem(null, "Camera", "(Optional)", "Take pictures and record video."))
+            addNeedsItem(NeedsItem(null, "Contact", "(Optional)", "Access this device's contacts."))
+            addNeedsItem(NeedsItem(null, "SMS", "(Optional)", "Send and view SMS messages."))
+            description = "The above accesses are used to better serve you."
+            confirm = "Confirm"
+            backgroundAlpha = 0.6f
+            lifecycleOwner = this@EntryFragment
+            //needsTheme = theme
+            //needsItemTheme = itemTheme
+            needsAnimation = NeedsAnimation.CIRCULAR
+        }
+
+        needs.setOnConfirmListener(object : OnConfirmListener {
+            override fun onConfirm() {
+                needs.dismiss()
+                viewModel.liveSnackbar.value = "Confirmed"
+            }
+
+        })
+        return needs
+    }
+
     override fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(EntryViewModel::class.java)
     }
 
     override fun initUiComponents() {
-
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
     }
 
