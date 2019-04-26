@@ -2,6 +2,7 @@ package com.aykuttasil.sweetloc.ui.activity.main
 
 import android.app.Activity
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -19,6 +20,8 @@ import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
 import com.aykuttasil.sweetloc.ui.activity.profile.ProfileActivity
 import com.aykuttasil.sweetloc.util.extension.setupToolbar
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -68,6 +71,16 @@ open class MainActivity : BaseActivity() {
             startActivity(intent)
         }
     }
+
+    /*
+    fun x()
+    {
+        val pendingIntent = PendingIntent.getActivity(this,1,Intent(),PendingIntent.FLAG_ONE_SHOT)
+        val fla = FusedLocationProviderClient(this)
+        fla.requestLocationUpdates(LocationRequest(),pendingIntent)
+    }
+    */
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // menuInflater.inflate(R.menu.menu_mainactivity, menu)
