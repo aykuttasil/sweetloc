@@ -21,6 +21,7 @@ open class LoginActivity : BaseActivity() {
 
     lateinit var loginViewModel: LoginViewModel
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         loginViewModel = ViewModelProviders.of(this@LoginActivity, viewModelFactory).get(LoginViewModel::class.java)
