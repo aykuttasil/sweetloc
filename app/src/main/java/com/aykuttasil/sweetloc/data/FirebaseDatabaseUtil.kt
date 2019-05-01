@@ -9,7 +9,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.schedulers.Schedulers
 
-class FirebaseDatabaseUtil constructor(private val databaseReference: DatabaseReference) {
+class FirebaseDatabaseUtil constructor(val databaseReference: DatabaseReference) {
 
     fun <T> observeChild(path: String, clazz: Class<T>): Observable<T> {
         return observeChildAndEmit(path, clazz) { it!! }
