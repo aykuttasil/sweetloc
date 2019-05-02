@@ -39,20 +39,20 @@ open class App : Application(), HasActivityInjector {
 
     private fun initSweetLoc() {
         Logger.init("SweetlocLogger")
-                .methodCount(3)
-                .logLevel(if (BuildConfig.DEBUG) LogLevel.FULL else LogLevel.NONE)
-                .methodOffset(0)
+            .methodCount(3)
+            .logLevel(if (BuildConfig.DEBUG) LogLevel.FULL else LogLevel.NONE)
+            .methodOffset(0)
 
         initializeFabric()
 
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.ERROR)
-        //OneSignal.init(this, "535821025252", "283c0725-f1ae-434a-8ea5-09f61b1246fc", new NotificationOpenedHandler(), new NotificationReceivedHandler());
+        // OneSignal.init(this, "535821025252", "283c0725-f1ae-434a-8ea5-09f61b1246fc", new NotificationOpenedHandler(), new NotificationReceivedHandler());
 
         OneSignal.startInit(this)
-                .setNotificationReceivedHandler(NotificationReceivedHandler())
-                .setNotificationOpenedHandler(NotificationOpenedHandler())
-                //.autoPromptLocation(true)
-                .init()
+            .setNotificationReceivedHandler(NotificationReceivedHandler())
+            .setNotificationOpenedHandler(NotificationOpenedHandler())
+            //.autoPromptLocation(true)
+            .init()
 
         // FacebookSdk.sdkInitialize(applicationContext)
         // AppEventsLogger.activateApp(this)
@@ -62,12 +62,12 @@ open class App : Application(), HasActivityInjector {
 
     private fun initializeFabric() {
         val crashlyticsCore = CrashlyticsCore.Builder()
-                .disabled(BuildConfig.DEBUG)
-                .build()
+            .disabled(BuildConfig.DEBUG)
+            .build()
 
         val crashlytics = Crashlytics.Builder()
-                .core(crashlyticsCore)
-                .build()
+            .core(crashlyticsCore)
+            .build()
 
         Fabric.with(this, crashlytics)
     }

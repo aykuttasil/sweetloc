@@ -1,6 +1,7 @@
 package com.aykuttasil.sweetloc.util.extension
 
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -11,6 +12,13 @@ fun View.showSnackbar(
     timeLength: Int = Snackbar.LENGTH_LONG
 ) {
     Snackbar.make(this, snackbarText ?: "Message is null", timeLength).show()
+}
+
+/**
+ * Fragent extension for [Snackbar]
+ */
+fun Fragment.showSnackbar(snackbarText: String, timeLength: Int) {
+    activity?.let { Snackbar.make(it.findViewById<View>(android.R.id.content), snackbarText, timeLength).show() }
 }
 
 /*

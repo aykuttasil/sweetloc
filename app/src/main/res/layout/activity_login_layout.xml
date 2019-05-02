@@ -102,6 +102,7 @@
                         android:layout_marginTop="200dp"
                         android:weightSum="2"
                         android:layout_below="@+id/view">
+
                     <Button
                             android:id="@+id/btnRegister"
                             style="@style/Widget.AppCompat.Button.Borderless.Colored"
@@ -112,8 +113,8 @@
                             android:enabled="@{!TextUtils.isEmpty(viewmodel.liveEmail) &amp;&amp; !TextUtils.isEmpty(viewmodel.livePass)}"
                             android:onClick="@{()->viewmodel.register(edtEmail.getText().toString(),editParola.getText().toString())}"
                             android:text="@string/txt_register"
-                            android:textColor="@color/white"
-                    />
+                            android:textColor="@color/white"/>
+
                     <Button
                             android:id="@+id/btnLogin"
                             style="@style/Widget.AppCompat.Button.Colored"
