@@ -7,7 +7,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -17,7 +17,7 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, C
         const val LOGIN_REQUEST_CODE = 1001
     }
 
-    var jobs = Job()
+    var jobs = SupervisorJob()
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + jobs
