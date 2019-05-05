@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
+import com.aykuttasil.sweetloc.data.remote.Resource
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.model.process.DataOkDialog
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
@@ -17,8 +18,8 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 inline fun <T> dependantLiveData(
-        vararg dependencies: LiveData<*>,
-        crossinline mapper: () -> T?
+    vararg dependencies: LiveData<*>,
+    crossinline mapper: () -> T?
 ) = MediatorLiveData<T>().also { mediatorLiveData ->
     val observer = Observer<Any> { mediatorLiveData.value = mapper() }
     dependencies.forEach { dependencyLiveData ->
@@ -26,103 +27,69 @@ inline fun <T> dependantLiveData(
     }
 }
 
-sealed class LoginUiStates
-data class LoginUiStateSuccessfulLogin(val user: UserEntity) : LoginUiStates()
-data class LoginUiStateSuccessfulRegister(val dataOkDialog: DataOkDialog) : LoginUiStates()
-data class LoginUiStateError(val dataOkDialog: DataOkDialog) : LoginUiStates()
-data class LoginUiStateProgress(val progressMsg: String? = "Lütfen Bekleyiniz.") : LoginUiStates()
-
 open class LoginViewModel @Inject constructor(
-        private val app: App,
-        private val userRepository: UserRepository
+    private val app: App,
+    private val userRepository: UserRepository
 ) : BaseAndroidViewModel(app) {
 
-    val liveUiStates = MutableLiveData<LoginUiStates>()
     val liveOkDialog = SingleLiveEvent<DataOkDialog>()
     val liveEmail = MutableLiveData<String>()
     val livePass = MutableLiveData<String>()
+
+    val liveLogin = MutableLiveData<Resource<UserEntity, DataOkDialog>>()
+
     val displayName = dependantLiveData(liveEmail) {
         liveEmail.value ?: "null"
     }
 
     open fun login(
-            email: String,
-            password: String
+        email: String,
+        password: String
     ) {
-        liveUiStates.value = LoginUiStateProgress()
+        liveLogin.value = Resource.loading()
 
         userRepository.loginUser(email, password)
-                .flatMap { userEntity ->
-                    userRepository.upsertUserToRemote(userEntity)
-                }
-                .observeOn(Schedulers.io())
-                .flatMap {
-                    userRepository.addUserToLocal(it)
-                    Single.just(it)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    liveSnackbar.value = "${it?.userEmail} ile oturum açıldı."
-                    liveUiStates.value = LoginUiStateSuccessfulLogin(it)
-                }, {
-                    it.printStackTrace()
-                    val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
-                    liveUiStates.value = LoginUiStateError(dialog)
-                }).addTo(disposables)
-
-
-        /*
-        userRepository.loginUser(email, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    liveSnackbar.value = "${it?.userEmail} ile oturum açıldı."
-                    liveUiStates.value = LoginUiStateSuccessfulLogin(it)
-                }, {
-                    it.printStackTrace()
-                    val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
-                    liveUiStates.value = LoginUiStateError(dialog)
-                }).addTo(disposables)
-
-         */
-
+            .observeOn(Schedulers.io())
+            .flatMap { user ->
+                userRepository.updateUserToRemote(user.userId, mapOf("userLastLoginDate" to user.userLastLoginDate))
+                    .blockingGet()
+                userRepository.addUserToLocal(user)
+                Single.just(user)
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                liveSnackbar.value = "${it?.userEmail} ile oturum açıldı."
+                liveLogin.value = Resource.success(it)
+            }, {
+                it.printStackTrace()
+                val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
+                liveLogin.value = Resource.error(it, dialog)
+            }).addTo(disposables)
     }
 
     fun register(
-            email: String,
-            password: String
+        email: String,
+        password: String
     ) {
-        userRepository.registerUser(email, password)
-                .flatMap { userEntity ->
-                    userRepository.upsertUserToRemote(userEntity)
-                }
-                .observeOn(Schedulers.io())
-                .flatMap {
-                    userRepository.addUserToLocal(it)
-                    Single.just(it)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    liveSnackbar.value = "${it?.userEmail} ile oturum açıldı."
-                    liveUiStates.value = LoginUiStateSuccessfulLogin(it)
-                }, {
-                    it.printStackTrace()
-                    val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
-                    liveUiStates.value = LoginUiStateError(dialog)
-                }).addTo(disposables)
-        /*
-        userRepository.registerUser(email, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    liveSnackbar.value = "${it?.userEmail} ile kayıt olundu."
-                    liveUiStates.value = LoginUiStateSuccessfulLogin(it)
-                }, {
-                    it.printStackTrace()
-                    val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
-                    liveUiStates.value = LoginUiStateError(dialog)
-                }).addTo(disposables)
+        liveLogin.value = Resource.loading()
 
-         */
+        userRepository.registerUser(email, password)
+            .flatMap { userEntity ->
+                userRepository.insertUserToRemote(userEntity)
+            }
+            .observeOn(Schedulers.io())
+            .flatMap {
+                userRepository.addUserToLocal(it)
+                Single.just(it)
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                liveSnackbar.value = "${it?.userEmail} ile oturum açıldı."
+                liveLogin.value = Resource.success(it)
+            }, {
+                it.printStackTrace()
+                val dialog = DataOkDialog("SweetLoc", it?.message ?: "") {}
+                liveLogin.value = Resource.error(it, dialog)
+            }).addTo(disposables)
     }
 }

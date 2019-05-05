@@ -1,27 +1,38 @@
 package com.aykuttasil.sweetloc.data.remote
 
-data class Resource<out T>(val status: Status, val data: T?, val error: Throwable?) {
+
+data class Resource<out T, out E>(
+    val status: Status,
+    val data: T?,
+    val errorData: E?,
+    val error: Throwable?
+) {
+
     companion object Factory {
-        fun <T> success(data: T?): Resource<T> {
+
+        fun <T, E> success(data: T?): Resource<T, E> {
             return Resource(
                 Status.SUCCESS,
                 data,
+                null,
                 null
             )
         }
 
-        fun <T> error(error: Throwable, data: T?): Resource<T> {
+        fun <T, E> error(error: Throwable, errorData: E?): Resource<T, E> {
             return Resource(
                 Status.ERROR,
-                data,
+                null,
+                errorData,
                 error
             )
         }
 
-        fun <T> loading(data: T?): Resource<T> {
+        fun <T, E> loading(): Resource<T, E> {
             return Resource(
                 Status.LOADING,
-                data,
+                null,
+                null,
                 null
             )
         }
@@ -33,3 +44,5 @@ data class Resource<out T>(val status: Status, val data: T?, val error: Throwabl
         ERROR
     }
 }
+
+

@@ -1,14 +1,7 @@
 package com.aykuttasil.sweetloc.data.remote
 
 
-import android.util.Log
-import androidx.annotation.MainThread
-import androidx.annotation.WorkerThread
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.*
-import kotlin.coroutines.coroutineContext
-
+/*
 abstract class NetworkBoundResource<ResultType, RequestType> {
 
     private val result = MutableLiveData<Resource<ResultType>>()
@@ -70,3 +63,4 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
     @MainThread
     protected abstract fun createCallAsync(): Deferred<RequestType>
 }
+*/

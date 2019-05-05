@@ -16,50 +16,50 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-        private val firebaseAuth: FirebaseAuth,
-        private val databaseReference: DatabaseReference,
-        private val userDao: UserDao
+    private val firebaseAuth: FirebaseAuth,
+    private val databaseReference: DatabaseReference,
+    private val userDao: UserDao
 ) {
 
     fun loginUser(
-            username: String,
-            password: String
+        username: String,
+        password: String
     ): Single<UserEntity> {
         return Single.create<UserEntity> { emitter ->
             firebaseAuth.signInWithEmailAndPassword(username, password)
-                    .addOnSuccessListener { success ->
-                        val firebaseUser = success.user
-                        val userEntity = UserEntity(
-                                userId = firebaseUser.uid,
-                                userEmail = firebaseUser.email,
-                                userPassword = password
-                        )
-                        emitter.onSuccess(userEntity)
-                    }
-                    .addOnFailureListener { e ->
-                        emitter.onError(e)
-                    }
+                .addOnSuccessListener { success ->
+                    val firebaseUser = success.user
+                    val userEntity = UserEntity(
+                        userId = firebaseUser.uid,
+                        userEmail = firebaseUser.email,
+                        userPassword = password
+                    )
+                    emitter.onSuccess(userEntity)
+                }
+                .addOnFailureListener { e ->
+                    emitter.onError(e)
+                }
         }
     }
 
     fun registerUser(
-            username: String,
-            password: String
+        username: String,
+        password: String
     ): Single<UserEntity> {
         return Single.create<UserEntity> { emitter ->
             firebaseAuth.createUserWithEmailAndPassword(username, password)
-                    .addOnSuccessListener { success ->
-                        val firebaseUser = success.user
-                        val userEntity = UserEntity(
-                                userId = firebaseUser.uid,
-                                userEmail = firebaseUser.email,
-                                userPassword = password
-                        )
-                        emitter.onSuccess(userEntity)
-                    }
-                    .addOnFailureListener { e ->
-                        emitter.onError(e)
-                    }
+                .addOnSuccessListener { success ->
+                    val firebaseUser = success.user
+                    val userEntity = UserEntity(
+                        userId = firebaseUser.uid,
+                        userEmail = firebaseUser.email,
+                        userPassword = password
+                    )
+                    emitter.onSuccess(userEntity)
+                }
+                .addOnFailureListener { e ->
+                    emitter.onError(e)
+                }
         }
     }
 
@@ -97,23 +97,41 @@ class UserRepository @Inject constructor(
     fun processUserToRemote(userId: String, action: (DatabaseReference) -> Task<Void>): Completable {
         return Completable.create { emitter ->
             action(databaseReference.child(userNode(userId)))
-                    .addOnSuccessListener {
-                        emitter.onComplete()
+                .addOnSuccessListener {
+                    emitter.onComplete()
+                }
+                .addOnFailureListener { e ->
+                    if (emitter.isDisposed) {
+                        return@addOnFailureListener
                     }
-                    .addOnFailureListener { e ->
-                        if (emitter.isDisposed) {
-                            return@addOnFailureListener
-                        }
-                        emitter.onError(e)
-                    }
+                    emitter.onError(e)
+                }
         }
     }
 
-    fun upsertUserToRemote(userEntity: UserEntity): Single<UserEntity> {
+    fun updateUserToRemote(userEntity: UserEntity): Single<UserEntity> {
+        return processUserToRemote(userEntity.userId) {
+            it.updateChildren(
+                mapOf(
+                    "userLastLoginDate" to userEntity.userLastLoginDate
+                )
+            )
+            // it.setValue(userEntity)
+        }.toSingle { userEntity }
+
+    }
+
+    fun updateUserToRemote(userId: String, map: Map<String, Any?>): Completable {
+        return processUserToRemote(userId) {
+            it.updateChildren(map)
+        }//.toSingle { userEntity }
+
+    }
+
+    fun insertUserToRemote(userEntity: UserEntity): Single<UserEntity> {
         return processUserToRemote(userEntity.userId) {
             it.setValue(userEntity)
         }.toSingle { userEntity }
-
     }
 
     fun getUserEntity(): UserEntity? = runBlocking {
@@ -147,7 +165,7 @@ class UserRepository @Inject constructor(
                 }
 
                 user?.apply {
-                    upsertUserToRemote(this).blockingGet()
+                    updateUserToRemote(this.userId, mapOf("userOneSignalId" to userOneSignalId)).blockingGet()
                     updateUserFromLocal(this).blockingGet()
                 }
             }

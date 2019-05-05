@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.aykuttasil.androidbasichelperlib.UiHelper
 import com.aykuttasil.sweetloc.R
+import com.aykuttasil.sweetloc.data.remote.Resource
 import com.aykuttasil.sweetloc.databinding.ActivityLoginLayoutBinding
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
@@ -19,8 +20,7 @@ open class LoginActivity : BaseActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    lateinit var loginViewModel: LoginViewModel
-
+    private lateinit var loginViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +31,6 @@ open class LoginActivity : BaseActivity() {
             viewmodel = loginViewModel
         }
 
-        initToolbar()
-
         loginViewModel.liveSnackbar.observe(this, Observer {
             Snackbar.make(view, it ?: "", Snackbar.LENGTH_LONG).show()
         })
@@ -41,23 +39,18 @@ open class LoginActivity : BaseActivity() {
             UiHelper.UiDialog.newInstance(this).getOKDialog(it.title, it.content, it.icon).show()
         })
 
-        loginViewModel.liveUiStates.observe(this, Observer { states ->
-            dismissProgressDialog()
-            when (states) {
-                is LoginUiStateSuccessfulLogin -> {
+        loginViewModel.liveLogin.observe(this, Observer {
+            when (it.status) {
+                Resource.Status.SUCCESS -> {
                     finish()
                 }
-                is LoginUiStateSuccessfulRegister -> {
-                    finish()
-                }
-                is LoginUiStateError -> {
-                    loginViewModel.liveOkDialog.value = states.dataOkDialog
-                }
-                is LoginUiStateProgress -> {
-                    showProgressDialog()
+                Resource.Status.ERROR -> {
+                    loginViewModel.liveOkDialog.value = it.errorData
                 }
             }
         })
+
+        initToolbar()
     }
 
     private fun initToolbar() {
