@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.data.remote
+package com.aykuttasil.sweetloc.data
 
 
 data class Resource<out T, out E>(

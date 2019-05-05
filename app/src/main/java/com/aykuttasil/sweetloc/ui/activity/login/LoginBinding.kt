@@ -2,7 +2,7 @@ package com.aykuttasil.sweetloc.ui.activity.login
 
 import android.view.View
 import androidx.databinding.BindingAdapter
-import com.aykuttasil.sweetloc.data.remote.Resource
+import com.aykuttasil.sweetloc.data.Resource
 
 
 @BindingAdapter("showWhen")

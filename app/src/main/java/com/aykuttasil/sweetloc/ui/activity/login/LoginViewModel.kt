@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
-import com.aykuttasil.sweetloc.data.remote.Resource
+import com.aykuttasil.sweetloc.data.Resource
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.model.process.DataOkDialog
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel

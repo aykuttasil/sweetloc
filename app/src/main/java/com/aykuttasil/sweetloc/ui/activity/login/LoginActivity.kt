@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.aykuttasil.androidbasichelperlib.UiHelper
 import com.aykuttasil.sweetloc.R
-import com.aykuttasil.sweetloc.data.remote.Resource
+import com.aykuttasil.sweetloc.data.Resource
 import com.aykuttasil.sweetloc.databinding.ActivityLoginLayoutBinding
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
