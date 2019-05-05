@@ -6,7 +6,7 @@ import com.aykuttasil.sweetloc.data.remote.Resource
 
 
 @BindingAdapter("showWhen")
-fun <T, E> showWhenAdapter(vi: View, resource: Resource<T, E>?) {
+fun <T, E> showWhenBinding(vi: View, resource: Resource<T, E>?) {
     if (resource?.status == Resource.Status.LOADING) {
         vi.visibility = View.VISIBLE
     } else {
