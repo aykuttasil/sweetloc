@@ -1,19 +1,29 @@
 package com.aykuttasil.sweetloc.ui.activity.main
 
+import android.location.Location
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
 import com.aykuttasil.sweetloc.App
+import com.aykuttasil.sweetloc.data.LocationEntity
+import com.aykuttasil.sweetloc.data.RoomLocationModel
+import com.aykuttasil.sweetloc.data.repository.LocationRepository
+import com.aykuttasil.sweetloc.data.repository.RoomRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
-        private val app: App,
-        private val userRepository: UserRepository,
-        private val sweetLocHelper: SweetLocHelper
+    private val app: App,
+    private val userRepository: UserRepository,
+    private val locationRepository: LocationRepository,
+    private val roomRepository: RoomRepository,
+    private val sweetLocHelper: SweetLocHelper
 ) : BaseAndroidViewModel(app), LifecycleObserver {
 
     val isUserLogin = MutableLiveData<Boolean>()
@@ -27,6 +37,32 @@ class MainActivityViewModel @Inject constructor(
     fun onPauseRunTest() {
         println("onPause running")
     }
+
+    fun updateLocation(location: Location?) {
+        launch {
+            location?.let {
+                val locationEntity = LocationEntity().apply {
+                    latitude = it.latitude
+                    longitude = it.longitude
+                    accuracy = it.accuracy
+                    time = it.time
+                }
+                val user = userRepository.getUserEntity()
+                user?.let {
+                    withContext(Dispatchers.Default) {
+                        locationRepository.addLocation(user.userId, locationEntity).blockingGet()
+
+                        val roomLocation = RoomLocationModel(user, locationEntity)
+                        val roomList = roomRepository.getUserRooms(user.userId).blockingGet()
+                        for (room in roomList) {
+                            locationRepository.addRoomLocation(room.roomId!!, roomLocation).blockingGet()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     /*
     fun checkUserLogin(): LiveData<Boolean> {

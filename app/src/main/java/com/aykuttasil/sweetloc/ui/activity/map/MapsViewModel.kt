@@ -21,9 +21,9 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MapsViewModel @Inject constructor(
-        private val rxLocation: RxLocation,
-        private val userRepository: UserRepository,
-        private val locationRepository: LocationRepository
+    private val rxLocation: RxLocation,
+    private val userRepository: UserRepository,
+    private val locationRepository: LocationRepository
 ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -33,55 +33,58 @@ class MapsViewModel @Inject constructor(
     @SuppressLint("MissingPermission")
     fun sendMyLocation(): LiveData<LocationEntity> {
         val locationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
-                .setInterval(30000)
-                .setFastestInterval(5000)
+            .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+            .setInterval(30000)
+            .setFastestInterval(5000)
 
         val locationSettingsRequest = LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest)
-                .setAlwaysShow(true)
-                .build()
+            .addLocationRequest(locationRequest)
+            .setAlwaysShow(true)
+            .build()
 
         compositeDisposable.add(Observable.combineLatest(
-                rxLocation.settings()
-                        .checkAndHandleResolution(locationSettingsRequest)
-                        .flatMapObservable { granted ->
-                            return@flatMapObservable if (granted) {
-                                rxLocation.settings()
-                                        .checkAndHandleResolution(locationSettingsRequest)
-                                        .flatMapObservable { rxLocation.location().updates(locationRequest) }
-                            } else {
-                                return@flatMapObservable Observable.error<Throwable>(
-                                        Exception("Konum izni gerekli."))
-                            }
-                        },
-                userRepository.getUser().toObservable(),
-                BiFunction<Location, UserEntity?, LocModel> { loc, user ->
-                    val locationEntity = LocationEntity(
-                            latitude = loc.latitude,
-                            longitude = loc.longitude,
-                            accuracy = loc.accuracy.toDouble(),
-                            address = loc.provider,
-                            time = loc.time,
-                            formatTime = SuperHelper.getFormatTime(loc.time),
-                            createDate = SuperHelper.formatTime)
+            rxLocation.settings()
+                .checkAndHandleResolution(locationSettingsRequest)
+                .flatMapObservable { granted ->
+                    return@flatMapObservable if (granted) {
+                        rxLocation.settings()
+                            .checkAndHandleResolution(locationSettingsRequest)
+                            .flatMapObservable { rxLocation.location().updates(locationRequest) }
+                    } else {
+                        return@flatMapObservable Observable.error<Throwable>(
+                            Exception("Konum izni gerekli.")
+                        )
+                    }
+                },
+            userRepository.getUser().toObservable(),
+            BiFunction<Location, UserEntity?, LocModel> { loc, user ->
+                val locationEntity = LocationEntity(
+                    latitude = loc.latitude,
+                    longitude = loc.longitude,
+                    accuracy = loc.accuracy,
+                    address = loc.provider,
+                    time = loc.time,
+                    formatTime = SuperHelper.getFormatTime(loc.time),
+                    createDate = SuperHelper.formatTime
+                )
 
-                    sentMyLocation.value = locationEntity
+                sentMyLocation.value = locationEntity
 
-                    return@BiFunction LocModel(user.userId, locationEntity)
-                })
-                .retry()
-                .flatMapCompletable {
-                    locationRepository.addLocation(it.userId, it.locationEntity)
-                }
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    Logger.i("Location gönderildi.")
-                }, {
-                    it.printStackTrace()
-                    Logger.e(it, "HATA")
-                }))
+                return@BiFunction LocModel(user.userId, locationEntity)
+            })
+            .retry()
+            .flatMapCompletable {
+                locationRepository.addLocation(it.userId, it.locationEntity)
+            }
+            .observeOn(Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+                Logger.i("Location gönderildi.")
+            }, {
+                it.printStackTrace()
+                Logger.e(it, "HATA")
+            })
+        )
         return sentMyLocation
     }
 
@@ -96,7 +99,7 @@ class MapsViewModel @Inject constructor(
     }
 
     data class LocModel(
-            var userId: String,
-            var locationEntity: LocationEntity
+        var userId: String,
+        var locationEntity: LocationEntity
     )
 }

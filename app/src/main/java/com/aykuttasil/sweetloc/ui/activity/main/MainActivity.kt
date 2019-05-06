@@ -2,14 +2,15 @@ package com.aykuttasil.sweetloc.ui.activity.main
 
 import android.app.Activity
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -19,9 +20,9 @@ import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
 import com.aykuttasil.sweetloc.ui.activity.profile.ProfileActivity
+import com.aykuttasil.sweetloc.util.LocationLiveData
 import com.aykuttasil.sweetloc.util.extension.setupToolbar
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -52,6 +53,24 @@ open class MainActivity : BaseActivity() {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
         lifecycle.addObserver(viewModel)
+
+
+        LocationLiveData.create(
+            this,
+            5000L,
+            5000L,
+            onErrorCallback = object : LocationLiveData.OnErrorCallback {
+                override fun onLocationSettingsException(e: ApiException) {
+                    e.printStackTrace()
+                }
+
+                override fun onPermissionsMissing() {
+                    Toast.makeText(this@MainActivity, "Permission is required.", Toast.LENGTH_LONG).show()
+                }
+            })
+            .observe(this, Observer { loc ->
+                viewModel.updateLocation(loc)
+            })
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -1,45 +1,51 @@
 package com.aykuttasil.sweetloc.data
 
 
+import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import java.text.DateFormat
 import java.util.Date
 
 data class UserModel(
-        var userId: String? = null,
-        var userEmail: String? = null,
-        var userPassword: String? = null,
-        var userName: String? = null,
-        var userSurname: String? = null,
-        var userTel: String? = null,
-        var userRegId: String? = null,
-        var userToken: String? = null,
-        var userImageUrl: String? = null,
-        var userOneSignalId: String? = null,
-        var userCity: String? = null,
-        var userCreateDate: Long? = Date().time,
-        var userCreateDateString: String? = DateFormat.getInstance().format(Date())
+    var userId: String? = null,
+    var userEmail: String? = null,
+    var userPassword: String? = null,
+    var userName: String? = null,
+    var userSurname: String? = null,
+    var userTel: String? = null,
+    var userRegId: String? = null,
+    var userToken: String? = null,
+    var userImageUrl: String? = null,
+    var userOneSignalId: String? = null,
+    var userCity: String? = null,
+    var userCreateDate: Long? = Date().time,
+    var userCreateDateString: String? = DateFormat.getInstance().format(Date())
 )
 
 data class RoomEntity(
-        var roomId: String? = null,
-        var roomName: String? = null,
-        var roomOwner: String? = null,
-        var createDate: Long? = Date().time,
-        var createDateString: String? = DateFormat.getInstance().format(Date())
+    var roomId: String? = null,
+    var roomName: String? = null,
+    var roomOwner: String? = null,
+    var createDate: Long? = Date().time,
+    var createDateString: String? = DateFormat.getInstance().format(Date())
 )
 
 data class LocationEntity(
-        val locationId: Long? = null,
-        val name: String? = null,
-        val address: String? = null,
-        val latitude: Double? = null,
-        val longitude: Double? = null,
-        val accuracy: Double? = null,
-        val time: Long? = null,
-        val formatTime: String? = null,
-        val speed: Long? = null,
-        val createDate: String? = null,
-        val placesName: String? = null
+    var locationId: Long? = null,
+    var name: String? = null,
+    var address: String? = null,
+    var latitude: Double? = null,
+    var longitude: Double? = null,
+    var accuracy: Float? = null,
+    var time: Long? = null,
+    var formatTime: String? = null,
+    var speed: Long? = null,
+    var createDate: String? = null,
+    var placesName: String? = null
+)
+
+data class RoomLocationModel(
+    var user: UserEntity,
+    var location: LocationEntity
 )
 
 fun roomsNode() = "rooms"

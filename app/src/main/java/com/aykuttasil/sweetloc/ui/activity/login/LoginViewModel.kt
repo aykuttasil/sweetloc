@@ -5,8 +5,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.aykuttasil.sweetloc.App
-import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.data.Resource
+import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.model.process.DataOkDialog
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
@@ -51,7 +51,13 @@ open class LoginViewModel @Inject constructor(
         userRepository.loginUser(email, password)
             .observeOn(Schedulers.io())
             .flatMap { user ->
-                userRepository.updateUserToRemote(user.userId, mapOf("userLastLoginDate" to user.userLastLoginDate))
+                val mapUser = mapOf(
+                    "userId" to user.userId,
+                    "userEmail" to user.userEmail,
+                    "userPassword" to user.userPassword,
+                    "userLastLoginDate" to user.userLastLoginDate
+                )
+                userRepository.updateUserToRemote(user.userId, mapUser)
                     .blockingGet()
                 userRepository.addUserToLocal(user)
                 Single.just(user)
