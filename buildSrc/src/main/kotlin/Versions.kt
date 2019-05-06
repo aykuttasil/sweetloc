@@ -12,7 +12,7 @@ object Versions {
 
     const val constraintlayout: String = "1.1.3"
 
-    const val androidx_core_core_ktx: String = "1.0.1"
+    const val core_ktx: String = "1.0.1"
 
     const val androidx_databinding: String = "3.4.0"
 
@@ -40,7 +40,7 @@ object Versions {
 
     const val vectordrawable_animated: String = "1.1.0-alpha01"
 
-    const val mvrx: String = "0.7.2" // available: "1.0.0"
+    const val androidx_work: String = "2.0.1"
 
     const val transitionseverywhere: String = "1.8.1"
 
@@ -50,19 +50,25 @@ object Versions {
 
     const val lint_gradle: String = "26.4.0"
 
-    const val crashlytics: String = "2.9.9"
+    const val crashlytics: String = "2.10.0"
 
-    const val facebook_android_sdk: String = "4.41.0" // available: "4.42.0"
+    const val facebook_android_sdk: String = "4.42.0"
 
     const val com_facebook_stetho: String = "1.5.1"
 
     const val com_fernandocejas_frodo: String = "0.8.3"
+
+    const val hyperion_chuck: String = "1.0.0"
 
     const val com_github_ajitsing: String = "1.0.4"
 
     const val androidbasichelper: String = "2.0.0-alpha1"
 
     const val com_github_bumptech_glide: String = "4.9.0"
+
+    const val needs: String = "1.0.2"
+
+    const val rxkit: String = "2.3.9"
 
     const val play_services_base: String = "16.1.0"
 
@@ -74,7 +80,7 @@ object Versions {
 
     const val material: String = "1.0.0"
 
-    const val com_google_dagger: String = "2.21" // available: "2.22.1"
+    const val com_google_dagger: String = "2.22.1"
 
     const val firebase_auth: String = "16.2.1"
 
@@ -94,7 +100,7 @@ object Versions {
 
     const val com_jakewharton: String = "10.1.0"
 
-    const val onesignal: String = "3.10.7"
+    const val onesignal: String = "3.10.8"
 
     const val logger: String = "1.15" // available: "2.2.0"
 
@@ -102,13 +108,15 @@ object Versions {
 
     const val com_readystatesoftware_chuck: String = "1.1.0"
 
-    const val logging_interceptor: String = "3.13.1" // available: "3.14.1"
+    const val logging_interceptor: String = "3.14.1"
 
     const val picasso: String = "2.71828"
 
     const val com_squareup_retrofit2: String = "2.5.0"
 
     const val rxpermissions: String = "0.9.4"
+
+    const val com_willowtreeapps_hyperion: String = "0.9.27"
 
     const val de_fayard_buildsrcversions_gradle_plugin: String = "0.3.2"
 
@@ -122,15 +130,15 @@ object Versions {
 
     const val junit: String = "4.12"
 
-    const val aspectjrt: String = "1.8.6" // available: "1.9.3"
+    const val aspectjrt: String = "1.9.3"
 
     const val eventbus: String = "3.1.1"
 
     const val anko: String = "0.10.8"
 
-    const val org_jetbrains_kotlin: String = "1.3.21"
+    const val org_jetbrains_kotlin: String = "1.3.31"
 
-    const val org_jetbrains_kotlinx: String = "1.2.0"
+    const val org_jetbrains_kotlinx: String = "1.2.1"
 
     /**
      *
@@ -140,9 +148,9 @@ object Versions {
     object Gradle {
         const val runningVersion: String = "5.1.1"
 
-        const val currentVersion: String = "5.4"
+        const val currentVersion: String = "5.4.1"
 
-        const val nightlyVersion: String = "5.5-20190421000054+0000"
+        const val nightlyVersion: String = "5.5-20190505000026+0000"
 
         const val releaseCandidate: String = ""
     }

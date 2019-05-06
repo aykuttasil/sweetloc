@@ -27,8 +27,7 @@ object Libs {
     /**
      * http://developer.android.com/tools/extras/support-library.html
      */
-    const val androidx_core_core_ktx: String = "androidx.core:core-ktx:" +
-            Versions.androidx_core_core_ktx
+    const val core_ktx: String = "androidx.core:core-ktx:" + Versions.core_ktx
 
     const val databinding_adapters: String = "androidx.databinding:databinding-adapters:" +
             Versions.androidx_databinding
@@ -136,9 +135,14 @@ object Libs {
             Versions.vectordrawable_animated
 
     /**
-     * https://github.com/airbnb/mvrx
+     * https://developer.android.com/topic/libraries/architecture/index.html
      */
-    const val mvrx: String = "com.airbnb.android:mvrx:" + Versions.mvrx
+    const val work_runtime_ktx: String = "androidx.work:work-runtime-ktx:" + Versions.androidx_work
+
+    /**
+     * https://developer.android.com/topic/libraries/architecture/index.html
+     */
+    const val work_rxjava2: String = "androidx.work:work-rxjava2:" + Versions.androidx_work
 
     /**
      * https://github.com/andkulikov/transitions-everywhere
@@ -198,6 +202,12 @@ object Libs {
             Versions.com_fernandocejas_frodo
 
     /**
+     * https://github.com/Commit451/Hyperion-Chuck
+     */
+    const val hyperion_chuck: String = "com.github.Commit451:Hyperion-Chuck:" +
+            Versions.hyperion_chuck
+
+    /**
      * https://github.com/ajitsing/Sherlock
      */
     const val sherlock_no_op: String = "com.github.ajitsing:sherlock-no-op:" +
@@ -231,6 +241,13 @@ object Libs {
      */
     const val okhttp3_integration: String = "com.github.bumptech.glide:okhttp3-integration:" +
             Versions.com_github_bumptech_glide
+
+    const val needs: String = "com.github.skydoves:needs:" + Versions.needs
+
+    /**
+     * https://github.com/vondear/RxTool
+     */
+    const val rxkit: String = "com.github.vondear.RxTool:RxKit:" + Versions.rxkit
 
     const val play_services_base: String = "com.google.android.gms:play-services-base:" +
             Versions.play_services_base
@@ -371,6 +388,74 @@ object Libs {
      */
     const val rxpermissions: String = "com.tbruyelle.rxpermissions:rxpermissions:" +
             Versions.rxpermissions
+
+    /**
+     * https://github.com/willowtreeapps/Hyperion-Android
+     */
+    const val hyperion_attr: String = "com.willowtreeapps.hyperion:hyperion-attr:" +
+            Versions.com_willowtreeapps_hyperion
+
+    /**
+     * https://github.com/willowtreeapps/Hyperion-Android
+     */
+    const val hyperion_build_config: String = "com.willowtreeapps.hyperion:hyperion-build-config:" +
+            Versions.com_willowtreeapps_hyperion
+
+    /**
+     * https://github.com/willowtreeapps/Hyperion-Android
+     */
+    const val hyperion_core: String = "com.willowtreeapps.hyperion:hyperion-core:" +
+            Versions.com_willowtreeapps_hyperion
+
+    /**
+     * https://github.com/willowtreeapps/Hyperion-Android
+     */
+    const val hyperion_crash: String = "com.willowtreeapps.hyperion:hyperion-crash:" +
+            Versions.com_willowtreeapps_hyperion
+
+    /**
+     * https://github.com/willowtreeapps/Hyperion-Android
+     */
+    const val hyperion_disk: String = "com.willowtreeapps.hyperion:hyperion-disk:" +
+            Versions.com_willowtreeapps_hyperion
+
+    /**
+     * https://github.com/willowtreeapps/Hyperion-Android
+     */
+    const val hyperion_geiger_counter: String =
+            "com.willowtreeapps.hyperion:hyperion-geiger-counter:" +
+            Versions.com_willowtreeapps_hyperion
+
+    /**
+     * https://github.com/willowtreeapps/Hyperion-Android
+     */
+    const val hyperion_measurement: String = "com.willowtreeapps.hyperion:hyperion-measurement:" +
+            Versions.com_willowtreeapps_hyperion
+
+    /**
+     * https://github.com/willowtreeapps/Hyperion-Android
+     */
+    const val hyperion_phoenix: String = "com.willowtreeapps.hyperion:hyperion-phoenix:" +
+            Versions.com_willowtreeapps_hyperion
+
+    /**
+     * https://github.com/willowtreeapps/Hyperion-Android
+     */
+    const val hyperion_recorder: String = "com.willowtreeapps.hyperion:hyperion-recorder:" +
+            Versions.com_willowtreeapps_hyperion
+
+    /**
+     * https://github.com/willowtreeapps/Hyperion-Android
+     */
+    const val hyperion_shared_preferences: String =
+            "com.willowtreeapps.hyperion:hyperion-shared-preferences:" +
+            Versions.com_willowtreeapps_hyperion
+
+    /**
+     * https://github.com/willowtreeapps/Hyperion-Android
+     */
+    const val hyperion_timber: String = "com.willowtreeapps.hyperion:hyperion-timber:" +
+            Versions.com_willowtreeapps_hyperion
 
     const val de_fayard_buildsrcversions_gradle_plugin: String =
             "de.fayard.buildSrcVersions:de.fayard.buildSrcVersions.gradle.plugin:" +

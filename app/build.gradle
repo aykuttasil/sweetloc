@@ -121,7 +121,7 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.0.0'
 
-    implementation Libs.androidx_core_core_ktx
+    implementation Libs.core_ktx
     implementation Libs.legacy_support_v4
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
@@ -168,7 +168,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
     implementation 'com.andkulikov:transitionseverywhere:1.8.1'
     implementation 'com.patloew.rxlocation:rxlocation:1.0.5'
-    implementation 'com.onesignal:OneSignal:3.10.7'
+    implementation 'com.onesignal:OneSignal:3.10.8'
 
     kapt Libs.dagger_compiler
     implementation Libs.dagger
@@ -207,7 +207,7 @@ dependencies {
 
     implementation "com.github.skydoves:needs:1.0.2"
 
-    implementation "com.github.vondear.RxTool:RxKit:v2.2.7"
+    implementation "com.github.vondear.RxTool:RxKit:2.3.9"
 
 }
 apply plugin: 'com.google.gms.google-services'
