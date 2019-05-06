@@ -40,6 +40,7 @@ class NotificationExtenderService : com.onesignal.NotificationExtenderService() 
                     Const.ACTION_KONUM_YOLLA -> {
                         val singleLocationRequestIntent = Intent(this, SingleLocationRequestReceiver::class.java)
                         sendBroadcast(singleLocationRequestIntent)
+
                         Logger.i("singleLocationRequestIntent Broadcast gönderildi")
                     }
                     Const.ACTION_PHONE_UNMUTE -> {

@@ -9,7 +9,13 @@ import android.os.Looper
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsStatusCodes
 
 /**
  * Created by Emre Eran on 31.08.2018.
@@ -50,7 +56,7 @@ class LocationLiveData private constructor() : LiveData<Location>() {
             val settingsClient = LocationServices.getSettingsClient(context)
             settingsClient.checkLocationSettings(locationSettingsRequest).addOnCompleteListener {
                 try {
-                    it.getResult(ApiException::class.java)
+                    val locationSettingsResponse = it.getResult(ApiException::class.java)
                     locationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
                 } catch (e: ApiException) {
                     onErrorCallback?.onLocationSettingsException(e)

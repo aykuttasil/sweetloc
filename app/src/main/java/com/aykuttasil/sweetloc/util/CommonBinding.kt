@@ -28,7 +28,8 @@ fun viewVisibleBinding(view: View, isVisible: Boolean) {
 @BindingAdapter("loadImage")
 fun imageViewLoadImageBinding(imgView: ImageView, url: String) {
     GlideApp.with(imgView.context)
-            .load(url)
-            .circleCrop()
-            .into(imgView)
+        .load(url)
+        .circleCrop()
+        .useAnimationPool(true)
+        .into(imgView)
 }

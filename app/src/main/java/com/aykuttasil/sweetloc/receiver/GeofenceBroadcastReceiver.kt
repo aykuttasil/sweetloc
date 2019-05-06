@@ -15,8 +15,10 @@ import com.aykuttasil.sweetloc.service.GeofenceTransitionsJobIntentService
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        // Enqueues a JobIntentService passing the context and intent as parameters
-        GeofenceTransitionsJobIntentService.enqueueWork(context, intent)
+        if (context != null && intent != null) {
+            // Enqueues a JobIntentService passing the context and intent as parameters
+            GeofenceTransitionsJobIntentService.enqueueWork(context, intent)
+        }
     }
 
 }
