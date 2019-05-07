@@ -1,6 +1,5 @@
 package com.aykuttasil.sweetloc.ui.fragment.profile
 
-import android.content.Intent
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
@@ -10,15 +9,14 @@ import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.model.process.DataOkCancelDialog
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
-import com.aykuttasil.sweetloc.ui.activity.main.MainActivity
 import com.aykuttasil.sweetloc.util.SingleLiveEvent
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
-        val app: App,
-        val userRepository: UserRepository,
-        val sweetLocHelper: SweetLocHelper
+    val app: App,
+    val userRepository: UserRepository,
+    val sweetLocHelper: SweetLocHelper
 ) : BaseAndroidViewModel(app) {
 
     val liveUser: MutableLiveData<UserEntity> = MutableLiveData()
@@ -33,17 +31,17 @@ class ProfileViewModel @Inject constructor(
 
     fun logoutClick() {
         liveConfirmDialog.value = DataOkCancelDialog(
-                "Çıkış Yap",
-                "Devam edilsin mi?",
-                actionOkText = "Ok",
-                actionCancelText = "Cancel",
-                actionOk = {
-                    sweetLocHelper.resetSweetLoc(app)
-                    liveLogout.value = true
-                },
-                actionCancel = {
+            "Çıkış Yap",
+            "Devam edilsin mi?",
+            actionOkText = "Ok",
+            actionCancelText = "Cancel",
+            actionOk = {
+                sweetLocHelper.resetSweetLoc(app)
+                liveLogout.value = true
+            },
+            actionCancel = {
 
-                })
+            })
 
         /*
         val dialog = UiHelper.UiDialog.newInstance(app)

@@ -15,6 +15,7 @@ import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.rx2.await
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -50,12 +51,12 @@ class MainActivityViewModel @Inject constructor(
                 val user = userRepository.getUserEntity()
                 user?.let {
                     withContext(Dispatchers.Default) {
-                        locationRepository.addLocation(user.userId, locationEntity).blockingGet()
+                        locationRepository.addLocation(user.userId, locationEntity).await()
 
                         val roomLocation = RoomLocationModel(user, locationEntity)
-                        val roomList = roomRepository.getUserRooms(user.userId).blockingGet()
+                        val roomList = roomRepository.getUserRooms(user.userId).await()
                         for (room in roomList) {
-                            locationRepository.addRoomLocation(room.roomId!!, roomLocation).blockingGet()
+                            locationRepository.addRoomLocation(room.roomId!!, roomLocation).await()
                         }
                     }
                 }

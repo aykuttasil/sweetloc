@@ -55,6 +55,10 @@ open class MainActivity : BaseActivity() {
         lifecycle.addObserver(viewModel)
 
 
+        updateLocation()
+    }
+
+    private fun updateLocation() {
         LocationLiveData.create(
             this,
             5000L,

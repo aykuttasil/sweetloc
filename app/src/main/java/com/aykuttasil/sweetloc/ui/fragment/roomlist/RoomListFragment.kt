@@ -10,8 +10,8 @@ import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.databinding.FragmentRoomListLayoutBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
-import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
+import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import kotlinx.android.synthetic.main.fragment_room_list_layout.*
 import javax.inject.Inject
 
@@ -27,9 +27,9 @@ open class RoomListFragment : BaseFragment(), Injectable {
     lateinit var binding: FragmentRoomListLayoutBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         binding = FragmentRoomListLayoutBinding.inflate(inflater)
         binding.lifecycleOwner = this

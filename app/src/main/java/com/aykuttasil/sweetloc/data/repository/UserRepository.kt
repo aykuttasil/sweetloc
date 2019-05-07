@@ -12,6 +12,7 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.rx2.await
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -154,9 +155,9 @@ class UserRepository @Inject constructor(
         return userEntity != null && firebaseUser != null
     }
 
-    fun updateOneSignalId() = runBlocking {
-        withContext(Dispatchers.Default) {
-            OneSignal.idsAvailable { userId, registrationId ->
+    fun updateOneSignalId() {
+        OneSignal.idsAvailable { userId, registrationId ->
+            runBlocking {
                 Logger.i("OneSignal userId: $userId")
                 Logger.i("OneSignal regId: $registrationId")
 
@@ -165,10 +166,11 @@ class UserRepository @Inject constructor(
                 }
 
                 user?.apply {
-                    updateUserToRemote(this.userId, mapOf("userOneSignalId" to userOneSignalId)).blockingGet()
-                    updateUserFromLocal(this).blockingGet()
+                    updateUserToRemote(this.userId, mapOf("userOneSignalId" to userOneSignalId)).await()
+                    updateUserFromLocal(this).await()
                 }
             }
         }
     }
+
 }

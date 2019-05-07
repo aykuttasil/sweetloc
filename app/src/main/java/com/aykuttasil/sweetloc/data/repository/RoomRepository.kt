@@ -20,22 +20,22 @@ import javax.inject.Inject
 
 
 class RoomRepository @Inject constructor(
-        private val userRepository: UserRepository,
-        private val databaseReference: DatabaseReference
+    private val userRepository: UserRepository,
+    private val databaseReference: DatabaseReference
 ) {
 
     fun addRoom(roomEntity: RoomEntity): Single<String> {
         return Single.create { emitter ->
             val record = databaseReference.child(roomsNode()).push()
             record.setValue(roomEntity)
-                    .addOnSuccessListener {
-                        emitter.onSuccess(record.key ?: "")
-                    }.addOnFailureListener { e ->
-                        if (emitter.isDisposed) {
-                            return@addOnFailureListener
-                        }
-                        emitter.onError(e)
+                .addOnSuccessListener {
+                    emitter.onSuccess(record.key ?: "")
+                }.addOnFailureListener { e ->
+                    if (emitter.isDisposed) {
+                        return@addOnFailureListener
                     }
+                    emitter.onError(e)
+                }
         }
     }
 
@@ -43,15 +43,15 @@ class RoomRepository @Inject constructor(
         return Completable.create { emitter ->
             val record = databaseReference.child(userRoomNode(userId, roomId))
             record.setValue(roomEntity)
-                    .addOnSuccessListener {
-                        emitter.onComplete()
+                .addOnSuccessListener {
+                    emitter.onComplete()
+                }
+                .addOnFailureListener { e ->
+                    if (emitter.isDisposed) {
+                        return@addOnFailureListener
                     }
-                    .addOnFailureListener { e ->
-                        if (emitter.isDisposed) {
-                            return@addOnFailureListener
-                        }
-                        emitter.onError(e)
-                    }
+                    emitter.onError(e)
+                }
         }
     }
 
@@ -59,31 +59,31 @@ class RoomRepository @Inject constructor(
         return Completable.create { emitter ->
             val record = databaseReference.child(roomMemberNode(roomId, userId))
             record.setValue(userEntity)
-                    .addOnSuccessListener {
-                        emitter.onComplete()
+                .addOnSuccessListener {
+                    emitter.onComplete()
+                }
+                .addOnFailureListener { e ->
+                    if (emitter.isDisposed) {
+                        return@addOnFailureListener
                     }
-                    .addOnFailureListener { e ->
-                        if (emitter.isDisposed) {
-                            return@addOnFailureListener
-                        }
-                        emitter.onError(e)
-                    }
+                    emitter.onError(e)
+                }
         }
     }
 
     fun getAllRooms(): Single<List<RoomEntity>> {
         return Single.create<List<RoomEntity>> {
             databaseReference.child(roomsNode())
-                    .addValueEventListener(object : ValueEventListener {
-                        override fun onCancelled(error: DatabaseError) {
-                            error.toException().printStackTrace()
-                            it.onError(error.toException())
-                        }
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(error: DatabaseError) {
+                        error.toException().printStackTrace()
+                        it.onError(error.toException())
+                    }
 
-                        override fun onDataChange(dataSnapshot: DataSnapshot) {
-                            val a = dataSnapshot.getValue(RoomEntity::class.java)
-                        }
-                    })
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val a = dataSnapshot.getValue(RoomEntity::class.java)
+                    }
+                })
         }
     }
 

@@ -10,8 +10,8 @@ import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
 class RoomMemberListViewModel @Inject constructor(
-        private val app: App,
-        private val roomRepository: RoomRepository
+    private val app: App,
+    private val roomRepository: RoomRepository
 ) : BaseAndroidViewModel(app) {
 
     val liveRoomMemberList: MutableLiveData<List<UserModel>> = MutableLiveData()

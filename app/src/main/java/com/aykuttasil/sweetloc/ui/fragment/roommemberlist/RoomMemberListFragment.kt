@@ -11,9 +11,9 @@ import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.databinding.RoomMemberlistFragmentBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
+import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import com.aykuttasil.sweetloc.ui.fragment.IFragmentContract
-import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import kotlinx.android.synthetic.main.room_memberlist_fragment.*
 import javax.inject.Inject
 
@@ -42,10 +42,6 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
         binding.viewModel = viewModel
         lifecycle.addObserver(viewModel)
         viewModel.setRoomMemberList(args.roomId)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     override fun getViewModel(): BaseAndroidViewModel {

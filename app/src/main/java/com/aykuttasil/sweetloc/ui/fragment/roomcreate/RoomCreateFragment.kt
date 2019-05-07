@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.aykuttasil.sweetloc.databinding.RoomCreateFragmentBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
-import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
+import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import javax.inject.Inject
 
 class RoomCreateFragment : BaseFragment(), Injectable {

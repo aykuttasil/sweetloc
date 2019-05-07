@@ -15,9 +15,12 @@ import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DatabaseReference
-import com.skydoves.needs.*
+import com.skydoves.needs.Needs
+import com.skydoves.needs.NeedsAnimation
+import com.skydoves.needs.NeedsItem
+import com.skydoves.needs.OnConfirmListener
+import com.skydoves.needs.createNeeds
 import kotlinx.android.synthetic.main.fragment_entry.*
 import javax.inject.Inject
 

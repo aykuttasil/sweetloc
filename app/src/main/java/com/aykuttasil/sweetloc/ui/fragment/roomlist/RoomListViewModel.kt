@@ -13,9 +13,9 @@ import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
 class RoomListViewModel @Inject constructor(
-        private val app: App,
-        private val userRepository: UserRepository,
-        private val roomRepository: RoomRepository
+    private val app: App,
+    private val userRepository: UserRepository,
+    private val roomRepository: RoomRepository
 ) : BaseAndroidViewModel(app) {
 
     val liveRoomEntityList: MutableLiveData<List<RoomEntity>> = MutableLiveData()
@@ -24,11 +24,11 @@ class RoomListViewModel @Inject constructor(
     private fun getTrackerList(): LiveData<List<RoomEntity>> {
         val user = userRepository.getUserEntity()!!
         roomRepository.getUserRooms(user.userId)
-                .subscribe({ roomList ->
-                    liveRoomEntityList.postValue(roomList)
-                }, {
-                    it.printStackTrace()
-                }).addTo(disposables)
+            .subscribe({ roomList ->
+                liveRoomEntityList.postValue(roomList)
+            }, {
+                it.printStackTrace()
+            }).addTo(disposables)
 
         return liveRoomEntityList
     }

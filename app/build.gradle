@@ -27,6 +27,13 @@ android {
         manifestPlaceholders = [onesignal_app_id               : "283c0725-f1ae-434a-8ea5-09f61b1246fc",
                                 // Project number pulled from dashboard, local value is ignored.
                                 onesignal_google_project_number: "REMOTE"]
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation":
+                                     "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     flavorDimensions "default"
@@ -180,6 +187,7 @@ dependencies {
     implementation Libs.anko
     implementation Libs.kotlinx_coroutines_core
     implementation Libs.kotlinx_coroutines_android
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.2.1"
 
     implementation Libs.rxkotlin
     implementation Libs.rxandroid
@@ -188,9 +196,9 @@ dependencies {
     implementation Libs.butterknife
     kapt Libs.butterknife_compiler
 
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    kapt "com.github.bumptech.glide:compiler:4.9.0"
-    implementation 'com.github.bumptech.glide:okhttp3-integration:4.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0' //LibsX.Glide.glide
+    kapt "com.github.bumptech.glide:compiler:4.9.0" //LibsX.Glide.compiler
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.9.0' //LibsX.Glide.okhttp3
 
     debugImplementation 'com.willowtreeapps.hyperion:hyperion-core:0.9.27'
     debugImplementation 'com.willowtreeapps.hyperion:hyperion-attr:0.9.27'
