@@ -2,6 +2,7 @@ package com.aykuttasil.sweetloc
 
 import android.app.Activity
 import android.app.Application
+import android.app.Service
 import android.content.Context
 import androidx.multidex.MultiDex
 import com.aykuttasil.sweetloc.di.AppInjector
@@ -14,15 +15,22 @@ import com.orhanobut.logger.LogLevel
 import com.orhanobut.logger.Logger
 import com.patloew.rxlocation.RxLocation
 import com.vondear.rxtool.RxTool
+import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import dagger.android.HasServiceInjector
 import io.fabric.sdk.android.Fabric
 import javax.inject.Inject
 
-open class App : Application(), HasActivityInjector {
+open class App : Application(), HasActivityInjector, HasServiceInjector {
+
 
     @Inject
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+
+
+    @Inject
+    lateinit var activityDispatchingServiceInjector: DispatchingAndroidInjector<Service>
 
     @Inject
     lateinit var rxLocation: RxLocation
@@ -35,6 +43,10 @@ open class App : Application(), HasActivityInjector {
 
     override fun activityInjector(): DispatchingAndroidInjector<Activity> {
         return activityDispatchingAndroidInjector
+    }
+
+    override fun serviceInjector(): AndroidInjector<Service> {
+        return activityDispatchingServiceInjector
     }
 
     private fun initSweetLoc() {

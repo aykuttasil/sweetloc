@@ -3,6 +3,7 @@ package com.aykuttasil.sweetloc.di.components
 import android.app.Application
 import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.di.ActivityBuilder
+import com.aykuttasil.sweetloc.di.ServiceBuilder
 import com.aykuttasil.sweetloc.di.modules.AppModule
 import com.aykuttasil.sweetloc.di.modules.DatabaseModule
 import com.aykuttasil.sweetloc.di.modules.NetworkModule
@@ -13,13 +14,16 @@ import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [
-    (AndroidSupportInjectionModule::class),
-    (ActivityBuilder::class),
-    (AppModule::class),
-    (NetworkModule::class),
-    (DatabaseModule::class)
-])
+@Component(
+    modules = [
+        (AndroidSupportInjectionModule::class),
+        (ActivityBuilder::class),
+        (ServiceBuilder::class),
+        (AppModule::class),
+        (NetworkModule::class),
+        (DatabaseModule::class)
+    ]
+)
 interface AppComponent : AndroidInjector<App> {
 
     @Component.Builder

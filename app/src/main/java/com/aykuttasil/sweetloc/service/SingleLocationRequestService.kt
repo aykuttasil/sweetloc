@@ -10,11 +10,14 @@ import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver
 import com.google.android.gms.location.LocationRequest
 import com.orhanobut.logger.Logger
+import com.patloew.rxlocation.RxLocation
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class SingleLocationRequestService : JobIntentService() {
+class SingleLocationRequestService @Inject constructor(val rxLocation: RxLocation) : JobIntentService() {
+
     var mDisposable: Disposable? = null
 
     override fun onHandleWork(intent: Intent) {
