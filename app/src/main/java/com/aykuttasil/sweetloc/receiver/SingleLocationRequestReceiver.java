@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.aykuttasil.sweetloc.service.SingleLocationRequestService;
-import com.aykuttasil.sweetloc.util.MyWakefulBroadcastReceiver;
 
 public class SingleLocationRequestReceiver extends MyWakefulBroadcastReceiver {
 

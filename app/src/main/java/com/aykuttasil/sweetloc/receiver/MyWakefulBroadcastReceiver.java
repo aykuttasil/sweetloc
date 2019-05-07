@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.util;
+package com.aykuttasil.sweetloc.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
