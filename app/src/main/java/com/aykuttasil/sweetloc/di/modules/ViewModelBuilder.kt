@@ -1,7 +1,8 @@
-package com.aykuttasil.sweetloc.di
+package com.aykuttasil.sweetloc.di.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.di.key.ViewModelKey
 import com.aykuttasil.sweetloc.ui.activity.login.LoginViewModel
 import com.aykuttasil.sweetloc.ui.activity.main.MainActivityViewModel

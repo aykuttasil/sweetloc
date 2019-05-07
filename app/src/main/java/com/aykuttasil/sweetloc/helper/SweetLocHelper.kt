@@ -18,6 +18,7 @@ import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.rx2.await
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
@@ -28,9 +29,9 @@ class SweetLocHelper @Inject constructor(
 ) : SuperHelper() {
 
     fun resetSweetLoc(context: Context) = runBlocking(context = Dispatchers.IO) {
-        val user = userRepository.getUser().blockingGet()
+        val user = userRepository.getUser().await()
         user?.apply {
-            userRepository.deleteUserFromLocal(this).blockingGet()
+            userRepository.deleteUserFromLocal(this).await()
         }
 
         stopPeriodicTask(context)

@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.di.ApplicationContext
-import com.aykuttasil.sweetloc.di.ViewModelBuilder
 import com.patloew.rxlocation.RxLocation
 import dagger.Module
 import dagger.Provides

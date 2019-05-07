@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.di
+package com.aykuttasil.sweetloc.di.modules
 
 import com.aykuttasil.sweetloc.service.SingleLocationRequestService
 import dagger.Module

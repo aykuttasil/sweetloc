@@ -1,4 +1,4 @@
-package com.aykuttasil.sweetloc.di
+package com.aykuttasil.sweetloc.di.modules
 
 import com.aykuttasil.sweetloc.di.scopes.PerActivity
 import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
