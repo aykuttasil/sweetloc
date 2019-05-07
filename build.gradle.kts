@@ -21,7 +21,9 @@ buildscript {
 }
 
 plugins {
-    id("de.fayard.buildSrcVersions") version "0.3.2"
+    // id("de.fayard.buildSrcVersions") version "0.3.2"
+    id("com.diffplug.gradle.spotless") version "3.21.1"
+    id("com.github.ben-manes.versions") version "0.21.0"
 }
 
 allprojects {
@@ -39,8 +41,7 @@ allprojects {
     }
 }
 
-
-tasks.register("clean", Delete::class) {
+tasks.register("cleanDir", Delete::class) {
     delete(rootProject.buildDir)
 }
 

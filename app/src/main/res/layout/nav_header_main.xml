@@ -12,7 +12,7 @@
         android:layout_width="81dp"
         android:layout_height="73dp"
         android:layout_gravity="right"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:contentDescription="TODO" android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:src="@drawable/ok" />
 
     <RelativeLayout

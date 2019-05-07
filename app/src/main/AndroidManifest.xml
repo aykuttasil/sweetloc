@@ -126,8 +126,10 @@
         <receiver
             android:name=".receiver.GeofenceBroadcastReceiver"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false"
+            android:permission="" />
 
+        <!--
         <service
             android:name=".service.MyFirebaseInstanceIdService"
             android:exported="false">
@@ -135,6 +137,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        -->
 
         <service
             android:name=".service.MyFcmListenerService"
