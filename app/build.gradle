@@ -126,7 +126,7 @@ dependencies {
     implementation 'com.orhanobut:logger:1.15'
 
     implementation 'com.google.android.material:material:1.0.0'
-
+    //implementation LibsX.Google.material
 
     implementation Libs.legacy_support_v4
     implementation 'androidx.multidex:multidex:2.0.1'
