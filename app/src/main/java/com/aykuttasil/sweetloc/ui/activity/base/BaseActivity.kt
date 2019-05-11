@@ -17,10 +17,10 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, C
         const val LOGIN_REQUEST_CODE = 1001
     }
 
-    var jobs = SupervisorJob()
+    var job = SupervisorJob()
 
     override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + jobs
+        get() = Dispatchers.Main + job
 
 
     private val progressDialog: ProgressDialogFragment by lazy {
@@ -51,7 +51,7 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, C
     override fun onDestroy() {
         super.onDestroy()
         dismissProgressDialog()
-        jobs.cancel()
+        job.cancel()
     }
 
     //    @DebugLog
