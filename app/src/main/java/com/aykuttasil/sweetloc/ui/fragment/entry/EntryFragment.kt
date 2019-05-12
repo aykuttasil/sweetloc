@@ -70,6 +70,7 @@ class EntryFragment : BaseFragment(), Injectable {
         val needs = initNeeds()
         btnAction.setOnClickListener {
             needs.show(view)
+            
             /*
             val user = userRepository.getUserEntity()
             userRepository.processUserToRemote(user!!.userId) {
