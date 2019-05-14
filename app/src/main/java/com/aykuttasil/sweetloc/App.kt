@@ -13,7 +13,6 @@ import com.crashlytics.android.core.CrashlyticsCore
 import com.onesignal.OneSignal
 import com.orhanobut.logger.LogLevel
 import com.orhanobut.logger.Logger
-import com.patloew.rxlocation.RxLocation
 import com.vondear.rxtool.RxTool
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -24,16 +23,11 @@ import javax.inject.Inject
 
 open class App : Application(), HasActivityInjector, HasServiceInjector {
 
-
     @Inject
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
-
     @Inject
     lateinit var activityDispatchingServiceInjector: DispatchingAndroidInjector<Service>
-
-    @Inject
-    lateinit var rxLocation: RxLocation
 
     override fun onCreate() {
         super.onCreate()

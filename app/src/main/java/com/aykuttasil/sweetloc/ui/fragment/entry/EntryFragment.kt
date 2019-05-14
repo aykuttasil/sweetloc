@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.data.repository.UserRepository
@@ -38,7 +38,7 @@ class EntryFragment : BaseFragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    lateinit var viewModel: EntryViewModel
+    val viewModel by viewModels<EntryViewModel> { viewModelFactory }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_entry, container, false)
@@ -70,7 +70,6 @@ class EntryFragment : BaseFragment(), Injectable {
         val needs = initNeeds()
         btnAction.setOnClickListener {
             needs.show(view)
-            
             /*
             val user = userRepository.getUserEntity()
             userRepository.processUserToRemote(user!!.userId) {
@@ -115,7 +114,7 @@ class EntryFragment : BaseFragment(), Injectable {
     }
 
     override fun initViewModel() {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(EntryViewModel::class.java)
+        // viewModel = ViewModelProviders.of(this, viewModelFactory).get(EntryViewModel::class.java)
     }
 
     override fun initUiComponents() {
@@ -125,6 +124,5 @@ class EntryFragment : BaseFragment(), Injectable {
     override fun getViewModel(): BaseAndroidViewModel {
         return viewModel
     }
-
 
 }

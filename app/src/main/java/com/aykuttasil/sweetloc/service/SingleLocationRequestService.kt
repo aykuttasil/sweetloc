@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import androidx.core.app.ActivityCompat
 import androidx.core.app.JobIntentService
-import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.receiver.SingleLocationRequestReceiver
 import com.google.android.gms.location.LocationRequest
 import com.orhanobut.logger.Logger
@@ -16,10 +15,10 @@ import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SingleLocationRequestService : JobIntentService() {
+class SingleLocationRequestService @Inject constructor(val rxLocation: RxLocation) : JobIntentService() {
 
-    @Inject
-    lateinit var rxLocation: RxLocation
+    //@Inject
+    //lateinit var rxLocation: RxLocation
 
     var mDisposable: Disposable? = null
 
@@ -50,7 +49,7 @@ class SingleLocationRequestService : JobIntentService() {
             //.setMaxWaitTime() // her bir sendMyLocation güncellemesi için max bekleme süresini belirtebiliriz. setInterval ile ilişkilidir. dikkat et.
             .setExpirationDuration(TimeUnit.SECONDS.toMillis(LOCATION_TIMEOUT_IN_SECONDS)) // Belirttiğimiz süre kadar sendMyLocation güncellemesi alır
 
-        mDisposable = (application as App).rxLocation.location()
+        mDisposable = rxLocation.location()
             .updates(locationRequest)
             .filter { location ->
                 Logger.i("Accuracy: " + location.accuracy)

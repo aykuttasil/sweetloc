@@ -105,7 +105,7 @@ return liveRoomEntityList
 
 override fun onCleared() {
 super.onCleared()
-jobs.cancel()
+job.cancel()
 println("onCleared")
 }
 
