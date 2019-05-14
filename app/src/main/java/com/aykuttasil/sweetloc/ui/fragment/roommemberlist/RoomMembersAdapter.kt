@@ -2,21 +2,21 @@ package com.aykuttasil.sweetloc.ui.fragment.roommemberlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.data.UserModel
-import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.databinding.ListitemRoommemberBinding
 import com.aykuttasil.sweetloc.util.BindableAdapter
 
-class RoomMembersAdapter : ListAdapter<UserModel, RoomMembersAdapter.MyViewHolder>(RoomMembersAdapter.DIFF_CALLBACK), BindableAdapter<UserModel> {
+class RoomMembersAdapter : ListAdapter<UserModel, RoomMembersAdapter.MyViewHolder>(RoomMembersAdapter.DIFF_CALLBACK),
+    BindableAdapter<UserModel> {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val vi: ListitemRoommemberBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.listitem_roommember, parent, false)
+        val vi: ListitemRoommemberBinding =
+            DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.listitem_roommember, parent, false)
         return MyViewHolder(vi)
     }
 

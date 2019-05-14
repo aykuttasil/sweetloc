@@ -51,7 +51,12 @@
             app:argType="string" />
         <argument
             android:name="roomName"
-            app:argType="string" />
+            android:defaultValue="XXX"
+            app:argType="string"
+            app:nullable="true" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="https://sweetloc/rooms/{roomId}?roomName={roomName}" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

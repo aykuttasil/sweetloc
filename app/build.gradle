@@ -47,7 +47,7 @@ android {
 
         dev {
             dimension "default"
-            applicationId "com.aykuttasil.sweetloc.demo"
+            applicationId "com.aykuttasil.sweetloc.dev"
             resValue "string", "app_name", "SweetLoc Dev"
             buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
         }

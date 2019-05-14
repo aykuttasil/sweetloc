@@ -9,9 +9,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -26,12 +26,14 @@ import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
+
 open class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var viewModel: MainActivityViewModel
+    val viewModel by viewModels<MainActivityViewModel> { viewModelFactory }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,14 +48,11 @@ open class MainActivity : BaseActivity() {
             title = "SweetLoc"
         }
 
+        lifecycle.addObserver(viewModel)
 
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
         NavigationUI.setupWithNavController(toolbar, navController)
-
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainActivityViewModel::class.java)
-        lifecycle.addObserver(viewModel)
-
 
         updateLocation()
     }
@@ -61,8 +60,8 @@ open class MainActivity : BaseActivity() {
     private fun updateLocation() {
         LocationLiveData.create(
             this,
-            5000L,
-            5000L,
+            25_000,
+            5_000,
             onErrorCallback = object : LocationLiveData.OnErrorCallback {
                 override fun onLocationSettingsException(e: ApiException) {
                     e.printStackTrace()
@@ -114,12 +113,14 @@ open class MainActivity : BaseActivity() {
         when (item.itemId) {
             R.id.menuProfil -> {
                 startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
+                return true
             }
             R.id.menuMap -> {
                 startActivity(Intent(this@MainActivity, MapsActivity::class.java))
+                return true
             }
         }
-        return true
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
