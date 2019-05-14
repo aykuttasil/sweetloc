@@ -10,11 +10,11 @@ class LocationWorker(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        try {
-            return Result.success()
+        return try {
+            Result.success()
         } catch (ex: Exception) {
             ex.printStackTrace()
-            return Result.retry()
+            Result.retry()
         }
     }
 
