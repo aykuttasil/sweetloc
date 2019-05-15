@@ -47,6 +47,10 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
     override fun initUiComponents() {
         listRoomMember.adapter = RoomMembersAdapter()
     }
@@ -83,12 +87,11 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
 
     private fun generateRoomLink(roomId: String, roomName: String): Uri {
         val baseUrl = Uri.parse("https://sweetloc/rooms/$roomId?roomName=$roomName")
-        val domain = "https://a3e34.app.goo.gl"
 
         val link = FirebaseDynamicLinks.getInstance()
             .createDynamicLink()
             .setLink(baseUrl)
-            .setDomainUriPrefix(domain)
+            .setDomainUriPrefix(getString(R.string.dynamic_links_uri_prefix))
             // .setNavigationInfoParameters()
             .setAndroidParameters(DynamicLink.AndroidParameters.Builder(BuildConfig.APPLICATION_ID).build())
             .buildDynamicLink()

@@ -1,11 +1,11 @@
 package com.aykuttasil.sweetloc.ui.activity.main
 
+import android.app.Application
 import android.location.Location
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
-import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.data.LocationEntity
 import com.aykuttasil.sweetloc.data.RoomLocationModel
 import com.aykuttasil.sweetloc.data.repository.LocationRepository
@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
-    private val app: App,
+    private val app: Application,
     private val userRepository: UserRepository,
     private val locationRepository: LocationRepository,
     private val roomRepository: RoomRepository,
