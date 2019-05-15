@@ -39,8 +39,41 @@
           }
         },
         {
-          "client_id": "535821025252-msipukucilrgfk2jskvnfracsgncqi72.apps.googleusercontent.com",
+          "client_id": "535821025252-900ior2vv23as7h7pnjd2pjn6inb6q6s.apps.googleusercontent.com",
           "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDx291mIGINNAu5jT-arL1sbFhs1H9YJmM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "535821025252-msipukucilrgfk2jskvnfracsgncqi72.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535821025252:android:8a7be649533449ed",
+        "android_client_info": {
+          "package_name": "com.aykuttasil.sweetloc.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "535821025252-90lr09a2g4rhqjrdscchbvmfe4bb0njt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aykuttasil.sweetloc.debug",
+            "certificate_hash": "79476ade7225bc6c2c340a07dd94be44360f2351"
+          }
         },
         {
           "client_id": "535821025252-900ior2vv23as7h7pnjd2pjn6inb6q6s.apps.googleusercontent.com",
@@ -53,15 +86,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "535821025252-msipukucilrgfk2jskvnfracsgncqi72.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     },
@@ -74,8 +105,12 @@
       },
       "oauth_client": [
         {
-          "client_id": "535821025252-msipukucilrgfk2jskvnfracsgncqi72.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "535821025252-5tg0pm49o4g5hfnhlerknpb3cs0lc2jd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aykuttasil.sweetloc.demo",
+            "certificate_hash": "79476ade7225bc6c2c340a07dd94be44360f2351"
+          }
         },
         {
           "client_id": "535821025252-900ior2vv23as7h7pnjd2pjn6inb6q6s.apps.googleusercontent.com",
@@ -88,15 +123,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "535821025252-msipukucilrgfk2jskvnfracsgncqi72.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
