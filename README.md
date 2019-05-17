@@ -1,5 +1,3 @@
 # SweetLoc
 
-SweetLoc
-
-You and Love ..
+Location Tracking App
