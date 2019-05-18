@@ -15,10 +15,10 @@ import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SingleLocationRequestService @Inject constructor(val rxLocation: RxLocation) : JobIntentService() {
+class SingleLocationRequestService : JobIntentService() {
 
-    //@Inject
-    //lateinit var rxLocation: RxLocation
+    @Inject
+    lateinit var rxLocation: RxLocation
 
     var mDisposable: Disposable? = null
 
