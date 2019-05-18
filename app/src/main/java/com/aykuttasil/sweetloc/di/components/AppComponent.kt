@@ -3,10 +3,10 @@ package com.aykuttasil.sweetloc.di.components
 import android.app.Application
 import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.di.modules.ActivityBuilder
-import com.aykuttasil.sweetloc.di.modules.ServiceBuilder
 import com.aykuttasil.sweetloc.di.modules.AppModule
 import com.aykuttasil.sweetloc.di.modules.DatabaseModule
 import com.aykuttasil.sweetloc.di.modules.NetworkModule
+import com.aykuttasil.sweetloc.di.modules.ServiceBuilder
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
