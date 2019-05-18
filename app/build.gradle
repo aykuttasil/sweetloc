@@ -227,5 +227,8 @@ dependencies {
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-alpha-1'
 
+    // Permission
+    implementation 'com.afollestad:assent:2.3.0'
+
 }
 apply plugin: 'com.google.gms.google-services'
