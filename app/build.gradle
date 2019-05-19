@@ -164,6 +164,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:17.0.0'
     implementation 'com.google.firebase:firebase-crash:16.2.1'
     implementation 'com.google.firebase:firebase-dynamic-links:17.0.0'
+    implementation 'com.google.firebase:firebase-common-ktx:17.0.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:19.0.0'
 
     implementation 'com.google.android.gms:play-services-base:16.1.0'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
