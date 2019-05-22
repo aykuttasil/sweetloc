@@ -3,6 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.aykuttasil.sweetloc.ui.fragment.profile.ProfileViewModel" />
+
+        <variable
+            name="user"
+            type="com.aykuttasil.sweetloc.data.local.entity.UserEntity" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -27,11 +38,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:contentDescription="TODO" android:maxHeight="120dp"
+            android:contentDescription="TODO"
+            android:maxHeight="120dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:loadImage='@{viewModel.liveUser.userImageUrl ?? "http://www.aykutasil.com/img/aykut.png"}'
+            app:loadImage='@{viewModel.liveUser.userImageUrl ?? "https://www.aykutasil.com/img/aykut.png"}'
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
@@ -51,14 +63,4 @@
             tools:text="@tools:sample/full_names" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.aykuttasil.sweetloc.ui.fragment.profile.ProfileViewModel" />
-
-        <variable
-            name="user"
-            type="com.aykuttasil.sweetloc.data.local.entity.UserEntity" />
-    </data>
 </layout>
