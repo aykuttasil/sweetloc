@@ -5,12 +5,12 @@ import com.aykuttasil.sweetloc.data.UserModel
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.data.roomMemberNode
 import com.aykuttasil.sweetloc.data.roomMembersNode
+import com.aykuttasil.sweetloc.data.roomNode
 import com.aykuttasil.sweetloc.data.roomsNode
 import com.aykuttasil.sweetloc.data.userRoomNode
 import com.aykuttasil.sweetloc.data.userRoomsNode
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import io.reactivex.Completable
@@ -104,7 +104,7 @@ class RoomRepository @Inject constructor(
 
                         emitter.onSuccess(rooms.toList())
                     } catch (e: Exception) {
-                        emitter.onError(DatabaseException("Problem in DB", e))
+                        emitter.onError(Exception("Problem in DB", e))
                     }
                 }
 
@@ -139,7 +139,7 @@ class RoomRepository @Inject constructor(
                         emitter.onSuccess(users.toList())
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        emitter.onError(DatabaseException("Problem in DB", e))
+                        emitter.onError(Exception("Problem in DB", e))
                     }
                 }
 
@@ -174,7 +174,7 @@ class RoomRepository @Inject constructor(
 
                         emitter.onSuccess(false)
                     } catch (e: Exception) {
-                        emitter.onError(DatabaseException("Problem in DB", e))
+                        emitter.onError(Exception("Problem in DB", e))
                     }
                 }
 
@@ -187,6 +187,47 @@ class RoomRepository @Inject constructor(
             }
 
             val childReference = databaseReference.child(roomsNode())
+            childReference.addListenerForSingleValueEvent(listener)
+            emitter.setCancellable { childReference.removeEventListener(listener) }
+        }.observeOn(Schedulers.io())
+    }
+
+    fun getRoom(roomId: String): Single<RoomEntity> {
+        return Single.create<RoomEntity> { emitter ->
+            val listener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (emitter.isDisposed) {
+                        return
+                    }
+                    try {
+                        val room = dataSnapshot.getValue(RoomEntity::class.java)
+
+                        /*val rooms = arrayListOf<RoomEntity>()
+                        dataSnapshot.children.forEach {
+                            val room = it.getValue(RoomEntity::class.java)
+                            room?.roomId = it.key
+                            rooms.add(room!!)
+                        }
+                        */
+                        if (room != null) {
+                            emitter.onSuccess(room)
+                        } else {
+                            emitter.onError(Exception("No such Room is present."))
+                        }
+                    } catch (e: Exception) {
+                        emitter.onError(Exception("Problem in DB", e))
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    if (emitter.isDisposed) {
+                        return
+                    }
+                    emitter.onError(databaseError.toException())
+                }
+            }
+
+            val childReference = databaseReference.child(roomNode(roomId))
             childReference.addListenerForSingleValueEvent(listener)
             emitter.setCancellable { childReference.removeEventListener(listener) }
         }.observeOn(Schedulers.io())

@@ -49,6 +49,9 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (args.isDeepLinkforMemberRecord) {
+            viewModel.addMember(args.roomId)
+        }
     }
 
     override fun initUiComponents() {
