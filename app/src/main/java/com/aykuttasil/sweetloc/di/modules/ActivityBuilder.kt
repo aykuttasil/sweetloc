@@ -7,13 +7,10 @@ import com.aykuttasil.sweetloc.ui.activity.main.MainActivity
 import com.aykuttasil.sweetloc.ui.activity.main.MainActivityModule
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivityModule
+import com.aykuttasil.sweetloc.ui.activity.splash.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
-
-/**
- * Created by aykutasil on 13.12.2017.
- */
 @Module(includes = [FragmentBuilder::class])
 abstract class ActivityBuilder {
 
@@ -28,4 +25,8 @@ abstract class ActivityBuilder {
     @PerActivity
     @ContributesAndroidInjector(modules = [(MainActivityModule::class)])
     abstract fun bindMainActivity(): MainActivity
+
+    @PerActivity
+    @ContributesAndroidInjector
+    abstract fun bindSplashActivity(): SplashActivity
 }
