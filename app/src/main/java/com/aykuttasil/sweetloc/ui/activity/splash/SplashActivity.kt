@@ -2,6 +2,7 @@ package com.aykuttasil.sweetloc.ui.activity.splash
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
@@ -18,6 +19,10 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+
         setContentView(R.layout.activity_splash)
 
         launch {
@@ -26,7 +31,7 @@ class SplashActivity : BaseActivity() {
             val isLogin = userRepository.checkUser()
             if (isLogin) {
                 val mainIntent = Intent(this@SplashActivity, MainActivity::class.java)
-                mainIntent.data = intent.data
+                // mainIntent.data = intent.data
                 // mainIntent.putExtras(intent)
                 // intent.extras?.let { mainIntent.putExtras(it) }
                 startActivity(mainIntent)

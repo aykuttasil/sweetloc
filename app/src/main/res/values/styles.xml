@@ -19,7 +19,6 @@
         <item name="md_corner_radius">16dp</item>
     </style>
 
-
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
