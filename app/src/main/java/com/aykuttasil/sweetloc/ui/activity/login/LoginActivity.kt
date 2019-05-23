@@ -1,5 +1,6 @@
 package com.aykuttasil.sweetloc.ui.activity.login
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -9,6 +10,7 @@ import com.aykuttasil.sweetloc.data.Resource
 import com.aykuttasil.sweetloc.databinding.ActivityLoginLayoutBinding
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
+import com.aykuttasil.sweetloc.ui.activity.main.MainActivity
 import com.aykuttasil.sweetloc.util.extension.bind
 import com.aykuttasil.sweetloc.util.extension.setupToolbar
 import com.google.android.material.snackbar.Snackbar
@@ -24,6 +26,8 @@ open class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initToolbar()
+        
         loginViewModel = ViewModelProviders.of(this@LoginActivity, viewModelFactory).get(LoginViewModel::class.java)
 
         val binding = bind<ActivityLoginLayoutBinding>(R.layout.activity_login_layout).apply {
@@ -42,6 +46,7 @@ open class LoginActivity : BaseActivity() {
         loginViewModel.liveLogin.observe(this, Observer {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     finish()
                 }
                 Resource.Status.ERROR -> {
@@ -49,8 +54,6 @@ open class LoginActivity : BaseActivity() {
                 }
             }
         })
-
-        initToolbar()
     }
 
     private fun initToolbar() {
