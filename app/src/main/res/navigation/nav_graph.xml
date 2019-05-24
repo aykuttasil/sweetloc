@@ -54,12 +54,23 @@
             android:defaultValue="XXX"
             app:argType="string"
             app:nullable="true" />
-        <deepLink
+        <argument
+            android:name="isDeepLinkforMemberRecord"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <!--<deepLink
             android:id="@+id/deepLink"
-            app:uri="https://sweetloc/rooms/{roomId}?roomName={roomName}" />
+            app:uri="https://sweetloc/rooms/{roomId}?roomName={roomName}" />-->
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.aykuttasil.sweetloc.ui.fragment.profile.ProfileFragment"
         android:label="Profile" />
+    <action
+        android:id="@+id/action_global_roomMemberListFragment"
+        app:destination="@id/roomMemberListFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 </navigation>

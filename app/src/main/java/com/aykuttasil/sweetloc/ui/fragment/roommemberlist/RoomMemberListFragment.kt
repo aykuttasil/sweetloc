@@ -20,6 +20,7 @@ import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import com.aykuttasil.sweetloc.ui.fragment.IFragmentContract
+import com.aykuttasil.sweetloc.widget.BottomNavigationDrawerFragment
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlinx.android.synthetic.main.room_memberlist_fragment.*
@@ -56,6 +57,10 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
 
     override fun initUiComponents() {
         listRoomMember.adapter = RoomMembersAdapter()
+        fabBottomNavigation.setOnClickListener {
+            val bottomNavDrawerFragment = BottomNavigationDrawerFragment()
+            bottomNavDrawerFragment.show(childFragmentManager, bottomNavDrawerFragment.tag)
+        }
     }
 
     override fun initViewModel() {

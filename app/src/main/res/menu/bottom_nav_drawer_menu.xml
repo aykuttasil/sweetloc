@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav1"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="X" />
+        <item
+            android:id="@+id/nav2"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Y" />
+        <item
+            android:id="@+id/nav3"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Z" />
+        <item
+            android:id="@+id/nav4"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="X" />
+        <item
+            android:id="@+id/nav5"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Y" />
+        <item
+            android:id="@+id/nav6"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Z" />
+        <item
+            android:id="@+id/nav7"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="X" />
+        <item
+            android:id="@+id/nav8"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Y" />
+        <item
+            android:id="@+id/nav9"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Z" />
+        <item
+            android:id="@+id/nav11"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="X" />
+        <item
+            android:id="@+id/nav22"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Y" />
+        <item
+            android:id="@+id/nav34"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Z" />
+        <item
+            android:id="@+id/nav123"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="X" />
+        <item
+            android:id="@+id/nav234"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Y" />
+        <item
+            android:id="@+id/nav453"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Z" />
+        <item
+            android:id="@+id/nav341"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="X" />
+        <item
+            android:id="@+id/nav452"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Y" />
+        <item
+            android:id="@+id/nadv3"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Z" />
+        <item
+            android:id="@+id/nafv1"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="X" />
+        <item
+            android:id="@+id/navg2"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Y" />
+        <item
+            android:id="@+id/najv3"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Z" />
+        <item
+            android:id="@+id/nhav1"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="X" />
+        <item
+            android:id="@+id/nadsv2"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Y" />
+        <item
+            android:id="@+id/ngav3"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Z" />
+    </group>
+</menu>

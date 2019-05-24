@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.aykuttasil.sweetloc.ui.fragment.roommemberlist.RoomMemberListFragment">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.aykuttasil.sweetloc.ui.fragment.roommemberlist.RoomMemberListViewModel" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,14 +25,31 @@
             app:listData="@{viewModel.liveRoomMemberList}"
             tools:listitem="@layout/listitem_roommember" />
 
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:backgroundTint="@color/accent"
+            app:buttonGravity="bottom"
+            app:fabAlignmentMode="center"
+            app:hideOnScroll="true"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:menu="@menu/room_list"
+            app:navigationIcon="@drawable/ic_backspace_dark">
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabBottomNavigation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_black_24dp"
+            app:backgroundTint="@color/color4"
+            app:elevation="5dp"
+            app:layout_anchor="@id/bottomAppBar" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.aykuttasil.sweetloc.ui.fragment.roommemberlist.RoomMemberListViewModel" />
-    </data>
 
 </layout>
 
