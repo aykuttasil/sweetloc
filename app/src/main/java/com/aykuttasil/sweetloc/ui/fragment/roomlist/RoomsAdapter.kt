@@ -13,10 +13,12 @@ import com.aykuttasil.sweetloc.data.RoomEntity
 import com.aykuttasil.sweetloc.databinding.ListitemRoomBinding
 import com.aykuttasil.sweetloc.util.BindableAdapter
 
-class RoomsAdapter : ListAdapter<RoomEntity, RoomsAdapter.MyViewHolder>(RoomsAdapter.DIFF_CALLBACK), BindableAdapter<RoomEntity> {
+class RoomsAdapter : ListAdapter<RoomEntity, RoomsAdapter.MyViewHolder>(DIFF_CALLBACK),
+    BindableAdapter<RoomEntity> {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val vi: ListitemRoomBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.listitem_room, parent, false)
+        val vi: ListitemRoomBinding =
+            DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.listitem_room, parent, false)
         return MyViewHolder(vi)
     }
 
@@ -33,8 +35,10 @@ class RoomsAdapter : ListAdapter<RoomEntity, RoomsAdapter.MyViewHolder>(RoomsAda
         fun bind(room: RoomEntity) {
             binding.room = room
             binding.root.setOnClickListener {
-                val direction = RoomListFragmentDirections.actionRoomListFragmentToRoomMemberListFragment(room.roomId!!, room.roomName
-                        ?: "")
+                val direction = RoomListFragmentDirections.actionRoomListFragmentToRoomMemberListFragment(
+                    room.roomId!!, room.roomName
+                        ?: ""
+                )
                 it.findNavController().navigate(direction)
                 Toast.makeText(itemView.context, room.roomName, Toast.LENGTH_SHORT).show()
             }

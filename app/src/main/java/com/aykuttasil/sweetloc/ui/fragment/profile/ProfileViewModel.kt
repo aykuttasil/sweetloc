@@ -1,9 +1,9 @@
 package com.aykuttasil.sweetloc.ui.fragment.profile
 
+import android.app.Application
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
-import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.helper.SweetLocHelper
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
-    val app: App,
+    val app: Application,
     val userRepository: UserRepository,
     val sweetLocHelper: SweetLocHelper
 ) : BaseAndroidViewModel(app) {

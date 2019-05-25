@@ -1,7 +1,7 @@
 package com.aykuttasil.sweetloc.ui.fragment.roomcreate
 
+import android.app.Application
 import android.net.Uri
-import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.data.RoomEntity
 import com.aykuttasil.sweetloc.data.repository.RoomRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RoomCreateViewModel @Inject constructor(
-    val app: App,
+    val app: Application,
     val userRepository: UserRepository,
     val roomRepository: RoomRepository
 ) : BaseAndroidViewModel(app) {

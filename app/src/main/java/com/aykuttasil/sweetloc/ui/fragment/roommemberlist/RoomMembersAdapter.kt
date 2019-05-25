@@ -11,7 +11,7 @@ import com.aykuttasil.sweetloc.data.UserModel
 import com.aykuttasil.sweetloc.databinding.ListitemRoommemberBinding
 import com.aykuttasil.sweetloc.util.BindableAdapter
 
-class RoomMembersAdapter : ListAdapter<UserModel, RoomMembersAdapter.MyViewHolder>(RoomMembersAdapter.DIFF_CALLBACK),
+class RoomMembersAdapter : ListAdapter<UserModel, RoomMembersAdapter.MyViewHolder>(DIFF_CALLBACK),
     BindableAdapter<UserModel> {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
