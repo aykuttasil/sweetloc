@@ -88,11 +88,6 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
         return true
     }
 
-    fun createDeepLink() {
-        findNavController().createDeepLink().setDestination(R.id.action_mainFragment_to_profileFragment)
-            .createPendingIntent()
-    }
-
     private fun generateRoomLink(roomId: String, roomName: String): Uri {
         val baseUrl = Uri.parse("https://sweetloc/rooms/$roomId?roomName=$roomName")
 
