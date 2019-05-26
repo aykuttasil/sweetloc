@@ -13,7 +13,7 @@ import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
-import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
+import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import com.google.firebase.database.DatabaseReference
 import com.skydoves.needs.Needs
@@ -84,6 +84,10 @@ class EntryFragment : BaseFragment(), Injectable {
 
         btnProfile.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
+        }
+
+        btnOpenMap.setOnClickListener {
+            startActivity(Intent(requireActivity(), MapsActivity::class.java))
         }
     }
 

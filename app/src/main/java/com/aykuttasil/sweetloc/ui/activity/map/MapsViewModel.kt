@@ -1,34 +1,39 @@
 package com.aykuttasil.sweetloc.ui.activity.map
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.aykuttasil.androidbasichelperlib.SuperHelper
 import com.aykuttasil.sweetloc.data.LocationEntity
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.data.repository.LocationRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
+import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationSettingsRequest
 import com.orhanobut.logger.Logger
 import com.patloew.rxlocation.RxLocation
 import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
+data class LocModel(
+    var userId: String,
+    var locationEntity: LocationEntity
+)
+
 class MapsViewModel @Inject constructor(
+    private val app: Application,
     private val rxLocation: RxLocation,
     private val userRepository: UserRepository,
     private val locationRepository: LocationRepository
-) : ViewModel() {
+) : BaseAndroidViewModel(app) {
 
-    private val compositeDisposable = CompositeDisposable()
-
-    private val sentMyLocation: MutableLiveData<LocationEntity> = MutableLiveData()
+    private val _sendMyLocation: MutableLiveData<LocationEntity> = MutableLiveData()
 
     @SuppressLint("MissingPermission")
     fun sendMyLocation(): LiveData<LocationEntity> {
@@ -42,14 +47,16 @@ class MapsViewModel @Inject constructor(
             .setAlwaysShow(true)
             .build()
 
-        compositeDisposable.add(Observable.combineLatest(
+        Observable.combineLatest(
             rxLocation.settings()
                 .checkAndHandleResolution(locationSettingsRequest)
                 .flatMapObservable { granted ->
                     return@flatMapObservable if (granted) {
                         rxLocation.settings()
                             .checkAndHandleResolution(locationSettingsRequest)
-                            .flatMapObservable { rxLocation.location().updates(locationRequest) }
+                            .flatMapObservable {
+                                rxLocation.location().updates(locationRequest)
+                            }
                     } else {
                         return@flatMapObservable Observable.error<Throwable>(
                             Exception("Konum izni gerekli.")
@@ -68,7 +75,7 @@ class MapsViewModel @Inject constructor(
                     createDate = SuperHelper.formatTime
                 )
 
-                sentMyLocation.value = locationEntity
+                _sendMyLocation.value = locationEntity
 
                 return@BiFunction LocModel(user.userId, locationEntity)
             })
@@ -83,23 +90,8 @@ class MapsViewModel @Inject constructor(
             }, {
                 it.printStackTrace()
                 Logger.e(it, "HATA")
-            })
-        )
-        return sentMyLocation
-    }
+            }).addTo(disposables)
 
-    fun getMyTrackerLocation() {
+        return _sendMyLocation
     }
-
-    override fun onCleared() {
-        super.onCleared()
-        if (!compositeDisposable.isDisposed) {
-            compositeDisposable.dispose()
-        }
-    }
-
-    data class LocModel(
-        var userId: String,
-        var locationEntity: LocationEntity
-    )
 }

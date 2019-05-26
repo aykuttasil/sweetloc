@@ -1,6 +1,5 @@
 package com.aykuttasil.sweetloc.data
 
-
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import java.text.DateFormat
 import java.util.Date
