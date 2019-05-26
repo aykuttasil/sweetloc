@@ -153,7 +153,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.2.0-alpha01'
 
     implementation "androidx.core:core-ktx:1.2.0-alpha01" // Libs.core_ktx
-    implementation "androidx.fragment:fragment-ktx:1.1.0-alpha08"
+    implementation "androidx.fragment:fragment-ktx:1.1.0-alpha09"
     // implementation "androidx.lifecycle:viemodel-ktx:2.0.0-alpha1"
 
     implementation(Libs.crashlytics) {
@@ -174,6 +174,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.android.gms:play-services-gcm:16.1.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
 
     implementation 'com.squareup.okhttp3:logging-interceptor:3.14.1'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
