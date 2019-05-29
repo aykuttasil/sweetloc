@@ -61,6 +61,18 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
             val bottomNavDrawerFragment = BottomNavigationDrawerFragment()
             bottomNavDrawerFragment.show(childFragmentManager, bottomNavDrawerFragment.tag)
         }
+
+        bottomAppBar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.itemMap -> {
+                    findNavController()
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
     }
 
     override fun initViewModel() {
