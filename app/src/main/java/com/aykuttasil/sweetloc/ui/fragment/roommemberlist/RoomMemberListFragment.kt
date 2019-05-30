@@ -18,6 +18,7 @@ import com.aykuttasil.sweetloc.databinding.RoomMemberlistFragmentBinding
 import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
+import com.aykuttasil.sweetloc.ui.activity.map.MapsActivityArgs
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
 import com.aykuttasil.sweetloc.ui.fragment.IFragmentContract
 import com.aykuttasil.sweetloc.widget.BottomNavigationDrawerFragment
@@ -65,7 +66,7 @@ class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
         bottomAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.itemMap -> {
-                    findNavController()
+                    findNavController().navigate(R.id.mapsActivity, MapsActivityArgs(args.roomId).toBundle())
                     true
                 }
                 else -> {
