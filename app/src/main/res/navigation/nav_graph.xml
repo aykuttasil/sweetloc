@@ -10,10 +10,10 @@
         android:label="Create Room"
         tools:layout="@layout/room_create_fragment" />
     <fragment
-        tools:layout="@layout/fragment_room_list_layout"
         android:id="@+id/roomListFragment"
         android:name="com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListFragment"
-        android:label="Rooms">
+        android:label="Rooms"
+        tools:layout="@layout/fragment_room_list_layout">
         <action
             android:id="@+id/action_roomListFragment_to_roomCreateFragment"
             app:destination="@id/roomCreateFragment"
@@ -44,10 +44,10 @@
             app:destination="@id/profileFragment" />
     </fragment>
     <fragment
-        tools:layout="@layout/room_memberlist_fragment"
         android:id="@+id/roomMemberListFragment"
         android:name="com.aykuttasil.sweetloc.ui.fragment.roommemberlist.RoomMemberListFragment"
-        android:label="{roomName}">
+        android:label="{roomName}"
+        tools:layout="@layout/room_memberlist_fragment">
         <argument
             android:name="roomId"
             app:argType="string" />
@@ -66,10 +66,10 @@
     </fragment>
 
     <fragment
-        tools:layout="@layout/fragment_profile_layout"
         android:id="@+id/profileFragment"
         android:name="com.aykuttasil.sweetloc.ui.fragment.profile.ProfileFragment"
-        android:label="Profile" />
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile_layout" />
     <action
         android:id="@+id/action_global_roomMemberListFragment"
         app:destination="@id/roomMemberListFragment"
@@ -77,13 +77,11 @@
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
     <activity
         android:id="@+id/mapsActivity"
         android:name="com.aykuttasil.sweetloc.ui.activity.map.MapsActivity"
         android:label="MapsActivity"
-        app:action="goMaps"
-        app:data="s"
-        app:dataPattern="d"
         tools:layout="@layout/activity_maps">
         <argument
             android:name="roomId"
