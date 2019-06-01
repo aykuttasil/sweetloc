@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aykuttasil.sweetloc.R
-import com.aykuttasil.sweetloc.data.UserModel
+import com.aykuttasil.sweetloc.data.RoomMemberLocationModel
 import com.aykuttasil.sweetloc.databinding.ListitemRoommemberBinding
 import com.aykuttasil.sweetloc.util.BindableAdapter
 
-class RoomMembersAdapter : ListAdapter<UserModel, RoomMembersAdapter.MyViewHolder>(DIFF_CALLBACK),
-    BindableAdapter<UserModel> {
+class RoomMembersAdapter : ListAdapter<RoomMemberLocationModel, RoomMembersAdapter.MyViewHolder>(DIFF_CALLBACK),
+    BindableAdapter<RoomMemberLocationModel> {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val vi: ListitemRoommemberBinding =
@@ -24,14 +24,14 @@ class RoomMembersAdapter : ListAdapter<UserModel, RoomMembersAdapter.MyViewHolde
         holder.bind(getItem(position));
     }
 
-    override fun setData(items: List<UserModel>) {
+    override fun setData(items: List<RoomMemberLocationModel>) {
         submitList(items)
     }
 
     inner class MyViewHolder(val binding: ListitemRoommemberBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(user: UserModel) {
-            binding.user = user
+        fun bind(roomMember: RoomMemberLocationModel) {
+            binding.roomMember = roomMember
             binding.root.setOnClickListener {
                 // Toast.makeText(itemView.context, user.userName, Toast.LENGTH_SHORT).show()
             }
@@ -53,13 +53,16 @@ class RoomMembersAdapter : ListAdapter<UserModel, RoomMembersAdapter.MyViewHolde
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserModel>() {
-            override fun areItemsTheSame(oldItem: UserModel, newItem: UserModel): Boolean {
-                return oldItem.userId == newItem.userId
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<RoomMemberLocationModel>() {
+            override fun areItemsTheSame(oldItem: RoomMemberLocationModel, newItem: RoomMemberLocationModel): Boolean {
+                return oldItem.user?.userId == newItem.user?.userId
             }
 
-            override fun areContentsTheSame(oldItem: UserModel, newItem: UserModel): Boolean {
-                return oldItem.userName == newItem.userName
+            override fun areContentsTheSame(
+                oldItem: RoomMemberLocationModel,
+                newItem: RoomMemberLocationModel
+            ): Boolean {
+                return oldItem.user?.userName == newItem.user?.userName
             }
 
         }

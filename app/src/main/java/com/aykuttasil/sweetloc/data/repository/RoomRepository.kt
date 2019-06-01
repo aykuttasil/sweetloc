@@ -1,7 +1,7 @@
 package com.aykuttasil.sweetloc.data.repository
 
 import com.aykuttasil.sweetloc.data.RoomEntity
-import com.aykuttasil.sweetloc.data.UserModel
+import com.aykuttasil.sweetloc.data.RoomMemberLocationModel
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import com.aykuttasil.sweetloc.data.roomMemberNode
 import com.aykuttasil.sweetloc.data.roomMembersNode
@@ -122,17 +122,17 @@ class RoomRepository @Inject constructor(
         }.observeOn(Schedulers.io())
     }
 
-    fun getRoomMembers(roomId: String): Single<List<UserModel>> {
-        return Single.create<List<UserModel>> { emitter ->
+    fun getRoomMembers(roomId: String): Single<List<RoomMemberLocationModel>> {
+        return Single.create<List<RoomMemberLocationModel>> { emitter ->
             val listener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (emitter.isDisposed) {
                         return
                     }
                     try {
-                        val users = arrayListOf<UserModel>()
+                        val users = arrayListOf<RoomMemberLocationModel>()
                         dataSnapshot.children.forEach {
-                            val user = it.getValue(UserModel::class.java)
+                            val user = it.getValue(RoomMemberLocationModel::class.java)
                             users.add(user!!)
                         }
 

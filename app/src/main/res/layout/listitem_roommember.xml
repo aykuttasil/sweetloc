@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="roomMember"
+            type="com.aykuttasil.sweetloc.data.RoomMemberLocationModel" />
+    </data>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -23,7 +29,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@{user.userEmail}"
+                android:text="@{roomMember.user.userEmail}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -34,10 +40,4 @@
 
     </androidx.cardview.widget.CardView>
 
-    <data>
-
-        <variable
-            name="user"
-            type="com.aykuttasil.sweetloc.data.UserModel" />
-    </data>
 </layout>
