@@ -1,20 +1,25 @@
 package com.aykuttasil.sweetloc.ui.activity.map
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.core.app.NavUtils
-import androidx.lifecycle.ViewModelProviders
-import com.afollestad.assent.Permission
-import com.afollestad.assent.runWithPermissions
+import androidx.lifecycle.Observer
+import androidx.navigation.navArgs
 import com.aykuttasil.androidbasichelperlib.UiHelper
 import com.aykuttasil.sweetloc.R
+import com.aykuttasil.sweetloc.data.LocationEntity
+import com.aykuttasil.sweetloc.data.UserModel
 import com.aykuttasil.sweetloc.di.ViewModelFactory
-import com.aykuttasil.sweetloc.ui.activity.base.LoginBaseActivity
+import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
 import com.aykuttasil.sweetloc.util.extension.setupToolbar
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -27,20 +32,28 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_maps.*
+import timber.log.Timber
 import java.util.HashMap
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter,
+open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter,
     GoogleMap.OnInfoWindowClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    private val _viewModel by viewModels<MapsViewModel> { viewModelFactory }
+
+    private val args: MapsActivityArgs by navArgs()
 
     private val WAIT_LOCATION_SECOND = 30
     private val REQUEST_CHECK_SETTINGS: Int = 999
@@ -48,12 +61,12 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
     private var isReceiveLocation = false
 
     private var _googleMap: GoogleMap? = null
-    private var _mapMarker: HashMap<Any, Any> = HashMap()
+    private var _mapMarker: HashMap<Marker, LocationEntity> = HashMap()
     private var _snackBarKonum: Snackbar? = null
     private var _requestingLocationUpdates: Boolean = false
 
-    private lateinit var _viewModel: MapsViewModel
     private lateinit var _fusedLocationProviderClient: FusedLocationProviderClient
+
 
     private val locationRequest: LocationRequest = LocationRequest.create()
         .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
@@ -75,11 +88,14 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
         setContentView(R.layout.activity_maps)
         setToolbar()
 
-        _viewModel = ViewModelProviders.of(this, viewModelFactory).get(MapsViewModel::class.java)
-
         initMap()
         initLocationListener()
         _fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
+        _viewModel.getRoomMembersLocation(args.roomId).observe(this, Observer { roomLoc ->
+            addMarker(roomLoc.user!!, roomLoc.location)
+            Timber.d(roomLoc.user?.userEmail)
+        })
 
         FabMap.setOnClickListener { fabMapClick() }
     }
@@ -89,13 +105,9 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
         if (_requestingLocationUpdates) startLocationUpdates()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun setToolbar() {
         setupToolbar(R.id.toolbar) {
-            title = "Harita"
+            title = "Üye Konumları"
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_arrow_back_indigo_300_24dp)
             setDisplayShowHomeEnabled(true)
@@ -128,43 +140,23 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
 
     private fun initMap() {
         (map as SupportMapFragment).getMapAsync(this)
-
-        /*
-        _viewModel.sendMyLocation().observe(this, Observer {
-            Timber.i("aa: $it")
-        })
-        */
-        // initLocationListener()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        /*
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Timber.i("Permission is not Granted !")
-            return
-        }
-        */
-
-        this._googleMap = googleMap
-
-        // _googleMap?.isMyLocationEnabled = true
-        _googleMap?.uiSettings?.isZoomControlsEnabled = true
-        _googleMap?.uiSettings?.isZoomGesturesEnabled = true
+        _googleMap = googleMap
 
         val width = resources.displayMetrics.widthPixels
         val height = resources.displayMetrics.heightPixels
         val padding = (width * 0.12).toInt() // offset from edges of the map 12% of screen
-        _googleMap?.moveCamera(CameraUpdateFactory.newLatLngBounds(TURKEY, width, height, padding))
-        _googleMap?.setInfoWindowAdapter(this)
-        _googleMap?.setOnInfoWindowClickListener(this)
-        _googleMap?.isTrafficEnabled = true
+
+        _googleMap?.apply {
+            uiSettings.isZoomControlsEnabled = true
+            uiSettings.isZoomGesturesEnabled = true
+            moveCamera(CameraUpdateFactory.newLatLngBounds(TURKEY, width, height, padding))
+            setInfoWindowAdapter(this@MapsActivity)
+            setOnInfoWindowClickListener(this@MapsActivity)
+            isTrafficEnabled = true
+        }
 
         //setMap()
     }
@@ -217,31 +209,31 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
         */
     }
 
-    private val locationCallback = object : LocationCallback() {
+    private var locationCallback: LocationCallback? = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult ?: return
 
             for (location in locationResult.locations) {
-                // Update UI with location data
-                // ...
+                _viewModel.updateLocation(location)
             }
         }
     }
 
-
     @SuppressLint("MissingPermission")
-    private fun startLocationUpdates() =
-        runWithPermissions(Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION) {
-            _googleMap?.isMyLocationEnabled = true
+    private fun startLocationUpdates() {
+        //runWithPermissions(Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION){
+        _googleMap?.isMyLocationEnabled = true
 
-            _fusedLocationProviderClient.requestLocationUpdates(
-                locationRequest,
-                locationCallback,
-                null /* Looper */
-            )
-        }
+        _fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            null
+        )
+        //}
+    }
 
     private fun stopLocationUpdates() {
+        Timber.d("stopLocationUpdates")
         _fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
 
@@ -283,13 +275,12 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
     }
 
 
-    @DebugLog
-    private fun addMarker(modelUser: ModelUser, modelLocation: ModelLocation) {
-        val latLng = LatLng(modelLocation.latitude, modelLocation.longitude)
+    private fun addMarker(user: UserEntity, location: ModelLocation) {
+        val latLng = LatLng(location.latitude, location.longitude)
         val marker = _googleMap?.addMarker(
                 MarkerOptions()
                         .position(latLng)
-                        .title(modelUser.email)
+                        .title(user.email)
 
                 //.icon(BitmapDescriptorFactory.fromBitmap())
                 //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
@@ -297,46 +288,45 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
                 //.snippet(snippet)
         )
 
-        _mapMarker.put(marker!!, modelLocation)
+        _mapMarker[marker!!] = location
         _googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.position, 10.0f))
         marker.showInfoWindow()
     }
+    */
 
-    @DebugLog
-    private fun addMarker(modelUserTracker: ModelUserTracker, modelLocation: ModelLocation?) {
-        isReceiveLocation = true
-        if (_snackBarKonum != null && _snackBarKonum!!.isShown) {
-            _snackBarKonum!!.dismiss()
-        }
-        val latLng = LatLng(modelLocation!!.latitude, modelLocation.longitude)
-        for ((key, value) in _mapMarker) {
+
+    private fun addMarker(user: UserModel, location: LocationEntity?) {
+        val latLng = LatLng(location!!.latitude!!, location.longitude!!)
+        for ((marker, loc) in _mapMarker) {
             try {
-                val marker = key as Marker
-                val sendMyLocation = value as ModelLocation
-                if (marker.title == modelUserTracker.email) {
+                if (marker.title == user.userEmail) {
                     marker.remove()
                 }
             } catch (e: Exception) {
-                SweetLocHelper.CrashlyticsError(e)
                 _googleMap?.clear()
                 break
             }
 
         }
 
-        val marker = _googleMap?.addMarker(
-                MarkerOptions()
-                        .position(latLng)
-                        .title(modelUserTracker.email)
-                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_check_light))
-                //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                //.title(title)
-                //.snippet(snippet)
-        )
+        _googleMap?.addMarker(
+            MarkerOptions()
+                .position(latLng)
+                .title(user.userEmail)
+                .snippet(user.userName)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+            // .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_account_circle_light_blue_300_24dp))
+        )?.also { marker ->
+            _mapMarker[marker] = location
+        }
+
+
+        /*
         val weakReference = WeakReference(marker)
-        val target = object : Target {
+        val target = object : Target() {
             override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-                weakReference.get()?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_account_circle_light_blue_300_24dp))
+                weakReference.get()
+                    ?.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_account_circle_light_blue_300_24dp))
             }
 
             override fun onBitmapFailed(errorDrawable: Drawable?) {
@@ -349,18 +339,19 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
         }
 
         Picasso.with(this)
-                .load(modelUserTracker.profilePictureUrl)
-                .transform(PicassoCircleTransform())
-                .into(target)
+            .load(modelUserTracker.profilePictureUrl)
+            .transform(PicassoCircleTransform())
+            .into(target)
+            */
 
-        _mapMarker.put(marker!!, modelLocation)
+        // _mapMarker[marker!!] = location
         //_googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 10.0f));
         //marker.showInfoWindow();
     }
-     */
+
 
     /**
-     * InfoWindow için custom view oluştururken ilk buraya firer.Eğer null dönerse getInfoContents e girer.
+     * InfoWindow için custom view oluştururken ilk buraya girer. Eğer null dönerse getInfoContents'e girer.
      *
      * @param marker
      * @return
@@ -377,31 +368,35 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
      */
     override fun getInfoContents(marker: Marker): View {
         val vi = LayoutInflater.from(this).inflate(R.layout.custom_infowindow_layout, null, false)
-
-        /*try {
+        try {
             val userMail = vi.findViewById<TextView>(R.id.TextView_UserMail)
             val userLocTime = vi.findViewById<TextView>(R.id.TextView_UserLocTime)
             val userLocAccuracy = vi.findViewById<TextView>(R.id.TextView_UserLocAccuracy)
 
-            val modelLocation = _mapMarker[marker] as ModelLocation
+            val modelLocation = _mapMarker[marker] as LocationEntity
 
             userMail.text = Html.fromHtml("<b>Email: </b>" + marker.title)
             userLocTime.text = Html.fromHtml("<b>Zaman: </b>" + modelLocation.formatTime)
-            userLocAccuracy.text = Html.fromHtml("<b>Sapma: </b>" + String.format(Locale.getDefault(), "%.2f", modelLocation.accuracy) + " m")
+            userLocAccuracy.text = Html.fromHtml(
+                "<b>Sapma: </b>" + String.format(
+                    Locale.getDefault(),
+                    "%.2f",
+                    modelLocation.accuracy
+                ) + " m"
+            )
         } catch (e: Exception) {
-            SweetLocHelper.CrashlyticsError(e)
+            // SweetLocHelper.CrashlyticsError(e)
             e.printStackTrace()
-        }*/
+        }
 
         return vi
     }
 
     override fun onInfoWindowClick(marker: Marker) {
-        val markerLatLng = marker.position
-        _googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, 15.0f))
+        _googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.position, 15.0f))
     }
 
-    fun fabMapClick() {
+    private fun fabMapClick() {
         _snackBarKonum = UiHelper.UiSnackBar.newInstance(
             toolbar,
             "Son konumlar getiriliyor.\n" + "Lütfen bekleyiniz... ", Snackbar.LENGTH_INDEFINITE
@@ -421,9 +416,6 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
         //SweetLocHelper.sendNotif(Const.ACTION_KONUM_YOLLA)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -435,10 +427,28 @@ open class MapsActivity : LoginBaseActivity(), OnMapReadyCallback, GoogleMap.Inf
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            REQUEST_CHECK_SETTINGS -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    startLocationUpdates()
+                }
+            }
+            else -> {
+                super.onActivityResult(requestCode, resultCode, data)
+            }
+        }
+    }
+
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Timber.d("onDestroy")
+        locationCallback = null
+    }
 }
 
