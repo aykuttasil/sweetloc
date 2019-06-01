@@ -139,6 +139,10 @@ class UserRepository @Inject constructor(
         return@runBlocking withContext(Dispatchers.IO) { userDao.getItem() }
     }
 
+    suspend fun getUserEntitySuspend(): UserEntity? {
+        return withContext(Dispatchers.IO) { userDao.getItem() }
+    }
+
     fun getUser(): Single<UserEntity?> {
         return Single.create<UserEntity> {
             if (userDao.getItem() != null) {
@@ -149,8 +153,8 @@ class UserRepository @Inject constructor(
         }
     }
 
-    fun checkUser(): Boolean {
-        val userEntity = getUserEntity()
+    suspend fun checkUser(): Boolean {
+        val userEntity = getUserEntitySuspend()
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         return userEntity != null && firebaseUser != null
     }
@@ -161,7 +165,7 @@ class UserRepository @Inject constructor(
                 Logger.i("OneSignal userId: $userId")
                 Logger.i("OneSignal regId: $registrationId")
 
-                val user = getUserEntity()?.apply {
+                val user = getUserEntitySuspend()?.apply {
                     userOneSignalId = userId
                 }
 

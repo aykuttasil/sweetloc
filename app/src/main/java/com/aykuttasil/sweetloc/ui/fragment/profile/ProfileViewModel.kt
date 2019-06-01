@@ -25,7 +25,7 @@ class ProfileViewModel @Inject constructor(
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onSetup() {
         launch {
-            liveUser.value = userRepository.getUserEntity()
+            liveUser.value = userRepository.getUserEntitySuspend()
         }
     }
 

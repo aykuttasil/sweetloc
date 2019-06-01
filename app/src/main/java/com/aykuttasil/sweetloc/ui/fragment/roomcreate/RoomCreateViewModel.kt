@@ -25,7 +25,7 @@ class RoomCreateViewModel @Inject constructor(
         launch {
             val isExistRoomName = withContext(Dispatchers.Default) { roomRepository.isExistRoomName(roomName).await() }
             if (!isExistRoomName) {
-                val user = userRepository.getUserEntity()
+                val user = userRepository.getUserEntitySuspend()
                 val room = RoomEntity(roomName = roomName, roomOwner = user?.userId)
                 val roomId = withContext(Dispatchers.Default) { roomRepository.addRoom(room).await() }
 

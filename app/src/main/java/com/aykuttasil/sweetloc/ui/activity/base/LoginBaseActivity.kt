@@ -1,11 +1,13 @@
 package com.aykuttasil.sweetloc.ui.activity.base
 
+/*
 import android.content.Intent
 import android.os.Bundle
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 abstract class LoginBaseActivity : BaseActivity() {
 
@@ -24,3 +26,4 @@ abstract class LoginBaseActivity : BaseActivity() {
         }
     }
 }
+*/
