@@ -14,6 +14,8 @@ import androidx.activity.viewModels
 import androidx.core.app.NavUtils
 import androidx.lifecycle.Observer
 import androidx.navigation.navArgs
+import com.afollestad.assent.Permission
+import com.afollestad.assent.runWithPermissions
 import com.aykuttasil.androidbasichelperlib.UiHelper
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.data.LocationEntity
@@ -209,6 +211,9 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         */
     }
 
+    /**
+     * For leak problem: https://stackoverflow.com/questions/43135948/memory-leak-when-removing-location-update-from-a-fragment-in-onpause
+     */
     private var locationCallback: LocationCallback? = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult ?: return
@@ -219,17 +224,18 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         }
     }
 
+
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
-        //runWithPermissions(Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION){
-        _googleMap?.isMyLocationEnabled = true
+        runWithPermissions(Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION) {
+            _googleMap?.isMyLocationEnabled = true
 
-        _fusedLocationProviderClient.requestLocationUpdates(
-            locationRequest,
-            locationCallback,
-            null
-        )
-        //}
+            _fusedLocationProviderClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                null
+            )
+        }
     }
 
     private fun stopLocationUpdates() {
@@ -448,7 +454,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     override fun onDestroy() {
         super.onDestroy()
         Timber.d("onDestroy")
-        locationCallback = null
     }
 }
 
