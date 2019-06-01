@@ -54,7 +54,7 @@ class SweetLocHelper @Inject constructor(
     fun checkUser(): Single<Boolean> {
         return Single.create { emitter: SingleEmitter<Boolean> ->
             runBlocking {
-                val userEntity = userRepository.getUserEntity()
+                val userEntity = userRepository.getUserEntitySuspend()
                 val firebaseUser = FirebaseAuth.getInstance().currentUser
 
                 if (userEntity != null && firebaseUser != null) {

@@ -10,6 +10,7 @@ import com.aykuttasil.sweetloc.data.repository.RoomRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import io.reactivex.rxkotlin.addTo
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class RoomListViewModel @Inject constructor(
@@ -22,14 +23,15 @@ class RoomListViewModel @Inject constructor(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun getRoomList(): LiveData<List<RoomEntity>> {
-        val user = userRepository.getUserEntity()!!
-        roomRepository.getUserRooms(user.userId)
-            .subscribe({ roomList ->
-                liveRoomEntityList.postValue(roomList)
-            }, {
-                it.printStackTrace()
-            }).addTo(disposables)
-
+        launch {
+            val user = userRepository.getUserEntitySuspend()!!
+            roomRepository.getUserRooms(user.userId)
+                .subscribe({ roomList ->
+                    liveRoomEntityList.postValue(roomList)
+                }, {
+                    it.printStackTrace()
+                }).addTo(disposables)
+        }
         return liveRoomEntityList
     }
 }
@@ -90,7 +92,7 @@ queryUser.addListenerForSingleValueEvent(object : ValueEventListener {
                     modelUserTracker.token = modelUser?.token
                     modelUserTracker.save()
 
-                    mAdapter.addLocation(modelUserTracker)
+                    mAdapter.addUserLocation(modelUserTracker)
                 }
             }
             */

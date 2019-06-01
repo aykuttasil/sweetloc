@@ -20,7 +20,6 @@ import androidx.navigation.ui.NavigationUI
 import com.afollestad.assent.Permission
 import com.afollestad.assent.runWithPermissions
 import com.aykuttasil.sweetloc.R
-import com.aykuttasil.sweetloc.data.repository.UserRepository
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
 import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
@@ -39,9 +38,6 @@ import javax.inject.Inject
 open class MainActivity : BaseActivity() {
 
     @Inject
-    lateinit var userRepository: UserRepository
-
-    @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
     val viewModel by viewModels<MainActivityViewModel> { viewModelFactory }
@@ -50,7 +46,8 @@ open class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val isLogin = userRepository.checkUser()
+
+        val isLogin = viewModel.checkUser()
         if (!isLogin) {
             startActivity(Intent(this, LoginActivity::class.java))
             return
