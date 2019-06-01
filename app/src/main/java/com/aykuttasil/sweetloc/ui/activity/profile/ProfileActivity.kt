@@ -9,13 +9,13 @@ import com.aykuttasil.androidbasichelperlib.UiHelper
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.helper.SweetLocHelper
-import com.aykuttasil.sweetloc.ui.activity.base.LoginBaseActivity
+import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
 import com.aykuttasil.sweetloc.ui.activity.main.MainActivity
 import com.aykuttasil.sweetloc.ui.fragment.profile.ProfileViewModel
 import kotlinx.android.synthetic.main.activity_profile.*
 import javax.inject.Inject
 
-open class ProfileActivity : LoginBaseActivity() {
+open class ProfileActivity : BaseActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -56,7 +56,7 @@ open class ProfileActivity : LoginBaseActivity() {
         when (item.itemId) {
             R.id.actionCikisYap -> {
                 val dialog = UiHelper.UiDialog.newInstance(this)
-                        .getOKCancelDialog("Çıkış Yap", "Devam edilsin mi?", null)
+                    .getOKCancelDialog("Çıkış Yap", "Devam edilsin mi?", null)
 
                 dialog.positiveButton {
                     dialog.dismiss()
