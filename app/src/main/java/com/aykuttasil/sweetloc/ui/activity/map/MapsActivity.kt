@@ -3,13 +3,13 @@ package com.aykuttasil.sweetloc.ui.activity.map
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.content.IntentSender
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.NavUtils
 import androidx.lifecycle.Observer
@@ -22,14 +22,10 @@ import com.aykuttasil.sweetloc.data.LocationEntity
 import com.aykuttasil.sweetloc.data.UserModel
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
+import com.aykuttasil.sweetloc.util.LocationLiveData
 import com.aykuttasil.sweetloc.util.extension.setupToolbar
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -65,20 +61,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     private var _googleMap: GoogleMap? = null
     private var _mapMarker: HashMap<Marker, LocationEntity> = HashMap()
     private var _snackBarKonum: Snackbar? = null
-    private var _requestingLocationUpdates: Boolean = false
-
-    private lateinit var _fusedLocationProviderClient: FusedLocationProviderClient
-
-
-    private val locationRequest: LocationRequest = LocationRequest.create()
-        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-        .setInterval(30000)
-        .setFastestInterval(5000)
-
-    private val locationSettingsRequest: LocationSettingsRequest = LocationSettingsRequest.Builder()
-        .addLocationRequest(locationRequest)
-        .setAlwaysShow(true)
-        .build()
 
     private val TURKEY = LatLngBounds(
         LatLng(36.299172, 26.248221), //Güney Batı
@@ -90,9 +72,8 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         setContentView(R.layout.activity_maps)
         setToolbar()
 
+        updateLocation()
         initMap()
-        initLocationListener()
-        _fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         _viewModel.getRoomMembersLocation(args.roomId).observe(this, Observer { roomLoc ->
             addMarker(roomLoc.user!!, roomLoc.location)
@@ -100,11 +81,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         })
 
         FabMap.setOnClickListener { fabMapClick() }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (_requestingLocationUpdates) startLocationUpdates()
     }
 
     private fun setToolbar() {
@@ -159,147 +135,35 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             setOnInfoWindowClickListener(this@MapsActivity)
             isTrafficEnabled = true
         }
-
-        //setMap()
-    }
-
-    private fun initLocationListener() {
-        LocationServices.getSettingsClient(this@MapsActivity).checkLocationSettings(locationSettingsRequest)
-            .addOnSuccessListener {
-                _requestingLocationUpdates = true
-                startLocationUpdates()
-            }
-            .addOnFailureListener { exception ->
-                if (exception is ResolvableApiException) {
-                    // Location settings are not satisfied, but this can be fixed
-                    // by showing the user a dialog.
-                    try {
-                        // Show the dialog by calling startResolutionForResult(),
-                        // and check the result in onActivityResult().
-                        exception.startResolutionForResult(
-                            this@MapsActivity,
-                            REQUEST_CHECK_SETTINGS
-                        )
-                    } catch (sendEx: IntentSender.SendIntentException) {
-                        // Ignore the error.
-                    }
-                }
-            }
-
-        /*
-        val disposable = rxLocation.settings()
-            .checkAndHandleResolution(locationSettingsRequest)
-            .flatMapObservable { granted ->
-                return@flatMapObservable if (granted) {
-                    rxLocation.settings()
-                        .checkAndHandleResolution(locationSettingsRequest)
-                        .flatMapObservable { rxLocation.sendMyLocation().updates(locationRequest) }
-                } else {
-                    return@flatMapObservable Observable.error<Throwable>(Exception("Konum izni gerekli."))
-                }
-            }
-            .retry() // Eğer onError çalışırsa tekrar subscribe olunuyor
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                SweetLocHelper.sendLocationInformation(it)
-            }, { error ->
-                Logger.e(error, "HATA")
-                //SweetLocHelper.CrashlyticsError(error)
-            })
-
-        mCompositeDisposible.add(disposable)
-        */
     }
 
     /**
      * For leak problem: https://stackoverflow.com/questions/43135948/memory-leak-when-removing-location-update-from-a-fragment-in-onpause
      */
-    private var locationCallback: LocationCallback? = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult?) {
-            locationResult ?: return
-
-            for (location in locationResult.locations) {
-                _viewModel.updateLocation(location)
-            }
-        }
-    }
-
-
     @SuppressLint("MissingPermission")
-    private fun startLocationUpdates() {
-        runWithPermissions(Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION) {
+    private fun updateLocation() {
+        runWithPermissions(Permission.ACCESS_FINE_LOCATION) {
             _googleMap?.isMyLocationEnabled = true
 
-            _fusedLocationProviderClient.requestLocationUpdates(
-                locationRequest,
-                locationCallback,
-                null
-            )
+            LocationLiveData.create(
+                this,
+                25_000,
+                5_000,
+                LocationRequest.PRIORITY_HIGH_ACCURACY,
+                onErrorCallback = object : LocationLiveData.OnErrorCallback {
+                    override fun onLocationSettingsException(e: ApiException) {
+                        e.printStackTrace()
+                    }
+
+                    override fun onPermissionsMissing() {
+                        Toast.makeText(this@MapsActivity, "Permission is required.", Toast.LENGTH_LONG).show()
+                    }
+                })
+                .observe(this, Observer { loc ->
+                    _viewModel.updateLocation(loc)
+                })
         }
     }
-
-    private fun stopLocationUpdates() {
-        Timber.d("stopLocationUpdates")
-        _fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-    }
-
-    /*
-    @DebugLog
-    private fun setMap() {
-        val databaseReference = FirebaseDatabase.getInstance().reference
-
-        for (modelUserTracker in DbManager.getModelUserTracker()) {
-            databaseReference.child(ModelLocation::class.java.simpleName)
-                    .child(modelUserTracker.uuid)
-                    .limitToLast(1)
-                    .addChildEventListener(object : ChildEventListener {
-
-                        override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
-                            val modelLocation = dataSnapshot.getValue(ModelLocation::class.java)
-                            addMarker(modelUserTracker, modelLocation)
-                        }
-
-                        override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
-                            val modelLocation = dataSnapshot.getValue(ModelLocation::class.java)
-                            Logger.d(modelLocation)
-                            addMarker(modelUserTracker, modelLocation)
-                        }
-
-                        override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-
-                        }
-
-                        override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
-
-                        }
-
-                        override fun onCancelled(databaseError: DatabaseError) {
-
-                        }
-                    })
-        }
-    }
-
-
-    private fun addMarker(user: UserEntity, location: ModelLocation) {
-        val latLng = LatLng(location.latitude, location.longitude)
-        val marker = _googleMap?.addMarker(
-                MarkerOptions()
-                        .position(latLng)
-                        .title(user.email)
-
-                //.icon(BitmapDescriptorFactory.fromBitmap())
-                //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                //.title(title)
-                //.snippet(snippet)
-        )
-
-        _mapMarker[marker!!] = location
-        _googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.position, 10.0f))
-        marker.showInfoWindow()
-    }
-    */
-
 
     private fun addMarker(user: UserModel, location: LocationEntity?) {
         val latLng = LatLng(location!!.latitude!!, location.longitude!!)
@@ -437,23 +301,14 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         when (requestCode) {
             REQUEST_CHECK_SETTINGS -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    startLocationUpdates()
+                    updateLocation()
+                    // startLocationUpdates()
                 }
             }
             else -> {
                 super.onActivityResult(requestCode, resultCode, data)
             }
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        stopLocationUpdates()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Timber.d("onDestroy")
     }
 }
 
