@@ -6,17 +6,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
-import com.aykuttasil.sweetloc.data.LocationEntity
-import com.aykuttasil.sweetloc.data.RoomLocationModel
 import com.aykuttasil.sweetloc.data.repository.LocationRepository
 import com.aykuttasil.sweetloc.data.repository.RoomRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
+import com.aykuttasil.sweetloc.data.toLocationEntity
 import com.aykuttasil.sweetloc.helper.SweetLocHelper
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.rx2.await
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
@@ -42,26 +40,16 @@ class MainActivityViewModel @Inject constructor(
     fun updateLocation(location: Location?) {
         launch {
             location?.let {
-                val locationEntity = LocationEntity().apply {
-                    latitude = it.latitude
-                    longitude = it.longitude
-                    accuracy = it.accuracy
-                    time = it.time
-                }
-                val user = userRepository.getUserEntity()
-                user?.let {
-                    withContext(Dispatchers.Default) {
-                        locationRepository.addLocation(user.userId, locationEntity).await()
-
-                        val roomLocation = RoomLocationModel(user, locationEntity)
-                        val roomList = roomRepository.getUserRooms(user.userId).await()
-                        for (room in roomList) {
-                            locationRepository.addRoomLocation(room.roomId!!, roomLocation).await()
-                        }
-                    }
+                userRepository.getUserEntitySuspend()?.let { user ->
+                    val roomList = roomRepository.getUserRooms(user.userId).await()
+                    locationRepository.addUserAndRoomLocation(user, it.toLocationEntity(), roomList).await()
                 }
             }
         }
+    }
+
+    fun checkUser(): Boolean = runBlocking {
+        userRepository.checkUser()
     }
 
 
