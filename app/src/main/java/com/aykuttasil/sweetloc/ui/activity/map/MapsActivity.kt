@@ -176,7 +176,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
                 _googleMap?.clear()
                 break
             }
-
         }
 
         _googleMap?.addMarker(
@@ -189,7 +188,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         )?.also { marker ->
             _mapMarker[marker] = location
         }
-
 
         /*
         val weakReference = WeakReference(marker)
@@ -215,10 +213,9 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             */
 
         // _mapMarker[marker!!] = location
-        //_googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 10.0f));
-        //marker.showInfoWindow();
+        // _googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 10.0f));
+        // marker.showInfoWindow();
     }
-
 
     /**
      * InfoWindow için custom view oluştururken ilk buraya girer. Eğer null dönerse getInfoContents'e girer.
@@ -286,7 +283,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         //SweetLocHelper.sendNotif(Const.ACTION_KONUM_YOLLA)
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -302,7 +298,6 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             REQUEST_CHECK_SETTINGS -> {
                 if (resultCode == Activity.RESULT_OK) {
                     updateLocation()
-                    // startLocationUpdates()
                 }
             }
             else -> {
