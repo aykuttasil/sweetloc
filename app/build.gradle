@@ -22,8 +22,8 @@ android {
         applicationId "com.aykuttasil.sweetloc"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 7
-        versionName "1.0.6"
+        versionCode 8
+        versionName "1.0.7"
         multiDexEnabled true
         manifestPlaceholders = [onesignal_app_id               : "283c0725-f1ae-434a-8ea5-09f61b1246fc",
                                 // Project number pulled from dashboard, local value is ignored.
