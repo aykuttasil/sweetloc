@@ -5,9 +5,6 @@ import android.os.Looper
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
-/**
- * Created by aykutasil on 11.01.2018.
- */
 private val IO_EXECUTOR = Executors.newSingleThreadExecutor()
 private val NETWORK_EXECUTOR = Executors.newFixedThreadPool(3)
 private val MAIN_EXECUTOR = MainThreadExecutor()

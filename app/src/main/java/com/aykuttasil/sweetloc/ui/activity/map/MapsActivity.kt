@@ -63,8 +63,8 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     private var _snackBarKonum: Snackbar? = null
 
     private val TURKEY = LatLngBounds(
-        LatLng(36.299172, 26.248221), //Güney Batı
-        LatLng(41.835412, 44.781357) //Kuzey Doğu
+        LatLng(36.299172, 26.248221), // Güney Batı
+        LatLng(41.835412, 44.781357) // Kuzey Doğu
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -146,7 +146,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             _googleMap?.isMyLocationEnabled = true
 
             LocationLiveData.create(
-                this,
+                this,g
                 25_000,
                 5_000,
                 LocationRequest.PRIORITY_HIGH_ACCURACY,
@@ -280,7 +280,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             }
         }, TimeUnit.SECONDS.toMillis(WAIT_LOCATION_SECOND.toLong()))
 
-        //SweetLocHelper.sendNotif(Const.ACTION_KONUM_YOLLA)
+        // SweetLocHelper.sendNotif(Const.ACTION_KONUM_YOLLA)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

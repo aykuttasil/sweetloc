@@ -4,12 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
 import com.squareup.picasso.Transformation;
-
-/**
- * Created by aykutasil on 13.12.2016.
- */
 
 public class PicassoCircleTransform implements Transformation {
     @Override
