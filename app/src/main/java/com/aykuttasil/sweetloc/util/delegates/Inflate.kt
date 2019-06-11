@@ -8,13 +8,14 @@ import androidx.fragment.app.Fragment
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-class Inflate<in R : Fragment, out T : ViewDataBinding>(@LayoutRes private val layoutRes: Int) : ReadOnlyProperty<R, T> {
+class Inflate<in R : Fragment, out T : ViewDataBinding>(@LayoutRes private val layoutRes: Int) :
+    ReadOnlyProperty<R, T> {
 
     private var binding: T? = null
 
     override fun getValue(
-            thisRef: R,
-            property: KProperty<*>
+        thisRef: R,
+        property: KProperty<*>
     ): T {
         if (binding == null) {
             val inflater = thisRef.layoutInflater
