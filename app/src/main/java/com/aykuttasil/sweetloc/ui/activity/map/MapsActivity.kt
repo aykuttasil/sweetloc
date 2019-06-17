@@ -16,7 +16,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.navArgs
 import com.afollestad.assent.Permission
 import com.afollestad.assent.runWithPermissions
-import com.aykuttasil.androidbasichelperlib.UiHelper
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.data.LocationEntity
 import com.aykuttasil.sweetloc.data.UserModel
@@ -40,7 +39,6 @@ import kotlinx.android.synthetic.main.activity_maps.*
 import timber.log.Timber
 import java.util.HashMap
 import java.util.Locale
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWindowAdapter,
@@ -85,7 +83,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
 
     private fun setToolbar() {
         setupToolbar(R.id.toolbar) {
-            title = "Üye Konumları"
+            title = getString(R.string.txt_title_maps)
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_arrow_back_indigo_300_24dp)
             setDisplayShowHomeEnabled(true)
@@ -146,7 +144,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
             _googleMap?.isMyLocationEnabled = true
 
             LocationLiveData.create(
-                this,g
+                this,
                 25_000,
                 5_000,
                 LocationRequest.PRIORITY_HIGH_ACCURACY,
@@ -264,6 +262,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
     }
 
     private fun fabMapClick() {
+        /*
         _snackBarKonum = UiHelper.UiSnackBar.newInstance(
             toolbar,
             "Son konumlar getiriliyor.\n" + "Lütfen bekleyiniz... ", Snackbar.LENGTH_INDEFINITE
@@ -281,6 +280,7 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         }, TimeUnit.SECONDS.toMillis(WAIT_LOCATION_SECOND.toLong()))
 
         // SweetLocHelper.sendNotif(Const.ACTION_KONUM_YOLLA)
+        */
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
