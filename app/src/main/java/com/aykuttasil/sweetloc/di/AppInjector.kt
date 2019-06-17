@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.aykuttasil.sweetloc.App
 import com.aykuttasil.sweetloc.di.components.DaggerAppComponent
@@ -59,8 +60,8 @@ object AppInjector {
             AndroidInjection.inject(activity)
         }
 
-        (activity as? androidx.fragment.app.FragmentActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(
-            object : androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks() {
+        (activity as? FragmentActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(
+            object : FragmentManager.FragmentLifecycleCallbacks() {
                 override fun onFragmentCreated(
                     fm: FragmentManager,
                     f: Fragment,
@@ -70,6 +71,7 @@ object AppInjector {
                         AndroidSupportInjection.inject(f)
                     }
                 }
-            }, true)
+            }, true
+        )
     }
 }
