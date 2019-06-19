@@ -1,12 +1,7 @@
 package com.aykuttasil.sweetloc.ui.fragment.roomlist
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
@@ -17,8 +12,6 @@ import com.aykuttasil.sweetloc.di.Injectable
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.google.firebase.dynamiclinks.DynamicLink
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlinx.android.synthetic.main.fragment_room_list_layout.*
 import javax.inject.Inject
 

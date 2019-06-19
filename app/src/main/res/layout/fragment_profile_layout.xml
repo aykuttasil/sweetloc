@@ -9,9 +9,6 @@
             name="viewModel"
             type="com.aykuttasil.sweetloc.ui.fragment.profile.ProfileViewModel" />
 
-        <variable
-            name="user"
-            type="com.aykuttasil.sweetloc.data.local.entity.UserEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

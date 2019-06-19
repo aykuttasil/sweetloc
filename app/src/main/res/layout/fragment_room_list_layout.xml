@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListFragment">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListViewModel" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,12 +34,5 @@
             app:srcCompat="@drawable/ic_add_black_24dp" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.aykuttasil.sweetloc.ui.fragment.roomlist.RoomListViewModel" />
-    </data>
 
 </layout>
