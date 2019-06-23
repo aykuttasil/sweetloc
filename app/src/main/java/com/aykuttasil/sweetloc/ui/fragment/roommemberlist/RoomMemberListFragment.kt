@@ -20,11 +20,17 @@ import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivityArgs
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.aykuttasil.sweetloc.widget.BottomNavigationDrawerFragment
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.dynamiclinks.ShortDynamicLink
 import kotlinx.android.synthetic.main.room_memberlist_fragment.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.jetbrains.anko.support.v4.share
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class RoomMemberListFragment : BaseFragment(), Injectable {
 
@@ -39,7 +45,7 @@ class RoomMemberListFragment : BaseFragment(), Injectable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+        // setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,9 +63,15 @@ class RoomMemberListFragment : BaseFragment(), Injectable {
 
     override fun initUiComponents() {
         listRoomMember.adapter = RoomMembersAdapter()
+
         fabBottomNavigation.setOnClickListener {
-            val bottomNavDrawerFragment = BottomNavigationDrawerFragment()
-            bottomNavDrawerFragment.show(childFragmentManager, bottomNavDrawerFragment.tag)
+            launch {
+                // val bottomNavDrawerFragment = BottomNavigationDrawerFragment()
+                // bottomNavDrawerFragment.show(childFragmentManager, bottomNavDrawerFragment.tag)
+
+                val link = generateRoomLink(args.roomId, args.roomName!!)
+                share("Sweetloc Room Link For ${args.roomName} : ${link.shortLink}", "Add Member")
+            }
         }
 
         bottomAppBar.setOnMenuItemClickListener {
@@ -93,25 +105,32 @@ class RoomMemberListFragment : BaseFragment(), Injectable {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.itemShare -> {
-                val link = generateRoomLink(args.roomId, args.roomName!!)
-                println(link)
+                launch {
+                    val link = generateRoomLink(args.roomId, args.roomName!!)
+                    println(link)
+                }
             }
         }
         return true
     }
 
-    private fun generateRoomLink(roomId: String, roomName: String): Uri {
-        val baseUrl = Uri.parse("https://sweetloc/rooms/$roomId?roomName=$roomName")
+    private suspend fun generateRoomLink(roomId: String, roomName: String): ShortDynamicLink {
+        return withContext(Dispatchers.Default) {
+            suspendCoroutine<ShortDynamicLink> { cont ->
+                val baseUrl = Uri.parse("https://aykuttasil.github.io/sweetloc/rooms/$roomId?roomName=$roomName")
 
-        val link = FirebaseDynamicLinks.getInstance()
-            .createDynamicLink()
-            .setLink(baseUrl)
-            .setDomainUriPrefix(getString(R.string.dynamic_links_uri_prefix))
-            // .setNavigationInfoParameters()
-            .setAndroidParameters(DynamicLink.AndroidParameters.Builder(BuildConfig.APPLICATION_ID).build())
-            .buildDynamicLink()
-
-        return link.uri
+                FirebaseDynamicLinks.getInstance()
+                    .createDynamicLink()
+                    .setLink(baseUrl)
+                    .setDomainUriPrefix(getString(R.string.dynamic_links_uri_prefix))
+                    // .setNavigationInfoParameters()
+                    .setAndroidParameters(DynamicLink.AndroidParameters.Builder(BuildConfig.APPLICATION_ID).build())
+                    .buildShortDynamicLink()
+                    .addOnSuccessListener {
+                        cont.resume(it)
+                    }
+            }
+        }
     }
 
     /*
