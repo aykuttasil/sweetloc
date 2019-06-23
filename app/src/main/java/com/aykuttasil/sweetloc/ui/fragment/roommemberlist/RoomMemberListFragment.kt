@@ -20,14 +20,13 @@ import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.BaseAndroidViewModel
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivityArgs
 import com.aykuttasil.sweetloc.ui.fragment.BaseFragment
-import com.aykuttasil.sweetloc.ui.fragment.IFragmentContract
 import com.aykuttasil.sweetloc.widget.BottomNavigationDrawerFragment
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import kotlinx.android.synthetic.main.room_memberlist_fragment.*
 import javax.inject.Inject
 
-class RoomMemberListFragment : BaseFragment(), IFragmentContract, Injectable {
+class RoomMemberListFragment : BaseFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
