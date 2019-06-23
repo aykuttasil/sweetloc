@@ -38,7 +38,7 @@
 
                 <data android:scheme="https" />
                 <data android:scheme="http" />
-                <data android:host="sweetloc" />
+                <data android:host="aykuttasil.github.io/sweetloc/" />
                 <data android:pathPrefix="/rooms/" />
             </intent-filter>
         </activity>
