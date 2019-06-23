@@ -35,8 +35,7 @@
             app:fabAlignmentMode="center"
             app:hideOnScroll="true"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:menu="@menu/room_memberlist_bottom"
-            app:navigationIcon="@drawable/ic_backspace_dark">
+            app:menu="@menu/room_memberlist_bottom">
 
         </com.google.android.material.bottomappbar.BottomAppBar>
 
