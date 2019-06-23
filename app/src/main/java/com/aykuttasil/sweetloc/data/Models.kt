@@ -44,10 +44,12 @@ data class LocationEntity(
     var placesName: String? = null
 )
 
+/*
 data class RoomLocationModel(
     var user: UserEntity? = null,
     var location: LocationEntity? = null
 )
+*/
 
 data class RoomMemberLocationModel(
     var user: UserModel? = null,
@@ -75,11 +77,13 @@ fun roomNode(roomId: String) = "${roomsNode()}/$roomId"
 
 fun roomMembersNode(roomId: String) = "${roomNode(roomId)}/members"
 fun roomMemberNode(roomId: String, userId: String) = "${roomMembersNode(roomId)}/$userId"
+fun roomMemberLocationNode(roomId: String, userId: String) = "${roomMemberNode(roomId,userId)}/location"
+fun roomMemberUserNode(roomId: String, userId: String) = "${roomMemberNode(roomId,userId)}/user"
 
-fun roomLocationsNode(roomId: String) = "${roomNode(roomId)}/locations"
+// fun roomLocationsNode(roomId: String) = "${roomNode(roomId)}/locations"
 
-fun roomMembersLocationNode(roomId: String) = "${roomMembersNode(roomId)}/location"
-fun roomMemberLocationNode(roomId: String, userId: String) = "${roomMembersNode(roomId)}/$userId"
+// fun roomMembersLocationNode(roomId: String) = "${roomMembersNode(roomId)}/location"
+
 
 /*----*/
 
