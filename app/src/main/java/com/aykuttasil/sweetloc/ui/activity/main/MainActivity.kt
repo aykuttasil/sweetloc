@@ -124,6 +124,8 @@ open class MainActivity : BaseActivity() {
                     val roomName = deepLink.getQueryParameter("roomName")
                     val roomId = deepLink.lastPathSegment
 
+                    Timber.d("roomId:$roomId roomName:$roomName")
+
                     val direction =
                         RoomMemberListFragmentDirections.actionGlobalRoomMemberListFragment(roomId!!, roomName!!, true)
                     navController.navigate(direction)
