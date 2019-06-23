@@ -2,11 +2,8 @@ package com.aykuttasil.sweetloc.data.repository
 
 import com.aykuttasil.sweetloc.data.LocationEntity
 import com.aykuttasil.sweetloc.data.RoomEntity
-import com.aykuttasil.sweetloc.data.RoomLocationModel
 import com.aykuttasil.sweetloc.data.RoomMemberLocationModel
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
-import com.aykuttasil.sweetloc.data.local.entity.toUserModel
-import com.aykuttasil.sweetloc.data.roomLocationsNode
 import com.aykuttasil.sweetloc.data.roomMemberLocationNode
 import com.aykuttasil.sweetloc.data.roomMembersNode
 import com.aykuttasil.sweetloc.data.userLocationsNode
@@ -24,6 +21,8 @@ import javax.inject.Inject
 class LocationRepository @Inject constructor(
     private val databaseReference: DatabaseReference
 ) {
+
+    /*
 
     fun addUserLocation(userId: String, locationEntity: LocationEntity): Completable {
         return Completable.create { emitter ->
@@ -91,6 +90,7 @@ class LocationRepository @Inject constructor(
                 }
         }
     }
+    */
 
     fun addUserAndRoomLocation(
         user: UserEntity,
@@ -110,7 +110,8 @@ class LocationRepository @Inject constructor(
                                     user.userId
                                 )
                             )
-                                .setValue(RoomMemberLocationModel(user.toUserModel(), locationEntity))
+                                //.setValue(RoomMemberLocationModel(user.toUserModel(), locationEntity))
+                                .setValue(locationEntity)
                                 .addOnSuccessListener {
                                     emitter.onComplete()
                                 }
@@ -130,6 +131,8 @@ class LocationRepository @Inject constructor(
         }
     }
 
+
+    /*
     fun addUserAndRoomLocation(
         userId: String,
         roomId: String,
@@ -168,6 +171,8 @@ class LocationRepository @Inject constructor(
                 }
         }
     }
+
+    */
 
     fun getRoomMembersLocations(roomId: String): Flowable<RoomMemberLocationModel> {
         return Flowable.create<RoomMemberLocationModel>({ emitter ->

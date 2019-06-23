@@ -3,7 +3,7 @@ package com.aykuttasil.sweetloc.data.repository
 import com.aykuttasil.sweetloc.data.RoomEntity
 import com.aykuttasil.sweetloc.data.RoomMemberLocationModel
 import com.aykuttasil.sweetloc.data.local.entity.UserEntity
-import com.aykuttasil.sweetloc.data.roomMemberNode
+import com.aykuttasil.sweetloc.data.roomMemberUserNode
 import com.aykuttasil.sweetloc.data.roomMembersNode
 import com.aykuttasil.sweetloc.data.roomNode
 import com.aykuttasil.sweetloc.data.roomsNode
@@ -57,7 +57,7 @@ class RoomRepository @Inject constructor(
 
     fun addRoomMember(userId: String, roomId: String, userEntity: UserEntity): Completable {
         return Completable.create { emitter ->
-            val record = databaseReference.child(roomMemberNode(roomId, userId))
+            val record = databaseReference.child(roomMemberUserNode(roomId, userId))
             record.setValue(userEntity)
                 .addOnSuccessListener {
                     emitter.onComplete()
