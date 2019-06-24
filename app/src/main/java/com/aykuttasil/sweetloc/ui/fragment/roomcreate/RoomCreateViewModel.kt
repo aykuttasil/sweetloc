@@ -2,6 +2,7 @@ package com.aykuttasil.sweetloc.ui.fragment.roomcreate
 
 import android.app.Application
 import android.net.Uri
+import androidx.lifecycle.MutableLiveData
 import com.aykuttasil.sweetloc.data.RoomEntity
 import com.aykuttasil.sweetloc.data.repository.RoomRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
@@ -21,20 +22,27 @@ class RoomCreateViewModel @Inject constructor(
     val roomRepository: RoomRepository
 ) : BaseAndroidViewModel(app) {
 
-    fun createRoom(roomName: String) {
+    val liveRoomName: MutableLiveData<String> = MutableLiveData()
+
+    fun createRoom() {
         launch {
-            val isExistRoomName = withContext(Dispatchers.Default) { roomRepository.isExistRoomName(roomName).await() }
-            if (!isExistRoomName) {
-                val user = userRepository.getUserEntitySuspend()
-                val room = RoomEntity(roomName = roomName, roomOwner = user?.userId)
-                val roomId = withContext(Dispatchers.Default) { roomRepository.addRoom(room).await() }
+            liveRoomName.value?.let { roomName ->
+                val isExistRoomName =
+                    withContext(Dispatchers.Default) { roomRepository.isExistRoomName(roomName).await() }
+                if (!isExistRoomName) {
+                    val user = userRepository.getUserEntitySuspend()
+                    val room = RoomEntity(roomName = roomName, roomOwner = user?.userId)
+                    val roomId = withContext(Dispatchers.Default) { roomRepository.addRoom(room).await() }
 
-                withContext(Dispatchers.Default) { roomRepository.addUserRoom(user!!.userId, roomId, room).await() }
-                withContext(Dispatchers.Default) { roomRepository.addRoomMember(user!!.userId, roomId, user).await() }
+                    withContext(Dispatchers.Default) { roomRepository.addUserRoom(user!!.userId, roomId, room).await() }
+                    withContext(Dispatchers.Default) {
+                        roomRepository.addRoomMember(user!!.userId, roomId, user).await()
+                    }
 
-                liveSnackbar.value = "Room added."
-            } else {
-                liveSnackbar.value = "Room didn't add!"
+                    liveSnackbar.value = "Room added."
+                } else {
+                    liveSnackbar.value = "Room didn't add!"
+                }
             }
         }
     }
