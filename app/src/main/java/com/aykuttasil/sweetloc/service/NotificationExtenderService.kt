@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.service
 
 import android.content.Context
@@ -23,9 +24,8 @@ class NotificationExtenderService : com.onesignal.NotificationExtenderService() 
             builder.setColor(BigInteger("FF00FF00", 16).toInt())
         }
 
-        //OSNotificationDisplayedResult displayedResult = displayNotification(overrideSettings);
-        //Logger.d("Notification displayed with id: " + displayedResult.androidNotificationId);
-
+        // OSNotificationDisplayedResult displayedResult = displayNotification(overrideSettings);
+        // Logger.d("Notification displayed with id: " + displayedResult.androidNotificationId);
 
         try {
             Logger.json(notification.payload.toJSONObject().toString())
@@ -60,7 +60,6 @@ class NotificationExtenderService : com.onesignal.NotificationExtenderService() 
                 if (customKey != null) {
                     Logger.i("customkey set with value: $customKey")
                 }
-
             } else {
                 val displayedResult = displayNotification(overrideSettings)
                 Logger.d("OneSignalExample", "Notification displayed with id: " + displayedResult.androidNotificationId)

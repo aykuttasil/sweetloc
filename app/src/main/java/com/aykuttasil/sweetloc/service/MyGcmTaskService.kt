@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.service
 
 import android.os.Bundle
@@ -13,7 +14,6 @@ import org.greenrobot.eventbus.EventBus
 class MyGcmTaskService : GcmTaskService() {
 
     override fun onInitializeTasks() {
-
     }
 
     override fun onRunTask(taskParams: TaskParams): Int {
@@ -35,7 +35,6 @@ class MyGcmTaskService : GcmTaskService() {
             EventBus.getDefault().post(errorEvent)
             return GcmNetworkManager.RESULT_RESCHEDULE
         }
-
     }
 
     private fun SchedulerLocationTask(bundle: Bundle): Int {
@@ -99,13 +98,11 @@ class MyGcmTaskService : GcmTaskService() {
         private val TAG = MyGcmTaskService::class.java.simpleName
     }
 
-    //////////////
-
+    // ////////////
 
     /*
     private ZiyaretResponse sendZiyaretProcess(ZiyaretRequest ziyaretRequest) {
         return ReaktifApiManager.getInstance(getApplicationContext()).ZiyaretSync(ziyaretRequest);
     }
     */
-
 }

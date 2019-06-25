@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.data.repository
 
 import com.aykuttasil.sweetloc.data.LocationEntity
@@ -16,7 +17,6 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
-
 
 class LocationRepository @Inject constructor(
     private val databaseReference: DatabaseReference
@@ -110,7 +110,7 @@ class LocationRepository @Inject constructor(
                                     user.userId
                                 )
                             )
-                                //.setValue(RoomMemberLocationModel(user.toUserModel(), locationEntity))
+                                // .setValue(RoomMemberLocationModel(user.toUserModel(), locationEntity))
                                 .setValue(locationEntity)
                                 .addOnSuccessListener {
                                     emitter.onComplete()
@@ -119,18 +119,15 @@ class LocationRepository @Inject constructor(
                                     emitter.onError(it)
                                 }
                         }
-
                     } else {
                         emitter.onComplete()
                     }
-
                 }
                 .addOnFailureListener {
                     emitter.onError(it)
                 }
         }
     }
-
 
     /*
     fun addUserAndRoomLocation(

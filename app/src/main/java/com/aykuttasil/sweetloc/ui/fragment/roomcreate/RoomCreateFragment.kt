@@ -1,7 +1,7 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.roomcreate
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,5 +44,4 @@ class RoomCreateFragment : BaseFragment(), Injectable {
     override fun getViewModel(): BaseAndroidViewModel {
         return viewModel
     }
-
 }

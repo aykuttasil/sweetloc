@@ -5,8 +5,14 @@ buildscript {
     repositories {
         google()
         jcenter()
+
+        mavenLocal()
+        maven { url "https://jitpack.io" }
+        maven { url "http://dl.bintray.com/android/android-tools" }
         maven { url 'https://maven.fabric.io/public' }
+        maven { url "https://dl.bintray.com/mockito/maven/" }
     }
+
     dependencies {
         classpath(Libs.com_android_tools_build_gradle)
         classpath(Libs.kotlin_gradle_plugin)
@@ -36,5 +42,30 @@ allprojects {
         maven { url "http://dl.bintray.com/android/android-tools" }
         maven { url 'https://maven.fabric.io/public' }
         maven { url "https://dl.bintray.com/mockito/maven/" }
+    }
+}
+
+subprojects {
+    buildscript {
+        repositories {
+            google()
+            jcenter()
+
+            mavenLocal()
+            maven { url "https://jitpack.io" }
+            maven { url "http://dl.bintray.com/android/android-tools" }
+            maven { url 'https://maven.fabric.io/public' }
+            maven { url "https://dl.bintray.com/mockito/maven/" }
+        }
+    }
+
+    apply plugin: 'com.diffplug.gradle.spotless'
+    spotless {
+        kotlin {
+            target '**/*.kt'
+            ktlint('0.24.0')
+            licenseHeader '/* Author - Aykut Asil(aykuttasil) */'
+            // licenseHeaderFile project.rootProject.file('tools/copyright.kt')
+        }
     }
 }

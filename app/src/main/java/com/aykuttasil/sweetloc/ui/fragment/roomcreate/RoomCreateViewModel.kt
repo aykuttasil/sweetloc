@@ -1,9 +1,9 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.roomcreate
 
 import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.aykuttasil.sweetloc.data.RoomEntity
 import com.aykuttasil.sweetloc.data.repository.RoomRepository
 import com.aykuttasil.sweetloc.data.repository.UserRepository
@@ -89,7 +89,5 @@ class RoomCreateViewModel @Inject constructor(
                 // mInvitationUrl = shortDynamicLink.shortLink
                 // ...
             }
-
     }
-
 }

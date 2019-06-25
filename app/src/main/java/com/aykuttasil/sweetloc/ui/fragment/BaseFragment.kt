@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment
 
 import android.os.Bundle
@@ -70,5 +71,4 @@ abstract class BaseFragment : Fragment(), IFragmentContract, CoroutineScope {
     fun dismissProgress() {
         getBaseActivity().dismissProgressDialog()
     }
-
 }

@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.data.repository
 
 import com.aykuttasil.sweetloc.data.local.dao.UserDao
@@ -119,14 +120,12 @@ class UserRepository @Inject constructor(
             )
             // it.setValue(userEntity)
         }.toSingle { userEntity }
-
     }
 
     fun updateUserToRemote(userId: String, map: Map<String, Any?>): Completable {
         return processUserToRemote(userId) {
             it.updateChildren(map)
-        }//.toSingle { userEntity }
-
+        } // .toSingle { userEntity }
     }
 
     fun insertUserToRemote(userEntity: UserEntity): Single<UserEntity> {
@@ -176,5 +175,4 @@ class UserRepository @Inject constructor(
             }
         }
     }
-
 }

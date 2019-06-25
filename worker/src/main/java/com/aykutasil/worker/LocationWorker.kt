@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykutasil.worker
 
 import android.content.Context
@@ -17,5 +18,4 @@ class LocationWorker(
             Result.retry()
         }
     }
-
 }

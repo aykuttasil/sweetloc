@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.util.extension
 
 import android.app.Activity
@@ -390,10 +391,10 @@ fun SnapHelper.snapToPosition(
 fun Activity.isKeyboardVisible(): Boolean {
     val r = Rect()
 
-    //r will be populated with the coordinates of your view that area still visible.
+    // r will be populated with the coordinates of your view that area still visible.
     window.decorView.getWindowVisibleDisplayFrame(r)
 
-    //get screen height and calculate the difference with the usable area from the r
+    // get screen height and calculate the difference with the usable area from the r
     val height = getDisplaySize().y
     val diff = height - r.bottom
 

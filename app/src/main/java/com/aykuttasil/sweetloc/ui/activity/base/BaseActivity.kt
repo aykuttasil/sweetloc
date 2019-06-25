@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.activity.base
 
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +22,6 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, C
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
-
 
     private val progressDialog: ProgressDialogFragment by lazy {
         ProgressDialogFragment().apply {
@@ -149,6 +149,4 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, C
     //
     //        alarmManager.cancel(pendingIntent);
     //    }
-
-
 }

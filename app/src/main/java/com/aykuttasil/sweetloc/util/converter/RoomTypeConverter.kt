@@ -1,7 +1,8 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.util.converter
 
 import androidx.room.TypeConverter
-import java.util.*
+import java.util.Date
 
 /**
  * Created by aykutasil on 27.12.2017.
@@ -17,5 +18,4 @@ class RoomTypeConverter {
     fun fromLongToDate(long: Long): Date {
         return Date(long)
     }
-
 }

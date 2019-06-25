@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.usergroup
 
 import android.os.Bundle
@@ -28,7 +29,6 @@ class UserGroupsFragment : BaseFragment(), Injectable {
     }
 
     override fun initUiComponents() {
-
     }
 
     override fun initViewModel() {

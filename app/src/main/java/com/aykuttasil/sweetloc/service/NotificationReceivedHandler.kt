@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.service
 
 import com.onesignal.OSNotification
@@ -41,7 +42,5 @@ class NotificationReceivedHandler : OneSignal.NotificationReceivedHandler {
             Logger.e(e, "HATA");
         }
         */
-
-
     }
 }

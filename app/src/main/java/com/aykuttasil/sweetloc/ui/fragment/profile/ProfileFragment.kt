@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.profile
 
 import android.content.Intent
@@ -50,7 +51,6 @@ class ProfileFragment : BaseFragment(), Injectable {
     }
 
     override fun initUiComponents() {
-
     }
 
     override fun getViewModel(): BaseAndroidViewModel {
@@ -72,5 +72,4 @@ class ProfileFragment : BaseFragment(), Injectable {
         }
         */
     }
-
 }

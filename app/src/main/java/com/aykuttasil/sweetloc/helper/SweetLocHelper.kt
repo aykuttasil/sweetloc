@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.helper
 
 import android.app.AlarmManager
@@ -100,9 +101,8 @@ class SweetLocHelper @Inject constructor(
                 })
                 .subscribeOn(Schedulers.io())
                 */
-        //return FirebaseAuth.getInstance().currentUser != null && dataManager.getUser().blockingGet() != null
+        // return FirebaseAuth.getInstance().currentUser != null && dataManager.getUser().blockingGet() != null
     }
-
 
     /*
     @DebugLog
@@ -233,8 +233,8 @@ class SweetLocHelper @Inject constructor(
                      */
 
                     if (BuildConfig.DEBUG) {
-                        //playerIds.put("428ef398-76d3-4ca9-ab4c-60d591879365");
-                        //playerIds.put("cebff33f-4274-49d1-b8ee-b1126325e169");
+                        // playerIds.put("428ef398-76d3-4ca9-ab4c-60d591879365");
+                        // playerIds.put("cebff33f-4274-49d1-b8ee-b1126325e169");
                     }
 
                     mainObject.put("include_player_ids", playerIds)

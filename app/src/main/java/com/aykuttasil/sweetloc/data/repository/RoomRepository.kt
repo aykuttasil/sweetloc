@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.data.repository
 
 import com.aykuttasil.sweetloc.data.RoomEntity
@@ -17,7 +18,6 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
-
 
 class RoomRepository @Inject constructor(
     private val userRepository: UserRepository,
@@ -232,5 +232,4 @@ class RoomRepository @Inject constructor(
             emitter.setCancellable { childReference.removeEventListener(listener) }
         }.observeOn(Schedulers.io())
     }
-
 }

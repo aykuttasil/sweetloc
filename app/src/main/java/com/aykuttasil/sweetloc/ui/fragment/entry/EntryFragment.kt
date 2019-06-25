@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.entry
 
 import android.content.Intent
@@ -105,8 +106,8 @@ class EntryFragment : BaseFragment(), Injectable {
             confirm = "Confirm"
             backgroundAlpha = 0.6f
             lifecycleOwner = this@EntryFragment
-            //needsTheme = theme
-            //needsItemTheme = itemTheme
+            // needsTheme = theme
+            // needsItemTheme = itemTheme
             needsAnimation = NeedsAnimation.CIRCULAR
         }
 
@@ -115,7 +116,6 @@ class EntryFragment : BaseFragment(), Injectable {
                 needs.dismiss()
                 viewModel.liveSnackbar.value = "Confirmed"
             }
-
         })
         return needs
     }

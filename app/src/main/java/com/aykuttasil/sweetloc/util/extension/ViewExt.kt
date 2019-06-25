@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.util.extension
 
 import android.view.View
@@ -38,8 +39,8 @@ fun View.setupSnackbar(lifecycleOwner: LifecycleOwner,
  *
  * Creates the `android:onRefresh` for a [SwipeRefreshLayout].
  */
-//@BindingAdapter("android:onRefresh")
-//fun ScrollChildSwipeRefreshLayout.setSwipeRefreshLayoutOnRefreshListener(
+// @BindingAdapter("android:onRefresh")
+// fun ScrollChildSwipeRefreshLayout.setSwipeRefreshLayoutOnRefreshListener(
 //        viewModel: TasksViewModel) {
 //    setOnRefreshListener { viewModel.loadTasks(true) }
-//}
+// }

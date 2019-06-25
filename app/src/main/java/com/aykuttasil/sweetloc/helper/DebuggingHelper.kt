@@ -1,5 +1,5 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.helper
-
 
 object DebuggingHelper {
 
@@ -11,7 +11,6 @@ object DebuggingHelper {
                 System.out.printf("Field name: %s, Field value: %s%n", name, value)
             } catch (t: Throwable) {
             }
-
         }
     }
 }

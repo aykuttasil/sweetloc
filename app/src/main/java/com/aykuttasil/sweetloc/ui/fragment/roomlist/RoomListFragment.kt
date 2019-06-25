@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.roomlist
 
 import android.os.Bundle
@@ -52,8 +53,6 @@ open class RoomListFragment : BaseFragment(), Injectable {
     override fun initViewModel() {
         binding.viewModel = viewModel
         lifecycle.addObserver(viewModel)
-
-        
     }
 
     override fun getViewModel(): BaseAndroidViewModel {

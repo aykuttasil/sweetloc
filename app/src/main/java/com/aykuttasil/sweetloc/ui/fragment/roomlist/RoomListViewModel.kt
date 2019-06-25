@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.roomlist
 
 import android.app.Application
@@ -37,7 +38,6 @@ class RoomListViewModel @Inject constructor(
 }
 
 // if (liveRoomEntityList.value != null) return liveRoomEntityList
-
 
 /*
 launch {

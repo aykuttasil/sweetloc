@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.profile
 
 import android.app.Application
@@ -40,7 +41,6 @@ class ProfileViewModel @Inject constructor(
                 liveLogout.value = true
             },
             actionCancel = {
-
             })
 
         /*

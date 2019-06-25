@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.activity.main
 
 import android.app.Application
@@ -51,7 +52,6 @@ class MainActivityViewModel @Inject constructor(
     fun checkUser(): Boolean = runBlocking {
         userRepository.checkUser()
     }
-
 
     /*
     fun checkUserLogin(): LiveData<Boolean> {

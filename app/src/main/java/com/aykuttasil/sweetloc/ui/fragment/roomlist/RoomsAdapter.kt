@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.roomlist
 
 import android.view.LayoutInflater
@@ -23,7 +24,7 @@ class RoomsAdapter : ListAdapter<RoomEntity, RoomsAdapter.MyViewHolder>(DIFF_CAL
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(getItem(position));
+        holder.bind(getItem(position))
     }
 
     override fun setData(items: List<RoomEntity>) {
@@ -68,7 +69,6 @@ class RoomsAdapter : ListAdapter<RoomEntity, RoomsAdapter.MyViewHolder>(DIFF_CAL
             override fun areContentsTheSame(oldItem: RoomEntity, newItem: RoomEntity): Boolean {
                 return oldItem.roomName == newItem.roomName
             }
-
         }
     }
 }

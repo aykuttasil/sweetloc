@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.util.extension
 
 fun <T> ArrayList<T>.addIfAbsent(data: T) {

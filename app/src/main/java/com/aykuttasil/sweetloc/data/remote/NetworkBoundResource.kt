@@ -1,5 +1,5 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.data.remote
-
 
 /*
 abstract class NetworkBoundResource<ResultType, RequestType> {

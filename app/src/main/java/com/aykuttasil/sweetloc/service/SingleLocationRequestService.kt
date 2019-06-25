@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.service
 
 import android.Manifest
@@ -44,9 +45,9 @@ class SingleLocationRequestService : JobIntentService() {
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
             .setInterval(TimeUnit.SECONDS.toMillis(10))
             .setFastestInterval(TimeUnit.SECONDS.toMillis(5))
-            //.setNumUpdates(1) // Sadece belirttiğimiz miktar kadar (1) sendMyLocation güncellemesi alır
-            //.setExpirationTime() // gerçek zaman vererek sendMyLocation güncellemesi kontrolü yapılabilir. (gereksiz)
-            //.setMaxWaitTime() // her bir sendMyLocation güncellemesi için max bekleme süresini belirtebiliriz. setInterval ile ilişkilidir. dikkat et.
+            // .setNumUpdates(1) // Sadece belirttiğimiz miktar kadar (1) sendMyLocation güncellemesi alır
+            // .setExpirationTime() // gerçek zaman vererek sendMyLocation güncellemesi kontrolü yapılabilir. (gereksiz)
+            // .setMaxWaitTime() // her bir sendMyLocation güncellemesi için max bekleme süresini belirtebiliriz. setInterval ile ilişkilidir. dikkat et.
             .setExpirationDuration(TimeUnit.SECONDS.toMillis(LOCATION_TIMEOUT_IN_SECONDS)) // Belirttiğimiz süre kadar sendMyLocation güncellemesi alır
 
         mDisposable = rxLocation.location()
@@ -68,7 +69,6 @@ class SingleLocationRequestService : JobIntentService() {
                 mDisposable!!.dispose()
                 Logger.e(error, "HATA")
             })
-
     }
 
     override fun onDestroy() {
@@ -80,5 +80,4 @@ class SingleLocationRequestService : JobIntentService() {
         // Konum belirlenip yollanabilmesi için max beklenecek zaman
         private val LOCATION_TIMEOUT_IN_SECONDS: Long = 45
     }
-
 }

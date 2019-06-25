@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.roommemberlist
 
 import android.view.LayoutInflater
@@ -21,7 +22,7 @@ class RoomMembersAdapter : ListAdapter<RoomMemberLocationModel, RoomMembersAdapt
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(getItem(position));
+        holder.bind(getItem(position))
     }
 
     override fun setData(items: List<RoomMemberLocationModel>) {
@@ -64,9 +65,6 @@ class RoomMembersAdapter : ListAdapter<RoomMemberLocationModel, RoomMembersAdapt
             ): Boolean {
                 return oldItem.user?.userName == newItem.user?.userName
             }
-
         }
     }
 }
-
-

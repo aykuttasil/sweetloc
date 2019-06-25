@@ -1,8 +1,8 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.data
 
 import android.location.Location
 import com.aykuttasil.androidbasichelperlib.SuperHelper
-import com.aykuttasil.sweetloc.data.local.entity.UserEntity
 import java.text.DateFormat
 import java.util.Date
 
@@ -18,8 +18,8 @@ data class UserModel(
     var userImageUrl: String? = null,
     var userOneSignalId: String? = null,
     var userCity: String? = null
-    //var userCreateDate: Long? = Date().time,
-    //var userCreateDateString: String? = DateFormat.getInstance().format(Date())
+    // var userCreateDate: Long? = Date().time,
+    // var userCreateDateString: String? = DateFormat.getInstance().format(Date())
 )
 
 data class RoomEntity(
@@ -84,7 +84,6 @@ fun roomMemberUserNode(roomId: String, userId: String) = "${roomMemberNode(roomI
 
 // fun roomMembersLocationNode(roomId: String) = "${roomMembersNode(roomId)}/location"
 
-
 /*----*/
 
 fun usersNode() = "users"
@@ -94,4 +93,3 @@ fun userRoomsNode(userId: String) = "${userNode(userId)}/rooms"
 fun userRoomNode(userId: String, roomId: String) = "${userRoomsNode(userId)}/$roomId"
 
 fun userLocationsNode(userId: String) = "${userNode(userId)}/locations"
-

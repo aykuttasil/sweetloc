@@ -1,5 +1,5 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.data.local.dao
-
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -26,5 +26,4 @@ abstract class UserDao {
 
     @Delete
     abstract fun deleteItem(item: UserEntity)
-
 }

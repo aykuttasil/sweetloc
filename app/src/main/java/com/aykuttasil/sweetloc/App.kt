@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc
 
 import android.app.Activity
@@ -23,7 +24,6 @@ import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 import javax.inject.Inject
 
-
 open class App : Application(), HasActivityInjector, HasServiceInjector {
 
     @Inject
@@ -31,7 +31,6 @@ open class App : Application(), HasActivityInjector, HasServiceInjector {
 
     @Inject
     lateinit var activityDispatchingServiceInjector: DispatchingAndroidInjector<Service>
-
 
     override fun activityInjector(): DispatchingAndroidInjector<Activity> {
         return activityDispatchingAndroidInjector
@@ -65,17 +64,17 @@ open class App : Application(), HasActivityInjector, HasServiceInjector {
         OneSignal.startInit(this)
             .setNotificationReceivedHandler(NotificationReceivedHandler())
             .setNotificationOpenedHandler(NotificationOpenedHandler())
-            //.autoPromptLocation(true)
+            // .autoPromptLocation(true)
             .init()
     }
 
     private fun initLog() {
         val formatStrategy = PrettyFormatStrategy.newBuilder()
-            .showThreadInfo(true)  // (Optional) Whether to show thread info or not. Default true
+            .showThreadInfo(true) // (Optional) Whether to show thread info or not. Default true
             .methodCount(2)         // (Optional) How many method line to show. Default 2
             .methodOffset(5)        // (Optional) Hides internal method calls up to offset. Default 5
             // .logStrategy(customLog)      // (Optional) Changes the log strategy to print out. Default LogCat
-            .tag("SweetlocLogger")  // (Optional) Global tag for every log. Default PRETTY_LOGGER
+            .tag("SweetlocLogger") // (Optional) Global tag for every log. Default PRETTY_LOGGER
             .build()
         Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy) {
             override fun isLoggable(priority: Int, tag: String?): Boolean {

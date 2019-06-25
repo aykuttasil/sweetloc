@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.widget
 
 import android.content.Context
@@ -7,10 +8,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.aykuttasil.sweetloc.R
 
-
 class CwProgress @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     LinearLayout(context, attrs, defStyleAttr) {
-
 
     private val progressBar: ProgressBar
     private val textView: TextView
@@ -21,6 +20,4 @@ class CwProgress @JvmOverloads constructor(context: Context, attrs: AttributeSet
         progressBar = vi.findViewById(R.id.progressBar)
         textView = vi.findViewById(R.id.textView)
     }
-
-
 }

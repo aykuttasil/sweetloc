@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykutasil.worker
 
 import androidx.work.BackoffPolicy
@@ -28,5 +29,4 @@ object WorkerManager {
 
         WorkManager.getInstance().enqueue(work)
     }
-
 }

@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.activity.map
 
 import android.annotation.SuppressLint
@@ -306,4 +307,3 @@ open class MapsActivity : BaseActivity(), OnMapReadyCallback, GoogleMap.InfoWind
         }
     }
 }
-

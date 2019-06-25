@@ -1,5 +1,5 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.data
-
 
 data class Resource<out T, out E>(
     val status: Status,
@@ -44,5 +44,3 @@ data class Resource<out T, out E>(
         ERROR
     }
 }
-
-

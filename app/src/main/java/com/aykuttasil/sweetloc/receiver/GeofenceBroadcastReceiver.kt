@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.receiver
 
 import android.content.BroadcastReceiver
@@ -20,5 +21,4 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
             GeofenceTransitionsJobIntentService.enqueueWork(context, intent)
         }
     }
-
 }

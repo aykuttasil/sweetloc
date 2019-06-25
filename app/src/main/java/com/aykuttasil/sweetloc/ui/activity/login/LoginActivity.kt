@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.activity.login
 
 import android.content.Intent
@@ -27,7 +28,7 @@ open class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initToolbar()
-        
+
         loginViewModel = ViewModelProviders.of(this@LoginActivity, viewModelFactory).get(LoginViewModel::class.java)
 
         val binding = bind<ActivityLoginLayoutBinding>(R.layout.activity_login_layout).apply {

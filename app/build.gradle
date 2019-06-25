@@ -127,7 +127,6 @@ dependencies {
     implementation Libs.timber
 
     implementation Libs.material
-
     implementation Libs.legacy_support_v4
     implementation Libs.multidex
     implementation Libs.androidx_appcompat_appcompat

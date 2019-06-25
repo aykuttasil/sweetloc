@@ -1,3 +1,4 @@
+/* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.ui.activity.main
 
 import android.app.Activity
@@ -130,15 +131,13 @@ open class MainActivity : BaseActivity() {
                         RoomMemberListFragmentDirections.actionGlobalRoomMemberListFragment(roomId!!, roomName!!, true)
                     navController.navigate(direction)
 
-                    //val dest = navController.graph.findNode(R.id.roomMemberListFragment)
-                    //dest?.addDeepLink("sweetloc/rooms/{roomId}?roomName={roomName}")
-
+                    // val dest = navController.graph.findNode(R.id.roomMemberListFragment)
+                    // dest?.addDeepLink("sweetloc/rooms/{roomId}?roomName={roomName}")
 
                     // navController.navigate(R.id.roomMemberListFragment,)
                     // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     // navController.handleDeepLink(intent)
-
 
                     // FirebaseAuth.getInstance().signInAnonymously()
 
@@ -204,7 +203,6 @@ open class MainActivity : BaseActivity() {
         fla.requestLocationUpdates(LocationRequest(),pendingIntent)
     }
     */
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // menuInflater.inflate(R.menu.menu_mainactivity, menu)
