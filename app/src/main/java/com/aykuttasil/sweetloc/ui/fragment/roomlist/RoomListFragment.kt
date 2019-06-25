@@ -52,6 +52,8 @@ open class RoomListFragment : BaseFragment(), Injectable {
     override fun initViewModel() {
         binding.viewModel = viewModel
         lifecycle.addObserver(viewModel)
+
+        
     }
 
     override fun getViewModel(): BaseAndroidViewModel {
