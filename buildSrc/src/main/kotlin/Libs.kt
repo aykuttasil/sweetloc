@@ -27,7 +27,8 @@ object Libs {
     /**
      * http://developer.android.com/tools/extras/support-library.html
      */
-    const val core_ktx: String = "androidx.core:core-ktx:" + Versions.core_ktx
+    const val androidx_core_core_ktx: String = "androidx.core:core-ktx:" +
+            Versions.androidx_core_core_ktx
 
     const val databinding_adapters: String = "androidx.databinding:databinding-adapters:" +
             Versions.androidx_databinding
@@ -50,6 +51,11 @@ object Libs {
     /**
      * http://developer.android.com/tools/extras/support-library.html
      */
+    const val fragment_ktx: String = "androidx.fragment:fragment-ktx:" + Versions.fragment_ktx
+
+    /**
+     * http://developer.android.com/tools/extras/support-library.html
+     */
     const val legacy_support_v4: String = "androidx.legacy:legacy-support-v4:" +
             Versions.legacy_support_v4
 
@@ -62,14 +68,8 @@ object Libs {
     /**
      * https://developer.android.com/topic/libraries/architecture/index.html
      */
-    const val lifecycle_reactivestreams: String = "androidx.lifecycle:lifecycle-reactivestreams:" +
-            Versions.androidx_lifecycle
-
-    /**
-     * http://developer.android.com/tools/extras/support-library.html
-     */
-    const val lifecycle_viewmodel_ktx: String = "androidx.lifecycle:lifecycle-viewmodel-ktx:" +
-            Versions.androidx_lifecycle
+    const val lifecycle_reactivestreams_ktx: String =
+            "androidx.lifecycle:lifecycle-reactivestreams-ktx:" + Versions.androidx_lifecycle
 
     const val multidex: String = "androidx.multidex:multidex:" + Versions.multidex
 
@@ -144,6 +144,8 @@ object Libs {
      */
     const val work_rxjava2: String = "androidx.work:work-rxjava2:" + Versions.androidx_work
 
+    const val assent: String = "com.afollestad:assent:" + Versions.assent
+
     /**
      * https://github.com/andkulikov/transitions-everywhere
      */
@@ -168,6 +170,10 @@ object Libs {
 
     const val crashlytics: String = "com.crashlytics.sdk.android:crashlytics:" +
             Versions.crashlytics
+
+    const val com_diffplug_gradle_spotless_gradle_plugin: String =
+            "com.diffplug.gradle.spotless:com.diffplug.gradle.spotless.gradle.plugin:" +
+            Versions.com_diffplug_gradle_spotless_gradle_plugin
 
     /**
      * https://github.com/facebook/facebook-android-sdk
@@ -250,16 +256,16 @@ object Libs {
     const val rxkit: String = "com.github.vondear.RxTool:RxKit:" + Versions.rxkit
 
     const val play_services_base: String = "com.google.android.gms:play-services-base:" +
-            Versions.play_services_base
+            Versions.com_google_android_gms
 
     const val play_services_gcm: String = "com.google.android.gms:play-services-gcm:" +
-            Versions.play_services_gcm
+            Versions.com_google_android_gms
 
     const val play_services_location: String = "com.google.android.gms:play-services-location:" +
-            Versions.play_services_location
+            Versions.com_google_android_gms
 
     const val play_services_maps: String = "com.google.android.gms:play-services-maps:" +
-            Versions.play_services_maps
+            Versions.com_google_android_gms
 
     /**
      * http://developer.android.com/tools/extras/support-library.html
@@ -291,6 +297,9 @@ object Libs {
 
     const val firebase_auth: String = "com.google.firebase:firebase-auth:" + Versions.firebase_auth
 
+    const val firebase_common_ktx: String = "com.google.firebase:firebase-common-ktx:" +
+            Versions.firebase_common_ktx
+
     const val firebase_config: String = "com.google.firebase:firebase-config:" +
             Versions.firebase_config
 
@@ -305,6 +314,9 @@ object Libs {
     const val firebase_dynamic_links: String = "com.google.firebase:firebase-dynamic-links:" +
             Versions.firebase_dynamic_links
 
+    const val firebase_firestore_ktx: String = "com.google.firebase:firebase-firestore-ktx:" +
+            Versions.firebase_firestore_ktx
+
     const val firebase_messaging: String = "com.google.firebase:firebase-messaging:" +
             Versions.firebase_messaging
 
@@ -312,6 +324,17 @@ object Libs {
      * http://tools.android.com/
      */
     const val google_services: String = "com.google.gms:google-services:" + Versions.google_services
+
+    /**
+     * https://github.com/googlemaps/android-maps-utils
+     */
+    const val android_maps_utils: String = "com.google.maps.android:android-maps-utils:" +
+            Versions.android_maps_utils
+
+    /**
+     * https://github.com/JakeWharton/timber
+     */
+    const val timber: String = "com.jakewharton.timber:timber:" + Versions.timber
 
     /**
      * https://github.com/JakeWharton/butterknife/
@@ -347,6 +370,12 @@ object Libs {
      */
     const val library: String = "com.readystatesoftware.chuck:library:" +
             Versions.com_readystatesoftware_chuck
+
+    /**
+     * http://github.com/square/leakcanary/
+     */
+    const val leakcanary_android: String = "com.squareup.leakcanary:leakcanary-android:" +
+            Versions.leakcanary_android
 
     /**
      * https://github.com/square/okhttp
@@ -483,6 +512,10 @@ object Libs {
      */
     const val junit: String = "junit:junit:" + Versions.junit
 
+    const val org_ajoberstar_grgit_gradle_plugin: String =
+            "org.ajoberstar.grgit:org.ajoberstar.grgit.gradle.plugin:" +
+            Versions.org_ajoberstar_grgit_gradle_plugin
+
     /**
      * http://www.aspectj.org
      */
@@ -540,5 +573,11 @@ object Libs {
      * https://github.com/Kotlin/kotlinx.coroutines
      */
     const val kotlinx_coroutines_core: String = "org.jetbrains.kotlinx:kotlinx-coroutines-core:" +
+            Versions.org_jetbrains_kotlinx
+
+    /**
+     * https://github.com/Kotlin/kotlinx.coroutines
+     */
+    const val kotlinx_coroutines_rx2: String = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2:" +
             Versions.org_jetbrains_kotlinx
 }
