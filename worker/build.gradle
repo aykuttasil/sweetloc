@@ -1,26 +1,4 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-
-android {
-    compileSdkVersion Config.compileSdk
-
-    defaultConfig {
-        minSdkVersion Config.minSdk
-        targetSdkVersion Config.targetSdk
-        versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-}
+apply from: "$rootDir/tools/common-android-library.gradle"
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

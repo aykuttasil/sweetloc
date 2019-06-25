@@ -1,12 +1,9 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+apply from: "$rootDir/tools/common.gradle"
 apply plugin: 'io.fabric'
 apply plugin: 'com.fernandocejas.frodo'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
-
 
 frodo {
     // https://github.com/android10/frodo
@@ -14,12 +11,8 @@ frodo {
 }
 
 android {
-    compileSdkVersion Config.compileSdk
-
     defaultConfig {
         applicationId "com.aykuttasil.sweetloc"
-        minSdkVersion Config.minSdk
-        targetSdkVersion Config.targetSdk
         versionCode 8
         versionName "1.0.7"
         multiDexEnabled true
@@ -48,6 +41,9 @@ android {
             resValue "string", "app_name", "SweetLoc Dev"
             buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
             resValue "string", "dynamic_links_uri_prefix", "https://sweetloc.page.link"
+
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-DEV'
         }
     }
 
@@ -69,7 +65,6 @@ android {
         debug {
             minifyEnabled false
             debuggable true
-            applicationIdSuffix '.debug'
             ext.enableCrashlytics = false
         }
     }
