@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.aykuttasil.sweetloc.R
@@ -38,7 +39,7 @@ open class RoomListFragment : BaseFragment(), Injectable {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentRoomListLayoutBinding.inflate(inflater)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_room_list_layout,container,false)
         binding.lifecycleOwner = this
         return binding.root
     }
