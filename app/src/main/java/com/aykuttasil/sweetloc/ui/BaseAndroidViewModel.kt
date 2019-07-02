@@ -13,7 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseAndroidViewModel(app: Application) : AndroidViewModel(app), CoroutineScope, LifecycleObserver {
+abstract class BaseAndroidViewModel(app: Application) : AndroidViewModel(app), CoroutineScope,
+    LifecycleObserver {
 
     var jobs = Job()
     var disposables = CompositeDisposable()
