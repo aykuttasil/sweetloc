@@ -27,6 +27,24 @@ android {
         }
     }
 
+    sourceSets {
+        main {
+            java.srcDir 'src/main/kotlin'
+        }
+        debug {
+            manifest.srcFile 'src/debug/AndroidManifest.xml'
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -61,27 +79,9 @@ android {
         }
     }
 
-    signingConfigs {
-        release {
-            storeFile file(RELEASE_STORE_FILE)
-            storePassword RELEASE_STORE_PASSWORD
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
-        }
-    }
-
     compileOptions {
         sourceCompatibility Config.javaVersion
         targetCompatibility Config.javaVersion
-    }
-
-    sourceSets {
-        main {
-            java.srcDir 'src/main/kotlin'
-        }
-        debug {
-            manifest.srcFile 'src/debug/AndroidManifest.xml'
-        }
     }
 
     packagingOptions {
