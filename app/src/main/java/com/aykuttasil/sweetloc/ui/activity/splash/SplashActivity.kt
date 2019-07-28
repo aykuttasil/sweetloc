@@ -20,7 +20,6 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 
@@ -32,9 +31,6 @@ class SplashActivity : BaseActivity() {
             val isLogin = userRepository.checkUser()
             if (isLogin) {
                 val mainIntent = Intent(this@SplashActivity, MainActivity::class.java)
-                // mainIntent.data = intent.data
-                // mainIntent.putExtras(intent)
-                // intent.extras?.let { mainIntent.putExtras(it) }
                 startActivity(mainIntent)
             } else {
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))

@@ -23,7 +23,6 @@ import com.afollestad.assent.runWithPermissions
 import com.aykuttasil.sweetloc.R
 import com.aykuttasil.sweetloc.di.ViewModelFactory
 import com.aykuttasil.sweetloc.ui.activity.base.BaseActivity
-import com.aykuttasil.sweetloc.ui.activity.login.LoginActivity
 import com.aykuttasil.sweetloc.ui.activity.map.MapsActivity
 import com.aykuttasil.sweetloc.ui.activity.profile.ProfileActivity
 import com.aykuttasil.sweetloc.ui.fragment.roommemberlist.RoomMemberListFragmentDirections
@@ -47,13 +46,6 @@ open class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val isLogin = viewModel.checkUser()
-        if (!isLogin) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            return
-        }
-
         Timber.d("setContentView")
         setContentView(R.layout.activity_main)
 
@@ -93,7 +85,11 @@ open class MainActivity : BaseActivity() {
                     }
 
                     override fun onPermissionsMissing() {
-                        Toast.makeText(this@MainActivity, "Permission is required.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Permission is required.",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 })
                 .observe(this, Observer { loc ->
@@ -128,7 +124,11 @@ open class MainActivity : BaseActivity() {
                     Timber.d("roomId:$roomId roomName:$roomName")
 
                     val direction =
-                        RoomMemberListFragmentDirections.actionGlobalRoomMemberListFragment(roomId!!, roomName!!, true)
+                        RoomMemberListFragmentDirections.actionGlobalRoomMemberListFragment(
+                            roomId!!,
+                            roomName!!,
+                            true
+                        )
                     navController.navigate(direction)
 
                     // val dest = navController.graph.findNode(R.id.roomMemberListFragment)
@@ -190,7 +190,8 @@ open class MainActivity : BaseActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun checkAndOpenAudioSettings() {
         if (!(getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).isNotificationPolicyAccessGranted) {
-            val intent = Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+            val intent =
+                Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
             startActivity(intent)
         }
     }

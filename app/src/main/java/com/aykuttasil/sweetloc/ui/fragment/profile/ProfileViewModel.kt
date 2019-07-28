@@ -15,9 +15,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
-    val app: Application,
-    val userRepository: UserRepository,
-    val sweetLocHelper: SweetLocHelper
+    private val app: Application,
+    private val userRepository: UserRepository,
+    private val sweetLocHelper: SweetLocHelper
 ) : BaseAndroidViewModel(app) {
 
     val liveUser: MutableLiveData<UserEntity> = MutableLiveData()

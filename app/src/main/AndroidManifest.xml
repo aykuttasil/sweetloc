@@ -36,18 +36,28 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="https" />
-                <data android:scheme="http" />
-                <data android:host="aykuttasil.github.io/sweetloc/" />
-                <data android:pathPrefix="/rooms/" />
+                <data
+                    android:scheme="https"
+                    android:host="aykuttasil.github.io/sweetloc/"
+                    android:pathPrefix="/rooms/" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="http"
+                    android:host="aykuttasil.github.io/sweetloc/"
+                    android:pathPrefix="/rooms/" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".ui.activity.main.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
-        </activity>
+            android:launchMode="singleTop"></activity>
 
         <activity
             android:name=".ui.activity.login.LoginActivity"

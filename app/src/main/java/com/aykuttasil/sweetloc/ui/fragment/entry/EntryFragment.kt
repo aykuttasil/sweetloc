@@ -47,15 +47,6 @@ class EntryFragment : BaseFragment(), Injectable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /*
-        val isLogin = userRepository.checkUser()
-        if (!isLogin) {
-            startActivity(Intent(activity, LoginActivity::class.java))
-            return
-        }
-        */
-
         btnGoUserTrackerList.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_roomListFragment)
         }

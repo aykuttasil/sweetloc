@@ -1,5 +1,6 @@
 package com.aykuttasil.sweetloc.util;
 
+/*
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -39,4 +40,5 @@ public class PicassoCircleTransform implements Transformation {
         return "circle";
     }
 }
+*/
 

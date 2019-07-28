@@ -35,7 +35,7 @@ class ProfileFragment : BaseFragment(), Injectable {
         super.onActivityCreated(savedInstanceState)
         viewModel.liveLogout.observe(viewLifecycleOwner, Observer { isLogout ->
             if (isLogout) {
-                val intent = Intent(context!!, LoginActivity::class.java)
+                val intent = Intent(requireContext(), LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 activity?.finish()

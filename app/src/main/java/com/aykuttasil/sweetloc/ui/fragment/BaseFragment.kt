@@ -15,6 +15,9 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class BaseFragment : Fragment(), IFragmentContract, CoroutineScope {
 
+    abstract fun initUiComponents()
+    abstract fun initViewModel()
+
     private val job = Job()
 
     override val coroutineContext: CoroutineContext
@@ -52,14 +55,6 @@ abstract class BaseFragment : Fragment(), IFragmentContract, CoroutineScope {
         initGlobalObservers()
     }
 
-    abstract fun initUiComponents()
-    abstract fun initViewModel()
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        job.cancel()
-    }
-
     fun getBaseActivity(): BaseActivity {
         return activity as BaseActivity
     }
@@ -70,5 +65,10 @@ abstract class BaseFragment : Fragment(), IFragmentContract, CoroutineScope {
 
     fun dismissProgress() {
         getBaseActivity().dismissProgressDialog()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        job.cancel()
     }
 }
