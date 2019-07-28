@@ -43,7 +43,7 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, C
     }
 
     fun dismissProgressDialog() {
-        if (progressDialog.isVisible) {
+        supportFragmentManager.findFragmentByTag("ProgressDialog")?.let {
             progressDialog.dismiss()
         }
     }

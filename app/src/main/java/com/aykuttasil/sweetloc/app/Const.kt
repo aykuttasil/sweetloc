@@ -1,9 +1,6 @@
 /* Author - Aykut Asil(aykuttasil) */
 package com.aykuttasil.sweetloc.app
 
-/**
- * Created by aykutasil on 4.07.2016.
- */
 object Const {
     const val TASK_TYPE = "TaskType"
     const val TASK_LOCATION = "TaskLocation"

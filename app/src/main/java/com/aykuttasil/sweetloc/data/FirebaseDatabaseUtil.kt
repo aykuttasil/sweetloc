@@ -3,7 +3,6 @@ package com.aykuttasil.sweetloc.data
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import io.reactivex.Observable
@@ -32,7 +31,7 @@ class FirebaseDatabaseUtil constructor(val databaseReference: DatabaseReference)
                         val value = dataSnapshot.getValue(clazz)
                         emitter.onNext(map(value))
                     } catch (e: Exception) {
-                        emitter.onError(DatabaseException("Problem in DB at path $path, class $clazz", e))
+                        emitter.onError(Exception("Problem in DB at path $path, class $clazz", e))
                     }
                 }
 
@@ -62,7 +61,7 @@ class FirebaseDatabaseUtil constructor(val databaseReference: DatabaseReference)
                         val value = dataSnapshot.getValue(clazz)
                         emitter.onNext(map(value))
                     } catch (e: Exception) {
-                        emitter.onError(DatabaseException("Problem in DB at path $path, class $clazz", e))
+                        emitter.onError(Exception("Problem in DB at path $path, class $clazz", e))
                     }
                 }
 
