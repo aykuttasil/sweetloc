@@ -148,7 +148,7 @@ object Versions {
 
     const val anko: String = "0.10.8"
 
-    const val org_jetbrains_kotlin: String = "1.3.40"
+    const val org_jetbrains_kotlin: String = "1.3.41"
 
     const val org_jetbrains_kotlinx: String = "1.2.2"
 

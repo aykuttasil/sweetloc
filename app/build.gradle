@@ -1,14 +1,8 @@
 apply plugin: 'com.android.application'
 apply from: "$rootDir/tools/common.gradle"
 apply plugin: 'io.fabric'
-apply plugin: 'com.fernandocejas.frodo'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
-
-frodo {
-    // https://github.com/android10/frodo
-    enabled = true
-}
 
 android {
     defaultConfig {
@@ -104,51 +98,50 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    testImplementation Libs.junit
-
-    debugImplementation Libs.stetho
-    implementation Libs.stetho_okhttp3
-    debugImplementation Libs.stetho_js_rhino
-
-    releaseImplementation Libs.library_no_op //'com.readystatesoftware.chuck:library-no-op:1.1.0'
-    debugImplementation Libs.library //'com.readystatesoftware.chuck:library:1.1.0'
-
-    releaseImplementation Libs.sherlock_no_op
-    debugImplementation(Libs.sherlock) {
-        transitive = true
-    }
 
     // Log
     implementation Libs.logger
     implementation Libs.timber
 
+    // Crashlytics
+    implementation(Libs.crashlytics)
+
+    // Stetho
+    debugImplementation Libs.stetho
+    implementation Libs.stetho_okhttp3
+    debugImplementation Libs.stetho_js_rhino
+
+    // Chuck Http Tracing
+    releaseImplementation Libs.library_no_op
+    debugImplementation Libs.library
+
+    // AndroidX
     implementation Libs.material
+    implementation Libs.androidx_appcompat_appcompat
+    implementation Libs.androidx_core_core_ktx
     implementation Libs.legacy_support_v4
     implementation Libs.multidex
-    implementation Libs.androidx_appcompat_appcompat
     implementation Libs.palette
     implementation Libs.cardview
     implementation Libs.recyclerview
     implementation Libs.vectordrawable_animated
     implementation Libs.constraintlayout
+    implementation Libs.fragment_ktx
 
+    // Room
     implementation Libs.room_rxjava2
     implementation Libs.room_runtime
     kapt Libs.room_compiler
 
+    // Navigation
     implementation Libs.navigation_fragment_ktx
     implementation Libs.navigation_ui_ktx
 
+    // Lifecycle
     implementation Libs.lifecycle_extensions
     implementation Libs.lifecycle_reactivestreams_ktx
 
-    implementation Libs.androidx_core_core_ktx
-    implementation Libs.fragment_ktx
-
-    implementation(Libs.crashlytics) {
-        transitive = true
-    }
-
+    // Firebase
     implementation Libs.firebase_core
     implementation Libs.firebase_messaging
     implementation Libs.firebase_database
@@ -159,26 +152,21 @@ dependencies {
     implementation Libs.firebase_common_ktx
     implementation Libs.firebase_firestore_ktx
 
+    // Google Play Services
     implementation Libs.play_services_base
     implementation Libs.play_services_maps
     implementation Libs.play_services_gcm
     implementation Libs.play_services_location
     implementation Libs.android_maps_utils
 
+    // Retrofit
     implementation Libs.logging_interceptor
     implementation Libs.retrofit
     implementation Libs.converter_gson
     implementation Libs.adapter_rxjava2
     implementation Libs.adapter_rxjava
 
-    implementation Libs.picasso
-    implementation Libs.androidbasichelper
-    implementation Libs.eventbus
-    implementation Libs.facebook_android_sdk
-    implementation Libs.transitionseverywhere
-    implementation Libs.rxlocation
-    implementation Libs.onesignal
-
+    // Dagger
     kapt Libs.dagger_compiler
     implementation Libs.dagger
     kapt Libs.dagger_android_processor
@@ -191,38 +179,37 @@ dependencies {
     implementation Libs.kotlinx_coroutines_android
     implementation Libs.kotlinx_coroutines_rx2
 
+    // Rx
     implementation Libs.rxkotlin
     implementation Libs.rxandroid
     implementation Libs.rxpermissions
     implementation Libs.rxkit
+    implementation Libs.rxlocation
 
+    // Butterknife
     implementation Libs.butterknife
     kapt Libs.butterknife_compiler
 
+    // Glide
     implementation Libs.glide
     kapt Libs.com_github_bumptech_glide_compiler
     implementation Libs.okhttp3_integration
 
-    debugImplementation Libs.hyperion_core
-    debugImplementation Libs.hyperion_attr
-    debugImplementation Libs.hyperion_measurement
-    debugImplementation Libs.hyperion_disk
-    debugImplementation Libs.hyperion_recorder
-    debugImplementation Libs.hyperion_phoenix
-    debugImplementation Libs.hyperion_crash
-    debugImplementation Libs.hyperion_shared_preferences
-    debugImplementation Libs.hyperion_geiger_counter
-    debugImplementation Libs.timber
-    debugImplementation Libs.hyperion_build_config
-    debugImplementation Libs.hyperion_chuck
-
-    implementation Libs.needs
-
+    // LeakCanary
     debugImplementation Libs.leakcanary_android
 
     // Permission
     implementation Libs.assent
+    implementation Libs.needs
 
+    implementation Libs.androidbasichelper
+    implementation Libs.eventbus
+    implementation Libs.facebook_android_sdk
+    implementation Libs.transitionseverywhere
+    implementation Libs.onesignal
+
+    // Testing
+    testImplementation Libs.junit
 
 }
 apply plugin: 'com.google.gms.google-services'
