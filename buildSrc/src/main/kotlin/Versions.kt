@@ -80,7 +80,7 @@ object Versions {
 
     const val material: String = "1.0.0"
 
-    const val com_google_dagger: String = "2.23.2"
+    const val com_google_dagger: String = "2.24"
 
     const val firebase_auth: String = "18.0.0"
 

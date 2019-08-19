@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.service
 
 import android.app.NotificationChannel
@@ -81,8 +81,8 @@ class GeofenceTransitionsJobIntentService : JobIntentService() {
      * @return The transition details formatted as String.
      */
     private fun getGeofenceTransitionDetails(
-        geofenceTransition: Int,
-        triggeringGeofences: List<Geofence>
+      geofenceTransition: Int,
+      triggeringGeofences: List<Geofence>
     ): String {
 
         val geofenceTransitionString = getTransitionString(geofenceTransition)

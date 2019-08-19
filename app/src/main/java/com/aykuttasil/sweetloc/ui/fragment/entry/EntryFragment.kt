@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.entry
 
 import android.content.Intent
@@ -39,7 +39,7 @@ class EntryFragment : BaseFragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    val viewModel by viewModels<EntryViewModel> { viewModelFactory }
+    val viewModel by viewModels<EntryViewModel>() { viewModelFactory }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_entry, container, false)
@@ -59,7 +59,7 @@ class EntryFragment : BaseFragment(), Injectable {
         }
 
         btnLogout.setOnClickListener {
-            sweetLocHelper.resetSweetLoc(context!!)
+            sweetLocHelper.resetSweetLoc(requireContext())
         }
 
         val needs = initNeeds()

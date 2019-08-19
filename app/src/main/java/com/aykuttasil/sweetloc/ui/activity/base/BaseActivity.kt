@@ -1,21 +1,28 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.activity.base
 
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.aykuttasil.sweetloc.ui.dialog.ProgressDialogFragment
+import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import dagger.android.HasAndroidInjector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, CoroutineScope {
+abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector, CoroutineScope {
 
     companion object {
         const val LOGIN_REQUEST_CODE = 1001
+    }
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> {
+        return dispatchingAndroidInjector
     }
 
     var job = SupervisorJob()
@@ -27,13 +34,6 @@ abstract class BaseActivity : AppCompatActivity(), HasSupportFragmentInjector, C
         ProgressDialogFragment().apply {
             isCancelable = false
         }
-    }
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-
-    override fun supportFragmentInjector(): DispatchingAndroidInjector<Fragment> {
-        return dispatchingAndroidInjector
     }
 
     fun showProgressDialog() {

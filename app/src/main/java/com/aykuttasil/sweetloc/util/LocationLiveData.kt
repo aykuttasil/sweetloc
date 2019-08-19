@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.util
 
 import android.Manifest
@@ -91,15 +91,15 @@ class LocationLiveData private constructor() : LiveData<Location>() {
         @JvmOverloads
         @JvmStatic
         fun create(
-            context: Context,
-            interval: Long? = null,
-            fastestInterval: Long? = null,
-            priority: Int? = null,
-            smallestDisplacement: Float? = null,
-            expirationTime: Long? = null,
-            maxWaitTime: Long? = null,
-            numUpdates: Int? = null,
-            onErrorCallback: OnErrorCallback? = null
+          context: Context,
+          interval: Long? = null,
+          fastestInterval: Long? = null,
+          priority: Int? = null,
+          smallestDisplacement: Float? = null,
+          expirationTime: Long? = null,
+          maxWaitTime: Long? = null,
+          numUpdates: Int? = null,
+          onErrorCallback: OnErrorCallback? = null
         ): LocationLiveData {
             val liveData = LocationLiveData()
             val locationRequest = LocationRequest.create()

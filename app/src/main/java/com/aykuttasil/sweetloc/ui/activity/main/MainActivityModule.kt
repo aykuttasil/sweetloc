@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.activity.main
 
 import android.content.Context

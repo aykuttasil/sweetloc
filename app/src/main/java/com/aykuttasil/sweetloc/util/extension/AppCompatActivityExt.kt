@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.util.extension
 
 import android.app.Activity
@@ -20,8 +20,8 @@ const val EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 3
  * performed by the `fragmentManager`.
  */
 fun AppCompatActivity.replaceFragmentInActivity(
-    fragment: Fragment,
-    frameId: Int
+  fragment: Fragment,
+  frameId: Int
 ) {
     supportFragmentManager.transact {
         replace(frameId, fragment)
@@ -33,8 +33,8 @@ fun AppCompatActivity.replaceFragmentInActivity(
  * performed by the `fragmentManager`.
  */
 fun AppCompatActivity.addFragmentToActivity(
-    fragment: Fragment,
-    tag: String
+  fragment: Fragment,
+  tag: String
 ) {
     supportFragmentManager.transact {
         add(fragment, tag)

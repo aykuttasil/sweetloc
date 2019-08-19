@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.roomlist
 
 import android.app.Application
@@ -15,9 +15,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class RoomListViewModel @Inject constructor(
-    private val app: Application,
-    private val userRepository: UserRepository,
-    private val roomRepository: RoomRepository
+  private val app: Application,
+  private val userRepository: UserRepository,
+  private val roomRepository: RoomRepository
 ) : BaseAndroidViewModel(app) {
 
     val liveRoomEntityList: MutableLiveData<List<RoomEntity>> = MutableLiveData()

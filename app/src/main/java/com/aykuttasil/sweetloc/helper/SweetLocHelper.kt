@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.helper
 
 import android.app.AlarmManager
@@ -25,8 +25,8 @@ import org.json.JSONObject
 import javax.inject.Inject
 
 class SweetLocHelper @Inject constructor(
-    private val userRepository: UserRepository,
-    private val roomRepository: RoomRepository
+  private val userRepository: UserRepository,
+  private val roomRepository: RoomRepository
 ) : SuperHelper() {
 
     fun resetSweetLoc(context: Context) = runBlocking(context = Dispatchers.IO) {
@@ -193,9 +193,9 @@ class SweetLocHelper @Inject constructor(
 
     companion object {
         fun sendNotif(
-            action: String,
-            userRepository: UserRepository,
-            roomRepository: RoomRepository
+          action: String,
+          userRepository: UserRepository,
+          roomRepository: RoomRepository
         ) {
             try {
                 runBlocking {

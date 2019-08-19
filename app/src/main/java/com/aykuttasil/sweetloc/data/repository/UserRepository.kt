@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.data.repository
 
 import com.aykuttasil.sweetloc.data.local.dao.UserDao
@@ -18,14 +18,14 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    private val firebaseAuth: FirebaseAuth,
-    private val databaseReference: DatabaseReference,
-    private val userDao: UserDao
+  private val firebaseAuth: FirebaseAuth,
+  private val databaseReference: DatabaseReference,
+  private val userDao: UserDao
 ) {
 
     fun loginUser(
-        username: String,
-        password: String
+      username: String,
+      password: String
     ): Single<UserEntity> {
         return Single.create<UserEntity> { emitter ->
             firebaseAuth.signInWithEmailAndPassword(username, password)
@@ -45,8 +45,8 @@ class UserRepository @Inject constructor(
     }
 
     fun registerUser(
-        username: String,
-        password: String
+      username: String,
+      password: String
     ): Single<UserEntity> {
         return Single.create<UserEntity> { emitter ->
             firebaseAuth.createUserWithEmailAndPassword(username, password)

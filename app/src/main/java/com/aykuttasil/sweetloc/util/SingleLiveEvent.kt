@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.util
 
 import androidx.annotation.MainThread
@@ -33,8 +33,8 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
 
     @MainThread
     override fun observe(
-        owner: LifecycleOwner,
-        observer: Observer<in T>
+      owner: LifecycleOwner,
+      observer: Observer<in T>
     ) {
 
         if (hasActiveObservers()) {

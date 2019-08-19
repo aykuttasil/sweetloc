@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.activity.map
 
 import android.app.Application
@@ -17,10 +17,10 @@ import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 class MapsViewModel @Inject constructor(
-    private val app: Application,
-    private val userRepository: UserRepository,
-    private val locationRepository: LocationRepository,
-    private val roomRepository: RoomRepository
+  private val app: Application,
+  private val userRepository: UserRepository,
+  private val locationRepository: LocationRepository,
+  private val roomRepository: RoomRepository
 ) : BaseAndroidViewModel(app) {
 
     private val _liveRoomMemberLocation: MutableLiveData<RoomMemberLocationModel> = MutableLiveData()

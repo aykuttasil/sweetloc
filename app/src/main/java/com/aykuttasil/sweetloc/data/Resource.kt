@@ -1,11 +1,11 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.data
 
 data class Resource<out T, out E>(
-    val status: Status,
-    val data: T?,
-    val errorData: E?,
-    val error: Throwable?
+  val status: Status,
+  val data: T?,
+  val errorData: E?,
+  val error: Throwable?
 ) {
 
     companion object Factory {

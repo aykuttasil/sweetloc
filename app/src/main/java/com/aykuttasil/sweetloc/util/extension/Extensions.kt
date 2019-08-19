@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.util.extension
 
 import android.app.Activity
@@ -67,8 +67,8 @@ inline fun <T : View> T.afterMeasured(crossinline f: T.() -> Unit) {
  * Extension method to simplify the code needed to apply spans on a specific sub string.
  */
 inline fun SpannableStringBuilder.withSpan(
-    vararg spans: Any,
-    action: SpannableStringBuilder.() -> Unit
+  vararg spans: Any,
+  action: SpannableStringBuilder.() -> Unit
 ):
     SpannableStringBuilder {
     val from = length
@@ -227,8 +227,8 @@ fun String.dateInFormat(format: String): Date? {
 }
 
 fun getClickableSpan(
-    color: Int,
-    action: (view: View) -> Unit
+  color: Int,
+  action: (view: View) -> Unit
 ): ClickableSpan {
 
     return object : ClickableSpan() {
@@ -255,8 +255,8 @@ fun Fragment.NOT_IMPL(message: String = "This action is not implemented yet!") {
  * Extension method used to display a [Toast] message to the user.
  */
 fun Fragment.TOAST(
-    message: String,
-    duration: Int = Toast.LENGTH_SHORT
+  message: String,
+  duration: Int = Toast.LENGTH_SHORT
 ) {
     Toast.makeText(context, message, duration).show()
 }
@@ -265,8 +265,8 @@ fun Fragment.TOAST(
  * Extension method used to display a [Toast] message to the user.
  */
 fun Fragment.TOAST(
-    messageResId: Int,
-    duration: Int = Toast.LENGTH_SHORT
+  messageResId: Int,
+  duration: Int = Toast.LENGTH_SHORT
 ) {
     Toast.makeText(context, messageResId, duration).show()
 }
@@ -275,8 +275,8 @@ fun Fragment.TOAST(
  * Extension method use to display a [Snackbar] message to the user.
  */
 fun View.displaySnakbar(
-    message: String,
-    duration: Int = Snackbar.LENGTH_SHORT
+  message: String,
+  duration: Int = Snackbar.LENGTH_SHORT
 ): Snackbar {
     val snackbar = Snackbar.make(this, message, duration)
     snackbar.show()
@@ -287,8 +287,8 @@ fun View.displaySnakbar(
  * Extension method use to display a [Snackbar] message to the user.
  */
 fun View.displaySnakbar(
-    messageResId: Int,
-    duration: Int = Snackbar.LENGTH_SHORT
+  messageResId: Int,
+  duration: Int = Snackbar.LENGTH_SHORT
 ): Snackbar {
     val snackbar = Snackbar.make(this, messageResId, duration)
     snackbar.show()
@@ -370,8 +370,8 @@ fun View.getDisplaySize() = context.getDisplaySize()
  * using [SnapHelper].
  */
 fun SnapHelper.snapToPosition(
-    recyclerView: RecyclerView,
-    position: Int
+  recyclerView: RecyclerView,
+  position: Int
 ) {
     recyclerView.apply {
         val view = findViewHolderForAdapterPosition(position)?.itemView

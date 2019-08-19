@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.util
 
 /**
@@ -19,8 +19,8 @@ object GeofenceErrorMessages {
      * Returns the error string for a geofencing exception.
      */
     fun getErrorString(
-        context: Context,
-        e: Exception
+      context: Context,
+      e: Exception
     ): String {
         return if (e is ApiException) {
             getErrorString(context, e.statusCode)
@@ -33,8 +33,8 @@ object GeofenceErrorMessages {
      * Returns the error string for a geofencing error code.
      */
     fun getErrorString(
-        context: Context,
-        errorCode: Int
+      context: Context,
+      errorCode: Int
     ): String {
         val mResources = context.resources
         return when (errorCode) {

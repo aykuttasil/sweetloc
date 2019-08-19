@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.roomcreate
 
 import android.app.Application
@@ -18,9 +18,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RoomCreateViewModel @Inject constructor(
-    val app: Application,
-    val userRepository: UserRepository,
-    val roomRepository: RoomRepository
+  val app: Application,
+  val userRepository: UserRepository,
+  val roomRepository: RoomRepository
 ) : BaseAndroidViewModel(app) {
 
     val liveRoomName: MutableLiveData<String> = MutableLiveData()

@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.roomlist
 
 import android.content.Context
@@ -13,9 +13,9 @@ class RoomListModule {
 
     @Provides
     fun provideRoomsAdapter(
-        context: Context,
-        userRepository: UserRepository,
-        roomRepository: RoomRepository
+      context: Context,
+      userRepository: UserRepository,
+      roomRepository: RoomRepository
     ): RoomsAdapter = RoomsAdapter()
 
     @Provides

@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.util.delegates
 
 import android.view.ViewGroup
@@ -15,8 +15,8 @@ class Inflate<in R : Fragment, out T : ViewDataBinding>(@LayoutRes private val l
     private var binding: T? = null
 
     override fun getValue(
-        thisRef: R,
-        property: KProperty<*>
+      thisRef: R,
+      property: KProperty<*>
     ): T {
         if (binding == null) {
             val inflater = thisRef.layoutInflater

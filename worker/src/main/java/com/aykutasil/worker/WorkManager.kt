@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykutasil.worker
 
 import androidx.work.BackoffPolicy
@@ -14,9 +14,9 @@ object WorkerManager {
     const val DATA_KEY_REQUEST_JSON = "request_json"
 
     fun scheduleLocationWorker(
-        tag: String,
-        data: Data,
-        networkType: NetworkType
+      tag: String,
+      data: Data,
+      networkType: NetworkType
     ) {
         val constraints = Constraints.Builder().setRequiredNetworkType(networkType).build()
 

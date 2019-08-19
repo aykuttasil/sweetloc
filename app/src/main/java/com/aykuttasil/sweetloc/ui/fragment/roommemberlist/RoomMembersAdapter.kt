@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.roommemberlist
 
 import android.view.LayoutInflater
@@ -60,8 +60,8 @@ class RoomMembersAdapter : ListAdapter<RoomMemberLocationModel, RoomMembersAdapt
             }
 
             override fun areContentsTheSame(
-                oldItem: RoomMemberLocationModel,
-                newItem: RoomMemberLocationModel
+              oldItem: RoomMemberLocationModel,
+              newItem: RoomMemberLocationModel
             ): Boolean {
                 return oldItem.user?.userName == newItem.user?.userName
             }

@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.util
 
 import android.content.Context
@@ -53,8 +53,8 @@ class AppSignatureHelper(context: Context) : ContextWrapper(context) {
         val NUM_BASE64_CHAR = 11
 
         private fun hash(
-            packageName: String,
-            signature: String
+          packageName: String,
+          signature: String
         ): String? {
             val appInfo = packageName + " " + signature
             try {

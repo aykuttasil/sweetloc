@@ -1,14 +1,14 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.di.modules
 
 import android.content.Context
 import com.aykuttasil.sweetloc.BuildConfig
 import com.aykuttasil.sweetloc.di.ApplicationContext
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.orhanobut.logger.Logger
-import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -31,8 +31,8 @@ class NetworkModule {
     @Provides
     @Singleton
     internal fun provideRetrofit(
-        okHttpClient: OkHttpClient,
-        gson: Gson
+      okHttpClient: OkHttpClient,
+      gson: Gson
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(getBaseUrl())
@@ -45,9 +45,9 @@ class NetworkModule {
     @Provides
     @Singleton
     internal fun provideOkHttpClient(
-        httpLoggingInterceptor: HttpLoggingInterceptor,
-        chuckInterceptor: ChuckInterceptor,
-        stethoInterceptor: StethoInterceptor
+      httpLoggingInterceptor: HttpLoggingInterceptor,
+      chuckerInterceptor: ChuckerInterceptor,
+      stethoInterceptor: StethoInterceptor
     ): OkHttpClient {
         val httpClientBuilder = OkHttpClient.Builder()
             .addInterceptor { chain ->
@@ -66,7 +66,7 @@ class NetworkModule {
 
         if (BuildConfig.DEBUG) {
             httpClientBuilder.addInterceptor(httpLoggingInterceptor)
-            httpClientBuilder.addInterceptor(chuckInterceptor)
+            httpClientBuilder.addInterceptor(chuckerInterceptor)
             httpClientBuilder.addNetworkInterceptor(stethoInterceptor)
         }
         return httpClientBuilder.build()
@@ -82,8 +82,8 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideChuckInterceptor(@ApplicationContext context: Context): ChuckInterceptor {
-        return ChuckInterceptor(context)
+    internal fun provideChuckInterceptor(@ApplicationContext context: Context): ChuckerInterceptor {
+        return ChuckerInterceptor(context)
     }
 
     @Provides
@@ -100,16 +100,4 @@ class NetworkModule {
             .excludeFieldsWithoutExposeAnnotation()
             .create()
     }
-
-    /*
-    @Provides
-    @Singleton
-    internal fun provideMoshi(): Moshi {
-        return Moshi
-                .Builder()
-                .add(KotlinJsonAdapterFactory())
-                .build()
-
-    }
-    */
 }

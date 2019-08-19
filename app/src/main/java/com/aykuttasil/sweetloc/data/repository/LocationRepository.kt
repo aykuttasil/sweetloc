@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.data.repository
 
 import com.aykuttasil.sweetloc.data.LocationEntity
@@ -19,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class LocationRepository @Inject constructor(
-    private val databaseReference: DatabaseReference
+  private val databaseReference: DatabaseReference
 ) {
 
     /*
@@ -93,9 +93,9 @@ class LocationRepository @Inject constructor(
     */
 
     fun addUserAndRoomLocation(
-        user: UserEntity,
-        locationEntity: LocationEntity,
-        roomList: List<RoomEntity>? = null
+      user: UserEntity,
+      locationEntity: LocationEntity,
+      roomList: List<RoomEntity>? = null
     ): Completable {
         return Completable.create { emitter ->
             databaseReference.child(userLocationsNode(user.userId))

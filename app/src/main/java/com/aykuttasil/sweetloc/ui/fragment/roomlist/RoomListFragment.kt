@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.roomlist
 
 import android.os.Bundle
@@ -35,11 +35,11 @@ open class RoomListFragment : BaseFragment(), Injectable {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+      inflater: LayoutInflater,
+      container: ViewGroup?,
+      savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_room_list_layout,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_room_list_layout, container, false)
         binding.lifecycleOwner = this
         return binding.root
     }

@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.data.repository
 
 import com.aykuttasil.sweetloc.data.RoomEntity
@@ -20,8 +20,8 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class RoomRepository @Inject constructor(
-    private val userRepository: UserRepository,
-    private val databaseReference: DatabaseReference
+  private val userRepository: UserRepository,
+  private val databaseReference: DatabaseReference
 ) {
 
     fun addRoom(roomEntity: RoomEntity): Single<String> {

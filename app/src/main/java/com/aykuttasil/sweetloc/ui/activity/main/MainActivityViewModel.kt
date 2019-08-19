@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.activity.main
 
 import android.app.Application
@@ -19,11 +19,11 @@ import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
-    private val app: Application,
-    private val userRepository: UserRepository,
-    private val locationRepository: LocationRepository,
-    private val roomRepository: RoomRepository,
-    private val sweetLocHelper: SweetLocHelper
+  private val app: Application,
+  private val userRepository: UserRepository,
+  private val locationRepository: LocationRepository,
+  private val roomRepository: RoomRepository,
+  private val sweetLocHelper: SweetLocHelper
 ) : BaseAndroidViewModel(app), LifecycleObserver {
 
     val isUserLogin = MutableLiveData<Boolean>()

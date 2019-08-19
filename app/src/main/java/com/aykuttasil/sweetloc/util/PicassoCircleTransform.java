@@ -41,4 +41,3 @@ public class PicassoCircleTransform implements Transformation {
     }
 }
 */
-

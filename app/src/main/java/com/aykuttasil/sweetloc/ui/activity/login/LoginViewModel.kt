@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.activity.login
 
 import androidx.lifecycle.LiveData
@@ -19,8 +19,8 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 inline fun <T> dependantLiveData(
-    vararg dependencies: LiveData<*>,
-    crossinline mapper: () -> T?
+  vararg dependencies: LiveData<*>,
+  crossinline mapper: () -> T?
 ) = MediatorLiveData<T>().also { mediatorLiveData ->
     val observer = Observer<Any> { mediatorLiveData.value = mapper() }
     dependencies.forEach { dependencyLiveData ->
@@ -29,8 +29,8 @@ inline fun <T> dependantLiveData(
 }
 
 open class LoginViewModel @Inject constructor(
-    private val app: App,
-    private val userRepository: UserRepository
+  private val app: App,
+  private val userRepository: UserRepository
 ) : BaseAndroidViewModel(app) {
 
     val liveOkDialog = SingleLiveEvent<DataOkDialog>()
@@ -44,8 +44,8 @@ open class LoginViewModel @Inject constructor(
     }
 
     open fun login(
-        email: String,
-        password: String
+      email: String,
+      password: String
     ) {
         liveLogin.value = Resource.loading()
 
@@ -75,8 +75,8 @@ open class LoginViewModel @Inject constructor(
     }
 
     fun register(
-        email: String,
-        password: String
+      email: String,
+      password: String
     ) {
         liveLogin.value = Resource.loading()
 

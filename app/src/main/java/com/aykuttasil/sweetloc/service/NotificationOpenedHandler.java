@@ -6,8 +6,8 @@ import com.orhanobut.logger.Logger;
 
 public class NotificationOpenedHandler implements OneSignal.NotificationOpenedHandler {
 
-    @Override
-    public void notificationOpened(OSNotificationOpenResult result) {
-        Logger.json(result.toJSONObject().toString());
-    }
+  @Override
+  public void notificationOpened(OSNotificationOpenResult result) {
+    Logger.json(result.toJSONObject().toString());
+  }
 }

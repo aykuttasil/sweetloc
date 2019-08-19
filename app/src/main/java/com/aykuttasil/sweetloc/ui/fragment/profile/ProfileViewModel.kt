@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.profile
 
 import android.app.Application
@@ -15,9 +15,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
-    private val app: Application,
-    private val userRepository: UserRepository,
-    private val sweetLocHelper: SweetLocHelper
+  private val app: Application,
+  private val userRepository: UserRepository,
+  private val sweetLocHelper: SweetLocHelper
 ) : BaseAndroidViewModel(app) {
 
     val liveUser: MutableLiveData<UserEntity> = MutableLiveData()

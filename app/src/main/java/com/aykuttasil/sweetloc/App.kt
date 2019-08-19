@@ -1,9 +1,7 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc
 
-import android.app.Activity
 import android.app.Application
-import android.app.Service
 import android.content.Context
 import androidx.multidex.MultiDex
 import com.aykuttasil.sweetloc.di.AppInjector
@@ -18,26 +16,18 @@ import com.orhanobut.logger.PrettyFormatStrategy
 import com.vondear.rxtool.RxTool
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import dagger.android.HasServiceInjector
+import dagger.android.HasAndroidInjector
 import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 import javax.inject.Inject
 
-open class App : Application(), HasActivityInjector, HasServiceInjector {
+open class App : Application(), HasAndroidInjector {
 
     @Inject
-    lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
-    @Inject
-    lateinit var activityDispatchingServiceInjector: DispatchingAndroidInjector<Service>
-
-    override fun activityInjector(): DispatchingAndroidInjector<Activity> {
-        return activityDispatchingAndroidInjector
-    }
-
-    override fun serviceInjector(): AndroidInjector<Service> {
-        return activityDispatchingServiceInjector
+    override fun androidInjector(): AndroidInjector<Any> {
+        return dispatchingAndroidInjector
     }
 
     override fun onCreate() {
@@ -71,8 +61,8 @@ open class App : Application(), HasActivityInjector, HasServiceInjector {
     private fun initLog() {
         val formatStrategy = PrettyFormatStrategy.newBuilder()
             .showThreadInfo(true) // (Optional) Whether to show thread info or not. Default true
-            .methodCount(2)         // (Optional) How many method line to show. Default 2
-            .methodOffset(5)        // (Optional) Hides internal method calls up to offset. Default 5
+            .methodCount(2) // (Optional) How many method line to show. Default 2
+            .methodOffset(5) // (Optional) Hides internal method calls up to offset. Default 5
             // .logStrategy(customLog)      // (Optional) Changes the log strategy to print out. Default LogCat
             .tag("SweetlocLogger") // (Optional) Global tag for every log. Default PRETTY_LOGGER
             .build()

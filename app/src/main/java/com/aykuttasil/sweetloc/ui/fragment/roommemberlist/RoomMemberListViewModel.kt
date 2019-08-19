@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.roommemberlist
 
 import android.app.Application
@@ -13,9 +13,9 @@ import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 class RoomMemberListViewModel @Inject constructor(
-    private val app: Application,
-    private val roomRepository: RoomRepository,
-    private val userRepository: UserRepository
+  private val app: Application,
+  private val roomRepository: RoomRepository,
+  private val userRepository: UserRepository
 ) : BaseAndroidViewModel(app) {
 
     val liveRoomMemberList: MutableLiveData<List<RoomMemberLocationModel>> = MutableLiveData()

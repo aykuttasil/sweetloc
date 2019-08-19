@@ -1,4 +1,4 @@
-/* Author - Aykut Asil(aykuttasil) */
+/* Author - Aykut Asil(@aykuttasil) */
 package com.aykuttasil.sweetloc.ui.fragment.usergroup
 
 import android.os.Bundle
@@ -21,9 +21,9 @@ class UserGroupsFragment : BaseFragment(), Injectable {
     lateinit var viewModel: UserGroupsViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+      inflater: LayoutInflater,
+      container: ViewGroup?,
+      savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_user_groups, container, false)
     }
