@@ -137,7 +137,7 @@
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="{applicationId}.action.BOOTUP" />
+                <action android:name="${applicationId}.action.BOOTUP" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
