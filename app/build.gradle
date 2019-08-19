@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
-apply from: "$rootDir/tools/common.gradle"
+apply from: "$rootDir/common.gradle"
 apply plugin: 'io.fabric'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
+apply from: "$rootDir/dependencies.gradle"
 
 android {
     defaultConfig {
@@ -59,14 +61,12 @@ android {
         prod {
             dimension "default"
             resValue "string", "app_name", "SweetLoc"
-            buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
             resValue "string", "dynamic_links_uri_prefix", "https://sweetloc.page.link"
         }
 
         dev {
             dimension "default"
             resValue "string", "app_name", "SweetLoc Dev"
-            buildConfigField('String', 'BACKEND_URL', '"http://sweet-loc.herokuapp.com/"')
             resValue "string", "dynamic_links_uri_prefix", "https://sweetloc.page.link"
 
             versionNameSuffix '-DEV'
@@ -102,18 +102,15 @@ dependencies {
     // Log
     implementation Libs.logger
     implementation Libs.timber
-
-    // Crashlytics
     implementation(Libs.crashlytics)
 
-    // Stetho
+    // Debug
     debugImplementation Libs.stetho
     implementation Libs.stetho_okhttp3
     debugImplementation Libs.stetho_js_rhino
-
-    // Chuck Http Tracing
-    releaseImplementation Libs.library_no_op
-    debugImplementation Libs.library
+    debugImplementation "com.github.ChuckerTeam.Chucker:library:3.0.1"
+    releaseImplementation "com.github.ChuckerTeam.Chucker:library-no-op:3.0.1"
+    debugImplementation Libs.leakcanary_android
 
     // AndroidX
     implementation Libs.material
@@ -166,7 +163,7 @@ dependencies {
     implementation Libs.adapter_rxjava2
     implementation Libs.adapter_rxjava
 
-    // Dagger
+    // DI
     kapt Libs.dagger_compiler
     implementation Libs.dagger
     kapt Libs.dagger_android_processor
@@ -195,9 +192,6 @@ dependencies {
     kapt Libs.com_github_bumptech_glide_compiler
     implementation Libs.okhttp3_integration
 
-    // LeakCanary
-    debugImplementation Libs.leakcanary_android
-
     // Permission
     implementation Libs.assent
     implementation Libs.needs
@@ -210,6 +204,12 @@ dependencies {
 
     // Testing
     testImplementation Libs.junit
+    testImplementation "androidx.test:core:" + versions.androidx.test_core
+    testImplementation "androidx.test:runner:" + versions.androidx.test_runner
+    testImplementation "androidx.test:rules:" + versions.androidx.test_rules
+    testImplementation "androidx.test.ext:junit-ktx:" +versions.androidx.test_ext_junit
+    testImplementation "androidx.test.ext:truth:" + versions.androidx.test_ext_truth
+    testImplementation "io.mockk:mockk:" + versions.mockk
 
 }
 apply plugin: 'com.google.gms.google-services'
